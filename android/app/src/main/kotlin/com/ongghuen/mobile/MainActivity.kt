@@ -1,4 +1,4 @@
-package com.ongghuen.ongghuen
+package com.ongghuen.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
