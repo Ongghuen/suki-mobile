@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ongghuen/pages/login_page.dart';
-import 'package:ongghuen/pages/main_page.dart';
+import 'package:ongghuen/auth/main_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

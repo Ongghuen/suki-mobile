@@ -1,31 +1,35 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  final VoidCallback showRegisterPage;
-  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  final VoidCallback showLoginPage;
+  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // controllers
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
-
-  Future _signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passController.text.trim());
-  }
+  final _confirmPassController = TextEditingController();
 
   @override
   void dispose() {
     // TODO: implement dispose
     _emailController.dispose();
     _passController.dispose();
+    _confirmPassController.dispose();
     super.dispose();
+  }
+
+  Future<void> _signUp() async {
+    if (_passController.text.trim() == _confirmPassController.text.trim()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passController.text.trim());
+    }
   }
 
   @override
@@ -44,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 // text di atas
                 Text(
-                  "Ongghuen??!",
+                  "SIAPA KAMU??!",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
                 ),
 
@@ -52,9 +56,15 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  "Selamat datang, ngabs!",
-                  style: TextStyle(fontSize: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Text(
+                    "Sini login kalau kamu mau masuk!",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
 
                 //
@@ -109,10 +119,35 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 //
 
+                // ini input text atau form
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: TextField(
+                      controller: _confirmPassController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Confirm Password',
+                          filled: true),
+                    ),
+                  ),
+                ),
+
+                //
+                const SizedBox(
+                  height: 10,
+                ),
+                //
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: _signIn,
+                    onTap: _signUp,
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -120,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(10)),
                       child: const Center(
                           child: Text(
-                        "Sign In",
+                        "Register",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       )),
@@ -136,15 +171,17 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Belum register? ",
+                      "AKU USER LOH YA MZ! ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+
+                    //
                     GestureDetector(
-                      onTap: widget.showRegisterPage,
+                      onTap: widget.showLoginPage,
                       child: Text(
-                        "Register sekarang",
+                        "Login sini",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.blue),
                       ),
