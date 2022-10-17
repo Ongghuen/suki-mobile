@@ -38,10 +38,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.android_outlined,
-                  size: 100,
-                ),
+                // const Icon(
+                //   Icons.android_outlined,
+                //   size: 100,
+                // ),
                 // text di atas
                 Text(
                   "Ongghuen??!",

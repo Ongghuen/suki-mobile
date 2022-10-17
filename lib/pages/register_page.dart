@@ -42,10 +42,10 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.android_outlined,
-                  size: 100,
-                ),
+                // const Icon(
+                //   Icons.android_outlined,
+                //   size: 100,
+                // ),
                 // text di atas
                 Text(
                   "SIAPA KAMU??!",
