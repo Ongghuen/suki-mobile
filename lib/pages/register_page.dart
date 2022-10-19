@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-  final VoidCallback showLoginPage;
-  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -24,14 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _signUp() async {
-    if (_passController.text.trim() == _confirmPassController.text.trim()) {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passController.text.trim());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //   size: 100,
                 // ),
                 // text di atas
-                Text(
+                const Text(
                   "SIAPA KAMU??!",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
                 ),
@@ -56,8 +46,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
                     "Sini login kalau kamu mau masuk!",
                     style: TextStyle(
@@ -82,7 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(12)),
                     child: TextField(
                       controller: _emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
                           filled: true),
@@ -105,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextField(
                       controller: _passController,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Password',
                           filled: true),
@@ -130,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextField(
                       controller: _confirmPassController,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Confirm Password',
                           filled: true),
@@ -147,7 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: _signUp,
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -170,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "AKU USER LOH YA MZ! ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -179,8 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     //
                     GestureDetector(
-                      onTap: widget.showLoginPage,
-                      child: Text(
+                      child: const Text(
                         "Login sini",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.blue),

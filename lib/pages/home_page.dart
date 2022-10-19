@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
@@ -13,11 +12,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _user = FirebaseAuth.instance.currentUser!;
+  // final _user = FirebaseAuth.instance.currentUser!;
 
-  Future _signOut() async {
-    FirebaseAuth.instance.signOut();
-  }
+  // Future _signOut() async {
+  //   FirebaseAuth.instance.signOut();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +26,10 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("signed in as: ${_user.email!}"),
+            Text("signed in as: ngabers"),
             MaterialButton(
-              onPressed: _signOut,
+              onPressed: null,
+              // onPressed: _signOut,
               color: Colors.yellow[500],
               child: Text("Sign Out"),
             )

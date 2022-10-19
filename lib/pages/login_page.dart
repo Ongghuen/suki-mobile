@@ -1,9 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
-  final VoidCallback showRegisterPage;
-  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -13,12 +16,29 @@ class _LoginPageState extends State<LoginPage> {
   // controllers
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
+  var testText = "hai";
 
-  Future _signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passController.text.trim());
+  Future login() async {
+    var url = Uri.http("192.168.8.112", "/web/api/testlogin.php");
+    var response = await http.post(url, body: {
+      "username": _emailController.text,
+      "password": _passController.text,
+    });
+    Map<String, dynamic> data = json.decode(response.body);
+    setState(() {
+      testText = data['msg'];
+    });
+    if (data['msg'].contains('masuk')) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
   }
+
+  // Future _signIn() async {
+  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: _emailController.text.trim(),
+  //       password: _passController.text.trim());
+  // }
 
   @override
   void dispose() {
@@ -44,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 // ),
                 // text di atas
                 Text(
-                  "Ongghuen??!",
+                  "$testText",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
                 ),
 
@@ -112,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: _signIn,
+                    onTap: login,
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -142,7 +162,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: widget.showRegisterPage,
                       child: Text(
                         "Register sekarang",
                         style: TextStyle(
