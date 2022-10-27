@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/logged_user.dart';
 import 'home_page.dart';
+import '../process/prefs.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,20 +21,23 @@ class _LoginPageState extends State<LoginPage> {
   final _passController = TextEditingController();
   var testText = "hai";
 
-  Future login() async {
-    var url = Uri.http("192.168.8.112", "/web/api/testlogin.php");
+  Future<bool> login() async {
+    var url = Uri.http("192.168.8.112", "/api/api/login/login.php");
     var response = await http.post(url, body: {
       "username": _emailController.text,
       "password": _passController.text,
     });
-    Map<String, dynamic> data = json.decode(response.body);
+    LoggedUser data = LoggedUser.fromJson(json.decode(response.body));
+    String username = data.username;
+    print(username);
+    await setPrefs("username", username);
     setState(() {
-      testText = data['msg'];
+      testText = data.msg;
     });
-    if (data['msg'].contains('masuk')) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+    if (data.msg.contains('masuk')) {
+      return true;
     }
+    return false;
   }
 
   // Future _signIn() async {
@@ -64,8 +70,9 @@ class _LoginPageState extends State<LoginPage> {
                 // ),
                 // text di atas
                 Text(
-                  "$testText",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+                  testText,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 36),
                 ),
 
                 // sized box cuma buat margin, idk any alternatives
@@ -92,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12)),
                     child: TextField(
                       controller: _emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
                           filled: true),
@@ -115,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextField(
                       controller: _passController,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Password',
                           filled: true),
@@ -132,7 +139,15 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: login,
+                    onTap: () async {
+                      var isLoggedIn = login();
+                      if (await isLoggedIn) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
+                      }
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -140,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(10)),
                       child: const Center(
                           child: Text(
-                        "Sign In",
+                        "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       )),
@@ -155,14 +170,14 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "Belum register? ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     GestureDetector(
-                      child: Text(
+                      child: const Text(
                         "Register sekarang",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.blue),

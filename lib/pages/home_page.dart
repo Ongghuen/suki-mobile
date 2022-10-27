@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/detail_page.dart';
+import 'package:mobile/process/prefs.dart';
 
 void main(List<String> args) {
-  runApp(HomePage());
+  runApp(const HomePage());
 }
 
 class HomePage extends StatefulWidget {
@@ -12,11 +14,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final _user = FirebaseAuth.instance.currentUser!;
+  late String username = "User";
 
-  // Future _signOut() async {
-  //   FirebaseAuth.instance.signOut();
-  // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUsername();
+  }
+
+  void getUsername() async {
+    var getUname = await getPrefs("username");
+    setState(() {
+      username = getUname;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +38,23 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("signed in as: ngabers"),
+            Text("signed in as: $username"),
             MaterialButton(
-              onPressed: null,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DetailPage()));
+              },
               // onPressed: _signOut,
               color: Colors.yellow[500],
-              child: Text("Sign Out"),
+              child: Text("Coba coba"),
+            ),
+            MaterialButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await removePrevs("username");
+              },
+              color: Colors.yellow[500],
+              child: Text("bye"),
             )
           ],
         ),
