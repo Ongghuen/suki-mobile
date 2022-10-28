@@ -6,6 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:mobile/data/api/call.dart';
 import 'package:mobile/data/hive/user.dart';
 import 'package:mobile/models/logged_user.dart';
+import 'package:mobile/pages/components/snackbar.dart';
 import 'package:mobile/pages/screens/register_page.dart';
 
 import 'home_page.dart';
@@ -18,14 +19,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // hive buat nyimpen sesi
   final userBox = Hive.box("user");
   UserHiveDatabase udb = UserHiveDatabase();
 
-  // controllers
+  // text controllers
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   var testText = "hai";
 
+  // fungsi buat login
   Future<bool> login() async {
     String apiUrl = "/api/api/login/login.php";
     var data = {
@@ -44,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
 
       return true;
     }
+    showSnackbar(context, "what the hell", "lol");
     return false;
   }
 
