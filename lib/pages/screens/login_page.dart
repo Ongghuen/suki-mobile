@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:hive_flutter/adapters.dart';
-import 'package:mobile/data/user.dart';
-import 'package:mobile/pages/register_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/logged_user.dart';
+import 'package:mobile/data/api/call.dart';
+import 'package:mobile/data/hive/user.dart';
+import 'package:mobile/models/logged_user.dart';
+import 'package:mobile/pages/screens/register_page.dart';
+
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,33 +27,28 @@ class _LoginPageState extends State<LoginPage> {
   var testText = "hai";
 
   Future<bool> login() async {
-    var url = Uri.http("192.168.8.112", "/api/api/login/login.php");
-    var response = await http.post(url, body: {
+    String apiUrl = "/api/api/login/login.php";
+    var data = {
       "username": _emailController.text,
       "password": _passController.text,
-    });
-    LoggedUser data = LoggedUser.fromJson(json.decode(response.body));
-    String username = data.username;
-    udb.user = username;
-    udb.updateDB();
-    setState(() {
-      testText = data.msg;
-    });
-    if (data.msg.contains('masuk')) {
+    };
+
+    var res = await CallApi().postData(data, apiUrl);
+    var body = json.decode(res.body);
+
+    if (body["msg"].contains('masuk')) {
+      LoggedUser user = LoggedUser.fromJson(body);
+
+      udb.user = user.username;
+      udb.updateDB();
+
       return true;
     }
     return false;
   }
 
-  // Future _signIn() async {
-  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //       email: _emailController.text.trim(),
-  //       password: _passController.text.trim());
-  // }
-
   @override
   void dispose() {
-    // TODO: implement dispose
     _emailController.dispose();
     _passController.dispose();
     super.dispose();
@@ -70,12 +65,6 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //
-
-                // const Icon(
-                //   Icons.android_outlined,
-                //   size: 100,
-                // ),
-                // text di atas
                 Text(
                   testText,
                   style: const TextStyle(
@@ -147,9 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
                     onTap: () async {
-                      var isLoggedIn = login();
-                      if (await isLoggedIn) {
-                        Navigator.push(
+                      if (await login()) {
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const HomePage()));

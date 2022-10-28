@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:mobile/data/user.dart';
-import 'package:mobile/pages/detail_page.dart';
-
-void main(List<String> args) {
-  runApp(const HomePage());
-}
+import 'package:mobile/data/hive/user.dart';
+import 'package:mobile/pages/auths/main_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,7 +18,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     udb.loadDB();
     getUsername();
     super.initState();
@@ -30,7 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   void getUsername() {
     setState(() {
-      username = udb.user;
+      username = udb.user!;
     });
   }
 
@@ -45,25 +40,15 @@ class _HomePageState extends State<HomePage> {
             //
 
             Text("signed in as: $username"),
-            // MaterialButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => const DetailPage()));
-            //   },
-            //   // onPressed: _signOut,
-            //   color: Colors.yellow[500],
-            //   child: Text("Coba coba"),
-            // ),
 
             MaterialButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const MainPage()));
                 udb.removeUser();
               },
               color: Colors.yellow[500],
-              child: Text("bye"),
+              child: const Text("bye"),
             )
           ],
         ),
