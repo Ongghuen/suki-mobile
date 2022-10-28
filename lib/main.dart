@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:mobile/pages/login_page.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  await Hive.initFlutter();
+  await Hive.openBox("user");
+
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Main(),

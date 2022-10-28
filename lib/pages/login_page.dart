@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:hive_flutter/adapters.dart';
+import 'package:mobile/data/user.dart';
+import 'package:mobile/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/logged_user.dart';
 import 'home_page.dart';
-import '../process/prefs.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,6 +18,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final userBox = Hive.box("user");
+  UserHiveDatabase udb = UserHiveDatabase();
+
   // controllers
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
@@ -29,8 +34,8 @@ class _LoginPageState extends State<LoginPage> {
     });
     LoggedUser data = LoggedUser.fromJson(json.decode(response.body));
     String username = data.username;
-    print(username);
-    await setPrefs("username", username);
+    udb.user = username;
+    udb.updateDB();
     setState(() {
       testText = data.msg;
     });
@@ -64,6 +69,8 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //
+
                 // const Icon(
                 //   Icons.android_outlined,
                 //   size: 100,
@@ -177,6 +184,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterPage())),
                       child: const Text(
                         "Register sekarang",
                         style: TextStyle(

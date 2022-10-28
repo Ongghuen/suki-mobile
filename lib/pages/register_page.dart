@@ -168,6 +168,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     //
                     GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: const Text(
                         "Login sini",
                         style: TextStyle(
