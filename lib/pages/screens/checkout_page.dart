@@ -104,7 +104,7 @@ class CheckoutPage extends StatelessWidget {
           "hehe",
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 100,
         child: Padding(
           padding: const EdgeInsets.all(20.0),

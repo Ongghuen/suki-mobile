@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-showSnackbar(context, text, [label, onPressed]) {
+showSnackbar(BuildContext context, text, [label, onPressed]) {
   final snackBar = SnackBar(
     content: Text(text),
     action: SnackBarAction(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/screens/login_page.dart';
+import 'package:mobile/pages/utils/components/snackbar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -28,9 +30,14 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(leading: IconButton(icon: const Icon(Icons.arrow_back), color:
-            Colors.black, onPressed: () => Navigator.pop(context),), backgroundColor:
-          const Color(0xFFF8F9FA),elevation: 0),
+      appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.black,
+            onPressed: () => Navigator.pop(context),
+          ),
+          backgroundColor: const Color(0xFFF8F9FA),
+          elevation: 0),
       backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: Center(
@@ -138,7 +145,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             backgroundColor: const Color(0xFF151515)),
                         child: const Text("BUAT AKUN",
                             style: TextStyle(fontSize: 18)),
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ));
+            showSnackbar(context, "INFO: blom ya fiturnya :)");
+                        },
                       ),
                     ),
                   ),

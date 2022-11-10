@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:mobile/data/api/call.dart';
 import 'package:mobile/data/hive/user.dart';
 import 'package:mobile/models/logged_user.dart';
 import 'package:mobile/pages/screens/home_page.dart';
 import 'package:mobile/pages/screens/register_page.dart';
+import 'package:mobile/pages/utils/components/snackbar.dart';
+import 'package:mobile/test_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,7 +20,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // hive buat nyimpen sesi
-  final userBox = Hive.box("user");
   UserHiveDatabase udb = UserHiveDatabase();
 
   // text controllers
@@ -28,20 +29,22 @@ class _LoginPageState extends State<LoginPage> {
   // fungsi buat login
   Future<bool> login() async {
     try {
-      String apiUrl = "/api/api/login/login.php";
-      var data = {
-        "username": _emailController.text,
-        "password": _passController.text,
-      };
-
-      var res = await CallApi().postData(data, apiUrl);
+      String apiUrl = "/api/login";
+      // var data = {
+      //   "username": _emailController.text,
+      //   "password": _passController.text,
+      // };
+      //
+      var res = await CallApi().getData(apiUrl);
+      print(res);
       var body = json.decode(res.body);
+      print(body);
 
-      if (body["msg"].contains('masuk')) {
-        LoggedUser user = LoggedUser.fromJson(body);
-
-        udb.user = user.username;
-        udb.updateDB();
+      if (body["msg"].contains('success')) {
+        // LoggedUser user = LoggedUser.fromJson(body);
+        //
+        // udb.user = user.username;
+        // udb.updateDB();
 
         return true;
       }
@@ -71,13 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Text(
-                      "Selamat Datang Kembali!",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Text("Selamat Datang Kembali!",
+                        style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20))),
                   ),
 
                   // sized box cuma buat margin, idk any alternatives
@@ -86,19 +88,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   // ini input text atau form
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                    ),
-                    child: TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          prefixIcon: Icon(Icons.person),
-                          hintText: 'Username',
-                          fillColor: Color(0xFFF8F9FA),
-                          filled: true),
-                    ),
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        prefixIcon: Icon(Icons.person),
+                        hintText: 'Username',
+                        fillColor: Color(0xFFF8F9FA),
+                        filled: true),
                   ),
 
                   const SizedBox(
@@ -123,26 +120,26 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   //
-
                   SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: GestureDetector(
                       child: ElevatedButton(
+                        onPressed: () async {
+                          if (await login()) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()));
+                            showSnackbar(context, "INFO: apinya blom ya :)");
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)),
                             backgroundColor: const Color(0xFF151515)),
                         child:
                             const Text("MASUK", style: TextStyle(fontSize: 16)),
-                        onPressed: () async {
-                          if (await login()) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
-                          }
-                        },
                       ),
                     ),
                   ),
@@ -151,6 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 30,
                   ),
 
+                  //
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

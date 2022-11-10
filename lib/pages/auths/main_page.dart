@@ -19,6 +19,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     udb.loadDB();
     return Scaffold(
-        body: udb.user == null ? const LoginPage() : const HomePage());
+      body: udb.user == null ? const LoginPage() : const HomePage(),
+    );
   }
 }
