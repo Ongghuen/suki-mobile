@@ -1,19 +1,16 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
-class LoggedUser {
+class User {
   final String username;
   final String password;
   final String msg;
 
-  const LoggedUser({
+  const User({
     required this.username,
     required this.password,
     required this.msg,
   });
 
-  factory LoggedUser.fromJson(Map<String, dynamic> json) {
-    return LoggedUser(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       username: json["result"][0]["username"],
       password: json["result"][0]["password"],
       msg: json['msg'],

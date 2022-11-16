@@ -2,14 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:mobile/data/api/call.dart';
-import 'package:mobile/data/hive/user.dart';
-import 'package:mobile/models/logged_user.dart';
-import 'package:mobile/pages/screens/home_page.dart';
-import 'package:mobile/pages/screens/register_page.dart';
-import 'package:mobile/pages/utils/components/snackbar.dart';
-import 'package:mobile/test_page.dart';
+import 'package:mobile/logic/data/api/call.dart';
+import 'package:mobile/logic/data/hive/user.dart';
+import 'package:mobile/presentation/screens/home_page.dart';
+import 'package:mobile/presentation/screens/register_page.dart';
+import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -127,10 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (await login()) {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                             showSnackbar(context, "INFO: apinya blom ya :)");
                           }
                         },

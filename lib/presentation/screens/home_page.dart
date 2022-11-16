@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/pages/screens/login_page.dart';
-import 'package:mobile/pages/utils/components/snackbar.dart';
+import 'package:mobile/presentation/screens/login_page.dart';
+import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,6 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController searchController = TextEditingController();
+
+  bool hahaha = true;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -30,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                     builder: (context) => const LoginPage(),
                   ));
-            showSnackbar(context, "INFO: cek logout");
+              showSnackbar(context, "INFO: cek logout");
             },
           ),
         ),
@@ -98,6 +101,13 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextField(
+                          onEditingComplete: () {
+                            setState(() {
+                              hahaha = !hahaha;
+                            });
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          controller: searchController,
                           decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20.0, vertical: 10.0),
@@ -108,9 +118,14 @@ class _HomePageState extends State<HomePage> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16)),
                               hintText: 'Cari Barang atau Perabotan',
-                              suffixIcon: const Icon(
-                                Icons.search,
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.search),
                                 color: Colors.black,
+                                onPressed: () {
+                                  setState(() {
+                                    hahaha = !hahaha;
+                                  });
+                                },
                               ),
                               fillColor: const Color(0xFFF8F9FA),
                               filled: true),
@@ -120,16 +135,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-          SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text("Kategori",
-                  style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  )),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(hahaha ? searchController.text : "Kategori",
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )),
+                  ],
+                ),
+              ),
             ),
             // --
           ]),
