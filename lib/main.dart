@@ -8,6 +8,7 @@ void main(List<String> args) async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
+    // check di AppRouter() "/" -- itu initial routenya kemana
     onGenerateRoute: AppRouter().onGenerateRoute,
   ));
 }

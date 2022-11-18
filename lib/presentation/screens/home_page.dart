@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/logic/data/api/call.dart';
+import 'package:mobile/logic/data/bloc/listing/listing_bloc.dart';
+import 'package:mobile/logic/models/listing.dart';
 import 'package:mobile/presentation/screens/login_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
@@ -11,9 +17,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController searchController = TextEditingController();
+  // instance bloc
+  // inget, kalo make atau buat baru atau provide
+  // baru ke provider instansinya pasti bakalan beda
+  // so... gada sih cuma ngingetin
+  final ListingBloc _listingBloc = ListingBloc();
 
+  TextEditingController searchController = TextEditingController();
   bool hahaha = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _listingBloc.add(GetListingList());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -28,11 +46,7 @@ class _HomePageState extends State<HomePage> {
           child: IconButton(
             icon: const Icon(Icons.arrow_left),
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ));
+              Navigator.of(context).pushReplacementNamed('/login');
               showSnackbar(context, "INFO: cek logout");
             },
           ),
@@ -139,6 +153,8 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
 
+            // ElevatedButton(onPressed: listing, child: const Text("cobalah")),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
@@ -156,6 +172,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             // --
+
+            BlocProvider<ListingBloc>(
+              create: (_) => _listingBloc,
+              child: Container(
+                color: Colors.yellow,
+                width: 50,
+                height: 50,
+                child: BlocBuilder<ListingBloc, ListingState>(
+                  builder: (context, state) {
+                    if (state is ListingInitial) {
+                      return Text("initial masi");
+                    } else if (state is ListingLoaded) {
+                      return Text("ok loaded");
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
+            )
           ]),
     );
   }
