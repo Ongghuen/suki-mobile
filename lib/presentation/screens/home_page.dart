@@ -94,13 +94,16 @@ class _HomePageState extends State<HomePage> {
                               ]),
 
                           // kanan
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(100))),
+                          GestureDetector(
+                          onTap: () => Navigator.of(context).pushNamed('/profile'),
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(100))),
+                            ),
                           ),
                         ],
                       ),
