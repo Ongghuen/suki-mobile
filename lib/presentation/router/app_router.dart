@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/presentation/auths/auth_page.dart';
 import 'package:mobile/presentation/screens/home_page.dart';
 import 'package:mobile/presentation/screens/login_page.dart';
+import 'package:mobile/presentation/screens/profile_page.dart';
 import 'package:mobile/presentation/screens/register_page.dart';
 
 class AppRouter {
@@ -24,6 +25,9 @@ class AppRouter {
       case '/home':
         return MaterialPageRoute(
             builder: (_) => const HomePage());
+      case '/profile':
+        return MaterialPageRoute(
+            builder: (_) => const ProfilePage());
       default:
         return null;
     }
