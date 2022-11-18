@@ -146,11 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: const Text("BUAT AKUN",
                             style: TextStyle(fontSize: 18)),
                         onPressed: () async {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginPage(),
-                              ));
+                          Navigator.of(context).pushNamed('/login');
             showSnackbar(context, "INFO: blom ya fiturnya :)");
                         },
                       ),
