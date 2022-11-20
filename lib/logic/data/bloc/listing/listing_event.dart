@@ -10,3 +10,4 @@ abstract class ListingEvent extends Equatable {
 }
 
 class GetListingList extends ListingEvent {}
+class GetDetailedListingList extends ListingEvent {}

@@ -19,8 +19,25 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
         String apiUrl = "/api/listings";
         var res = await CallApi().getData(apiUrl);
         var body = json.decode(res.body);
-        final listing = Results.fromJson(body);
-        print(listing);
+        final listing = ListingModel.fromJson(body);
+        print(body);
+
+        emit(ListingLoaded(listing));
+
+      } catch (ex, trace) {
+        print("$ex $trace");
+      }
+    });
+    on<GetDetailedListingList>((event, emit) async{
+      // TODO: implement event handler
+      try {
+        emit(ListingLoading());
+
+        String apiUrl = "/api/listings";
+        var res = await CallApi().getData(apiUrl);
+        var body = json.decode(res.body);
+        final listing = ListingModel.fromJson(body);
+        print(body);
 
         emit(ListingLoaded(listing));
 

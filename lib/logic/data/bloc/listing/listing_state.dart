@@ -12,7 +12,7 @@ abstract class ListingState extends Equatable {
 class ListingInitial extends ListingState {}
 class ListingLoading extends ListingState {}
 class ListingLoaded extends ListingState {
-  final Results listingModel;
+  final ListingModel listingModel;
   ListingLoaded(this.listingModel);
 }
 class ListingError extends ListingState {

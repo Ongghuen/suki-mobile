@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/data/bloc/listing/listing_bloc.dart';
 import 'package:mobile/logic/models/listing.dart';
-import 'package:mobile/presentation/screens/login_page.dart';
+import 'package:mobile/presentation/screens/detail_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +31,7 @@ class _HomePageState extends State<HomePage> {
     _listingBloc.add(GetListingList());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -95,7 +95,8 @@ class _HomePageState extends State<HomePage> {
 
                           // kanan
                           GestureDetector(
-                          onTap: () => Navigator.of(context).pushNamed('/profile'),
+                            onTap: () =>
+                                Navigator.of(context).pushNamed('/profile'),
                             child: Container(
                               height: 50,
                               width: 50,
@@ -156,8 +157,6 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
 
-            // ElevatedButton(onPressed: listing, child: const Text("cobalah")),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
@@ -176,21 +175,75 @@ class _HomePageState extends State<HomePage> {
             ),
             // --
 
-            BlocProvider<ListingBloc>(
-              create: (_) => _listingBloc,
-              child: Container(
-                color: Colors.yellow,
-                width: 50,
-                height: 50,
-                child: BlocBuilder<ListingBloc, ListingState>(
-                  builder: (context, state) {
-                    if (state is ListingInitial) {
-                      return Text("initial masi");
-                    } else if (state is ListingLoaded) {
-                      return Text("ok loaded");
-                    }
-                    return CircularProgressIndicator();
-                  },
+            Expanded(
+              child: SingleChildScrollView(
+                child: BlocProvider<ListingBloc>(
+                  create: (_) => _listingBloc,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Column(
+                      children: [
+                        Builder(builder: (context) {
+                          return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black),
+                              onPressed: () => context
+                                  .read<ListingBloc>()
+                                  .add(GetListingList()),
+                              child: const Text("Reload"));
+                        }),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        BlocBuilder<ListingBloc, ListingState>(
+                          builder: (context, state) {
+                            if (state is ListingInitial) {
+                              return const Text("LOADING MAZ");
+                            } else if (state is ListingLoaded) {
+                              return ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: state.listingModel.results!.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      onTap: () => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => DetailPage(),
+                                      )),
+                                      child: Card(
+                                        child: Container(
+                                          margin: EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                  "#${state.listingModel.results![index].id}"),
+                                              Text(
+                                                  "Title: ${state.listingModel.results![index].title}"),
+                                              Text(
+                                                  "Tags: ${state.listingModel.results![index].tags}"),
+                                              Text(
+                                                  "Email: ${state.listingModel.results![index].email}"),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.black,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             )
