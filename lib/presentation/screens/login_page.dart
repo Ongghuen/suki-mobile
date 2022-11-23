@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/data/hive/user.dart';
-import 'package:mobile/presentation/screens/home_page.dart';
-import 'package:mobile/presentation/screens/register_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,7 +15,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // hive buat nyimpen sesi
-  UserHiveDatabase udb = UserHiveDatabase();
+  // UserHiveDatabase udb = UserHiveDatabase();
 
   // text controllers
   final _emailController = TextEditingController();
@@ -27,13 +25,14 @@ class _LoginPageState extends State<LoginPage> {
   Future<bool> login() async {
     try {
       String apiUrl = "/api/login";
+      // BUAT NGEPOST DATA {{ POST }}
+      // TODO: PLEASE BENERIN INI
       // var data = {
       //   "username": _emailController.text,
       //   "password": _passController.text,
       // };
       //
       var res = await CallApi().getData(apiUrl);
-      print(res);
       var body = json.decode(res.body);
       print(body);
 
@@ -124,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (await login()) {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                            Navigator.of(context).pushNamed('/home');
                             showSnackbar(context, "INFO: apinya blom ya :)");
                           }
                         },
@@ -153,10 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Color(0xFF979797)),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterPage())),
+                        onTap: () => Navigator.of(context).pushNamed('/register'),
                         child: const Text(
                           "Daftar",
                           style: TextStyle(
