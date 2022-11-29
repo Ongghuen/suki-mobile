@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                                     print("$_ and $context");
                                     showSnackbar(context, "Logged Out");
                                     Navigator.of(context)
-                                        .pushReplacementNamed('/login');
+                                        .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/'));
                                   }
                                 }, builder: (_, state) {
                                   if (state is AuthLoaded) {

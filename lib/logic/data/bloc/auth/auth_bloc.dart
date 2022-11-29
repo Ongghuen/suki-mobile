@@ -39,7 +39,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (res.statusCode == 200) {
         emit(AuthLogout());
-        print("lets check this shit");
       } else {
         print("Logout Failed");
       }
