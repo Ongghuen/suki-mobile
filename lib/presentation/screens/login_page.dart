@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/api/call.dart';
-import 'package:mobile/logic/data/hive/user.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,41 +15,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // hive buat nyimpen sesi
-  // UserHiveDatabase udb = UserHiveDatabase();
-
-  // text controllers
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
 
-  // fungsi buat login
-  Future<bool> login() async {
-    try {
-      String apiUrl = "/api/login";
-      // BUAT NGEPOST DATA {{ POST }}
-      // TODO: PLEASE BENERIN INI
-      // var data = {
-      //   "username": _emailController.text,
-      //   "password": _passController.text,
-      // };
-      //
-      var res = await CallApi().getData(apiUrl);
-      var body = json.decode(res.body);
-      print(body);
-
-      if (body["msg"].contains('success')) {
-        // LoggedUser user = LoggedUser.fromJson(body);
-        //
-        // udb.user = user.username;
-        // udb.updateDB();
-
-        return true;
-      }
-    } catch (ex) {
-      print("Login Error: $ex");
-    }
-    return false;
-  }
+  // fungsi buat auth
+  // Future<bool> login(BuildContext context) async {
+  //   try {
+  //     String apiUrl = "/api/login";
+  //
+  //     var data = {
+  //       "email": _emailController.text.trim(),
+  //       "password": _passController.text.trim(),
+  //     };
+  //
+  //     var res = await CallApi().postData(apiUrl, data);
+  //     var body = json.decode(res.body);
+  //
+  //     if (res.statusCode == 201) {
+  //       return true;
+  //     } else {
+  //       showSnackbar(context, body['message']);
+  //     }
+  //   } catch (ex) {
+  //     print("Login Error: $ex");
+  //   }
+  //   return false;
+  // }
 
   @override
   void dispose() {
@@ -72,10 +64,20 @@ class _LoginPageState extends State<LoginPage> {
                   //
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Text("Selamat Datang Kembali!",
-                        style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20))),
+                    child:
+                        BlocConsumer<AuthBloc, AuthState>(listener: (_, state) {
+                      if (state is AuthLoaded) {
+                        Navigator.of(context).pushNamed('/home');
+                      }
+                      if (state is AuthError) {
+                        showSnackbar(context, state.msg);
+                      }
+                    }, builder: (_, state) {
+                      return Text("Selamat Datang Kembali!",
+                          style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20)));
+                    }),
                   ),
 
                   // sized box cuma buat margin, idk any alternatives
@@ -120,20 +122,31 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 50,
                     child: GestureDetector(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (await login()) {
-                            Navigator.of(context).pushNamed('/home');
-                            showSnackbar(context, "INFO: apinya blom ya :)");
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            backgroundColor: const Color(0xFF151515)),
-                        child:
-                            const Text("MASUK", style: TextStyle(fontSize: 16)),
-                      ),
+                      child: Builder(builder: (context) {
+                        return ElevatedButton(
+                          onPressed: () async {
+                            // if (await login(context)) {
+                            //   Navigator.of(context).pushNamed('/home');
+                            //   showSnackbar(context, "INFO: apinya blom ya :)");
+                            // }
+
+                            var data = {
+                              "email": _emailController.text.trim(),
+                              "password": _passController.text.trim(),
+                            };
+
+                            context
+                                .read<AuthBloc>()
+                                .add(UserAuthLogin(data));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              backgroundColor: const Color(0xFF151515)),
+                          child: const Text("MASUK",
+                              style: TextStyle(fontSize: 16)),
+                        );
+                      }),
                     ),
                   ),
 
@@ -152,7 +165,8 @@ class _LoginPageState extends State<LoginPage> {
                             color: Color(0xFF979797)),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.of(context).pushNamed('/register'),
+                        onTap: () =>
+                            Navigator.of(context).pushNamed('/register'),
                         child: const Text(
                           "Daftar",
                           style: TextStyle(

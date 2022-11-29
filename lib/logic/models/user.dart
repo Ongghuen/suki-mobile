@@ -1,20 +1,65 @@
-class User {
-  final String username;
-  final String password;
-  final String msg;
+class AuthModel {
+  User? user;
+  String? token;
 
-  const User({
-    required this.username,
-    required this.password,
-    required this.msg,
-  });
+  AuthModel({this.user, this.token});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      username: json["result"][0]["username"],
-      password: json["result"][0]["password"],
-      msg: json['msg'],
-    );
+  AuthModel.fromJson(Map<String, dynamic> json) {
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    data['token'] = this.token;
+    return data;
   }
 }
 
+class User {
+  int? id;
+  String? name;
+  String? email;
+  String? phone;
+  int? roleId;
+  String? emailVerifiedAt;
+  String? createdAt;
+  String? updatedAt;
+
+  User(
+      {this.id,
+      this.name,
+      this.email,
+      this.phone,
+      this.roleId,
+      this.emailVerifiedAt,
+      this.createdAt,
+      this.updatedAt});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    roleId = json['role_id'];
+    emailVerifiedAt = json['email_verified_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['role_id'] = this.roleId;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}

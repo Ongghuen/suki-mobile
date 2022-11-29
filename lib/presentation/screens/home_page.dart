@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/logic/data/bloc/listing/listing_bloc.dart';
-import 'package:mobile/logic/models/listing.dart';
-import 'package:mobile/presentation/screens/detail_page.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   // inget, kalo make atau buat baru atau provide
   // baru ke provider instansinya pasti bakalan beda
   // so... gada sih cuma ngingetin
-  final ListingBloc _listingBloc = ListingBloc();
+  // final ListingBloc _listingBloc = ListingBloc();
 
   TextEditingController searchController = TextEditingController();
   bool hahaha = true;
@@ -28,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    _listingBloc.add(GetListingList());
+    // _listingBloc.add(GetListingList());
     super.initState();
   }
 
@@ -43,13 +41,20 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
           ),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_left),
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/login');
-              showSnackbar(context, "INFO: cek logout");
-            },
-          ),
+          child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            if (state is AuthLoaded) {
+              return IconButton(
+                icon: const Icon(Icons.arrow_left),
+                onPressed: () {
+                  context
+                      .read<AuthBloc>()
+                      .add(UserAuthLogout(state.userModel.token));
+                },
+              );
+            }
+            return IconButton(
+                onPressed: () {}, icon: const Icon(Icons.arrow_left));
+          }),
         ),
       ),
       body: Column(
@@ -79,13 +84,32 @@ class _HomePageState extends State<HomePage> {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Hi, Vinda",
-                                    style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 24),
-                                    )),
+                                BlocConsumer<AuthBloc, AuthState>(
+                                    listener: (_, state) {
+                                  if (state is AuthLogout) {
+                                    print("$_ and $context");
+                                    showSnackbar(context, "Logged Out");
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('/login');
+                                  }
+                                }, builder: (_, state) {
+                                  if (state is AuthLoaded) {
+                                    return SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Text(
+                                          "Hi, ${state.userModel.user!.name}",
+                                          style: GoogleFonts.montserrat(
+                                            textStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontSize: 24),
+                                          )),
+                                    );
+                                  }
+                                  return const CircularProgressIndicator(
+                                    backgroundColor: Colors.black,
+                                  );
+                                }),
                                 Text("Welcome to Suki",
                                     style: GoogleFonts.montserrat(
                                       textStyle: const TextStyle(
@@ -175,78 +199,78 @@ class _HomePageState extends State<HomePage> {
             ),
             // --
 
-            Expanded(
-              child: SingleChildScrollView(
-                child: BlocProvider<ListingBloc>(
-                  create: (_) => _listingBloc,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                    child: Column(
-                      children: [
-                        Builder(builder: (context) {
-                          return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black),
-                              onPressed: () => context
-                                  .read<ListingBloc>()
-                                  .add(GetListingList()),
-                              child: const Text("Reload"));
-                        }),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        BlocBuilder<ListingBloc, ListingState>(
-                          builder: (context, state) {
-                            if (state is ListingInitial) {
-                              return const Text("LOADING MAZ");
-                            } else if (state is ListingLoaded) {
-                              return ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: state.listingModel.results!.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    margin: EdgeInsets.all(8.0),
-                                    child: InkWell(
-                                      onTap: () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => DetailPage(),
-                                      )),
-                                      child: Card(
-                                        child: Container(
-                                          margin: EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                  "#${state.listingModel.results![index].id}"),
-                                              Text(
-                                                  "Title: ${state.listingModel.results![index].title}"),
-                                              Text(
-                                                  "Tags: ${state.listingModel.results![index].tags}"),
-                                              Text(
-                                                  "Email: ${state.listingModel.results![index].email}"),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.black,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            )
+            // Expanded(
+            //   child: SingleChildScrollView(
+            //     child: BlocProvider<ListingBloc>(
+            //       create: (_) => _listingBloc,
+            //       child: Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 14.0),
+            //         child: Column(
+            //           children: [
+            //             Builder(builder: (context) {
+            //               return ElevatedButton(
+            //                   style: ElevatedButton.styleFrom(
+            //                       backgroundColor: Colors.black),
+            //                   onPressed: () => context
+            //                       .read<ListingBloc>()
+            //                       .add(GetListingList()),
+            //                   child: const Text("Reload"));
+            //             }),
+            //             SizedBox(
+            //               height: 24,
+            //             ),
+            //             // BlocBuilder<ListingBloc, ListingState>(
+            //             //   builder: (context, state) {
+            //             //     if (state is ListingInitial) {
+            //             //       return const Text("LOADING MAZ");
+            //             //     } else if (state is ListingLoaded) {
+            //             //       return ListView.builder(
+            //             //         scrollDirection: Axis.vertical,
+            //             //         shrinkWrap: true,
+            //             //         itemCount: state.listingModel.results!.length,
+            //             //         itemBuilder: (context, index) {
+            //             //           return Container(
+            //             //             margin: EdgeInsets.all(8.0),
+            //             //             child: InkWell(
+            //             //               onTap: () => Navigator.of(context)
+            //             //                   .push(MaterialPageRoute(
+            //             //                 builder: (context) => DetailPage(),
+            //             //               )),
+            //             //               child: Card(
+            //             //                 child: Container(
+            //             //                   margin: EdgeInsets.all(8.0),
+            //             //                   child: Column(
+            //             //                     children: <Widget>[
+            //             //                       Text(
+            //             //                           "${state.listingModel.results![index].id}"),
+            //             //                       Text(
+            //             //                           "Title: ${state.listingModel.results![index].title}"),
+            //             //                       Text(
+            //             //                           "Tags: ${state.listingModel.results![index].tags}"),
+            //             //                       Text(
+            //             //                           "Email: ${state.listingModel.results![index].email}"),
+            //             //                     ],
+            //             //                   ),
+            //             //                 ),
+            //             //               ),
+            //             //             ),
+            //             //           );
+            //             //         },
+            //             //       );
+            //             //     }
+            //             //     return const Center(
+            //             //       child: CircularProgressIndicator(
+            //             //         backgroundColor: Colors.black,
+            //             //       ),
+            //             //     );
+            //             //   },
+            //             // ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ]),
     );
   }
