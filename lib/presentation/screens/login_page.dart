@@ -18,30 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
 
-  // fungsi buat auth
-  // Future<bool> login(BuildContext context) async {
-  //   try {
-  //     String apiUrl = "/api/login";
-  //
-  //     var data = {
-  //       "email": _emailController.text.trim(),
-  //       "password": _passController.text.trim(),
-  //     };
-  //
-  //     var res = await CallApi().postData(apiUrl, data);
-  //     var body = json.decode(res.body);
-  //
-  //     if (res.statusCode == 201) {
-  //       return true;
-  //     } else {
-  //       showSnackbar(context, body['message']);
-  //     }
-  //   } catch (ex) {
-  //     print("Login Error: $ex");
-  //   }
-  //   return false;
-  // }
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -135,16 +111,23 @@ class _LoginPageState extends State<LoginPage> {
                               "password": _passController.text.trim(),
                             };
 
-                            context
-                                .read<AuthBloc>()
-                                .add(UserAuthLogin(data));
+                            context.read<AuthBloc>().add(UserAuthLogin(data));
                           },
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                               backgroundColor: const Color(0xFF151515)),
-                          child: const Text("MASUK",
-                              style: TextStyle(fontSize: 16)),
+                          child: BlocBuilder<AuthBloc, AuthState>(
+                              builder: (_, state) {
+                            if (state is AuthLoading) {
+                              return const CircularProgressIndicator(
+                                backgroundColor: Colors.black,
+                                color: Colors.white,
+                              );
+                            }
+                            return const Text("MASUK",
+                                style: TextStyle(fontSize: 16));
+                          }),
                         );
                       }),
                     ),

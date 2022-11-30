@@ -84,32 +84,35 @@ class _HomePageState extends State<HomePage> {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                BlocConsumer<AuthBloc, AuthState>(
-                                    listener: (_, state) {
-                                  if (state is AuthLogout) {
-                                    print("$_ and $context");
-                                    showSnackbar(context, "Logged Out");
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/'));
-                                  }
-                                }, builder: (_, state) {
-                                  if (state is AuthLoaded) {
-                                    return SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Text(
-                                          "Hi, ${state.userModel.user!.name}",
-                                          style: GoogleFonts.montserrat(
-                                            textStyle: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 24),
-                                          )),
-                                    );
-                                  }
-                                  return const CircularProgressIndicator(
-                                    backgroundColor: Colors.black,
-                                  );
-                                }),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Container(
+                                    width: 200,
+                                    child: BlocConsumer<AuthBloc, AuthState>(
+                                        listener: (_, state) {
+                                      if (state is AuthLogout) {
+                                        showSnackbar(context, "Logged Out");
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil('/login',
+                                                ModalRoute.withName('/'));
+                                      }
+                                    }, builder: (_, state) {
+                                      if (state is AuthLoaded) {
+                                        return Text(
+                                            "Hi, ${state.userModel.user!.name?.split(" ")[0]}",
+                                            style: GoogleFonts.montserrat(
+                                              textStyle: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 24),
+                                            ));
+                                      }
+                                      return const CircularProgressIndicator(
+                                        backgroundColor: Colors.black,
+                                      );
+                                    }),
+                                  ),
+                                ),
                                 Text("Welcome to Suki",
                                     style: GoogleFonts.montserrat(
                                       textStyle: const TextStyle(
