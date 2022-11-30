@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                             // }
 
                             var data = {
-                              "email": _emailController.text.trim(),
+                              "username": _emailController.text.trim(),
                               "password": _passController.text.trim(),
                             };
 
