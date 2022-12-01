@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/screens/login_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
@@ -12,18 +14,22 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   // controllers
   final _usernameController = TextEditingController();
+  final _nameController = TextEditingController();
   final _noTelpController = TextEditingController();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
+  final _passConfirmationController = TextEditingController();
   bool _hidePass = true;
 
   @override
   void dispose() {
     // TODO: implement dispose
     _usernameController.dispose();
+    _nameController.dispose();
     _noTelpController.dispose();
     _emailController.dispose();
     _passController.dispose();
+    _passConfirmationController.dispose();
     super.dispose();
   }
 
@@ -47,11 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // const Icon(
-                  //   Icons.android_outlined,
-                  //   size: 100,
-                  // ),
-                  // text di atas
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
@@ -70,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // ini input text atau form
                   TextField(
-                    controller: _usernameController,
+                    controller: _nameController,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
                       labelText: 'Nama Anda',
@@ -94,6 +95,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 10,
                   ),
                   //
+
+                  // ini input text atau form
+                  TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Username',
+                    ),
+                  ),
 
                   // ini input text atau form
                   TextField(
@@ -128,6 +138,24 @@ class _RegisterPageState extends State<RegisterPage> {
                         )),
                   ),
 
+                  TextField(
+                    obscureText: _hidePass,
+                    controller: _passConfirmationController,
+                    decoration: InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Konfirmasi Sandi',
+                        suffixIcon: IconButton(
+                          icon: Icon(_hidePass
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _hidePass = !_hidePass;
+                            });
+                          },
+                        )),
+                  ),
+
                   //
                   const SizedBox(
                     height: 30,
@@ -143,11 +171,28 @@ class _RegisterPageState extends State<RegisterPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)),
                             backgroundColor: const Color(0xFF151515)),
-                        child: const Text("BUAT AKUN",
-                            style: TextStyle(fontSize: 18)),
+                        child: BlocBuilder<AuthBloc, AuthState>(
+                            builder: (_, state) {
+                          if (state is AuthLoading) {
+                            return const CircularProgressIndicator(
+                              backgroundColor: Colors.black,
+                              color: Colors.white,
+                            );
+                          }
+                          return const Text("BUAT AKUN",
+                              style: TextStyle(fontSize: 18));
+                        }),
                         onPressed: () async {
-                          Navigator.of(context).pushNamed('/login');
-            showSnackbar(context, "INFO: blom ya fiturnya :)");
+                          var data = {
+                            "email": _emailController.text.trim(),
+                            "username": _usernameController.text.trim(),
+                            "name": _nameController.text.trim(),
+                            "noTelp": _noTelpController.text.trim(),
+                            "password": _passController.text.trim(),
+                            "password_confirmation":
+                                _passConfirmationController.text.trim(),
+                          };
+                          context.read<AuthBloc>().add(UserAuthRegister(data));
                         },
                       ),
                     ),
