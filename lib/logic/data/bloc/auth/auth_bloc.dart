@@ -21,13 +21,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         var body = json.decode(res.body);
         if (res.statusCode == 201) {
           final auth = AuthModel.fromJson(body);
-          print(auth.token);
           emit(AuthLoaded(auth));
         } else {
           emit(AuthError(body['message']));
         }
       } catch (ex, trace) {
         print("$ex $trace");
+        emit(AuthError("Something's wrong"));
       }
     });
 
@@ -42,7 +42,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         var body = json.decode(res.body);
         if (res.statusCode == 201) {
           final auth = AuthModel.fromJson(body);
-          print(auth.token);
           emit(AuthLoaded(auth));
         } else {
           emit(AuthError(body['message']));
@@ -50,15 +49,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (ex, trace) {
         print("$ex $trace");
       }
-      // emulate apasih namanya, ruang dan waktu
-      // yahahaa aseeeek
-      // await Future.delayed(const Duration(seconds: 1));
-      // if (event.data.length != 0) {
-      //   emit(AuthInitial());
-      // } else {
-      //   emit(AuthError("Gagal Brow"));
-      //   emit(AuthInitial());
-      // }
     });
 
     on<UserAuthLogout>((event, emit) async {
@@ -70,7 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (res.statusCode == 200) {
         emit(AuthLogout());
       } else {
-        print("Logout Failed");
+        emit(AuthError("Logout Failed"));
       }
     });
   }

@@ -17,6 +17,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   http: ^0.13.5
   equatable: ^2.0.5
+  google_nav_bar: ^5.0.6
 
   # ini ntar bisa pake hydratedbloc atau whatever namanya
   hive:

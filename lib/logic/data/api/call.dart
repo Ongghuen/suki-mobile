@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CallApi {
-  final String _url = "http://192.168.100.23:8000";
+  final String _url = "http://192.168.100.25:8000";
 
-  getData(apiUrl) async {
+  getData(apiUrl, {token = ""}) async {
     try {
       var fullUrl = _url + apiUrl;
       print(fullUrl);
-      return await http
-          .get(Uri.parse(fullUrl), headers: {"Accept": "application/json"});
+      return await http.get(Uri.parse(fullUrl), headers: {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token'
+      });
     } catch (ex, stacktrace) {
       print("Exception occured: $ex stackTrace: $stacktrace");
     }

@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                     child:
                         BlocConsumer<AuthBloc, AuthState>(listener: (_, state) {
                       if (state is AuthLoaded) {
-                        Navigator.of(context).pushNamed('/home');
+                        Navigator.of(context).pushReplacementNamed('/main');
                       }
                       if (state is AuthError) {
                         showSnackbar(context, state.msg);
@@ -101,11 +101,6 @@ class _LoginPageState extends State<LoginPage> {
                       child: Builder(builder: (context) {
                         return ElevatedButton(
                           onPressed: () async {
-                            // if (await login(context)) {
-                            //   Navigator.of(context).pushNamed('/home');
-                            //   showSnackbar(context, "INFO: apinya blom ya :)");
-                            // }
-
                             var data = {
                               "username": _emailController.text.trim(),
                               "password": _passController.text.trim(),

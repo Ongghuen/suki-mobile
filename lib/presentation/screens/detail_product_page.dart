@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/presentation/screens/checkout_page.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({Key? key}) : super(key: key);
@@ -124,10 +123,10 @@ class DetailPage extends StatelessWidget {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const CheckoutPage()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => const CheckoutPage()));
                         },
                         child: const Center(
                           child: Text(
