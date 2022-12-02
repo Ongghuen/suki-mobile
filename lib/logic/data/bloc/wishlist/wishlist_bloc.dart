@@ -18,16 +18,32 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
 
         String apiUrl = "/api/wishlists";
         var res = await CallApi().getData(apiUrl, token: event.token);
-        print(event.token);
         var body = json.decode(res.body);
         final data = WishlistModel.fromJson(body);
-        print(body);
 
-        emit(WishlistLoaded(data));
+        // taroh product id aunthenticated user ke list
+        List<String> wishlisted = [];
+        for (var i = 0; i < data.results!.length; i++) {
+          wishlisted.add(data.results![i].pivot!.productId.toString());
+        }
+
+        emit(WishlistLoaded(data, wishlisted));
       } catch (ex, trace) {
         emit(WishlistError("sum ting wong"));
         print("$ex $trace");
       }
+    });
+
+    on<AddProductToWishlist>((event, emit) async {
+      String apiUrl = "/api/wishlists";
+      await CallApi().postData(apiUrl, event.productId, token: event.token);
+      add(GetWishlistUserList(event.token));
+    });
+
+    on<DeleteProductFromWishlist>((event, emit) async {
+      String apiUrl = "/api/wishlists/${event.productId}";
+      await CallApi().deleteData(apiUrl, token: event.token);
+      add(GetWishlistUserList(event.token));
     });
   }
 }

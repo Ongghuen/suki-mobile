@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
+import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -227,113 +228,140 @@ class _HomePageState extends State<HomePage> {
                             textStyle: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           )),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        height: 700,
-                        child: ListView(
-                          // This next line does the trick.
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: 100.0,
-                                color: Colors.black,
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                          child: Column(
+                            children: [
+                              Builder(builder: (context) {
+                                return ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black),
+                                    onPressed: () => context
+                                        .read<ProductBloc>()
+                                        .add(GetProductList()),
+                                    child: const Text("Reload"));
+                              }),
+                              SizedBox(
+                                height: 24,
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: 100.0,
-                                color: Colors.black45,
+                              BlocBuilder<ProductBloc, ProductState>(
+                                builder: (context, state) {
+                                  if (state is ProductInitial) {
+                                    return const Text("LOADING MAZ");
+                                  } else if (state is ProductLoaded) {
+                                    return ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          state.productModel.results!.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          margin: EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            child: Card(
+                                              child: Container(
+                                                margin: EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                                "${state.productModel.results![index].name}"),
+                                                            Text(
+                                                                "Rp.${state.productModel.results![index].harga},00"),
+                                                          ],
+                                                        ),
+                                                        BlocBuilder<
+                                                                WishlistBloc,
+                                                                WishlistState>(
+                                                            builder: (context,
+                                                                wstate) {
+                                                          if (wstate
+                                                              is WishlistLoaded) {
+                                                            return IconButton(
+                                                                onPressed: () {
+                                                                  final astate =
+                                                                      context
+                                                                          .read<
+                                                                              AuthBloc>()
+                                                                          .state;
+                                                                  if (astate
+                                                                      is AuthLoaded) {
+                                                                    var product_id = state
+                                                                        .productModel
+                                                                        .results![
+                                                                            index]
+                                                                        .id
+                                                                        .toString();
+                                                                    var data = {
+                                                                      "product_id":
+                                                                          product_id
+                                                                    };
+                                                                    wstate.wishlistedProduct.contains(
+                                                                            product_id)
+                                                                        ? context.read<WishlistBloc>().add(DeleteProductFromWishlist(
+                                                                            product_id,
+                                                                            astate.userModel.token
+                                                                                .toString()))
+                                                                        : context.read<WishlistBloc>().add(AddProductToWishlist(
+                                                                            data,
+                                                                            astate.userModel.token.toString()));
+                                                                  }
+                                                                },
+                                                                icon: Icon(wstate.wishlistedProduct.contains(state
+                                                                        .productModel
+                                                                        .results![
+                                                                            index]
+                                                                        .id
+                                                                        .toString())
+                                                                    ? Icons
+                                                                        .favorite_outlined
+                                                                    : Icons
+                                                                        .favorite_outline));
+                                                            // return Text(wstate
+                                                            //     .data
+                                                            //     .results![index]
+                                                            //     .pivot!
+                                                            //     .productId.toString());
+                                                          }
+                                                          return IconButton(
+                                                              onPressed: () {},
+                                                              icon: Icon(Icons
+                                                                  .heart_broken));
+                                                        })
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: Colors.black,
+                                    ),
+                                  );
+                                },
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: 100.0,
-                                color: Colors.black38,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: 100.0,
-                                color: Colors.black26,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
               ),
               // --
-
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                  child: Column(
-                    children: [
-                      Builder(builder: (context) {
-                        return ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black),
-                            onPressed: () => context
-                                .read<ProductBloc>()
-                                .add(GetProductList()),
-                            child: const Text("Reload"));
-                      }),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      BlocBuilder<ProductBloc, ProductState>(
-                        builder: (context, state) {
-                          if (state is ProductInitial) {
-                            return const Text("LOADING MAZ");
-                          } else if (state is ProductLoaded) {
-                            return ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: state.productModel.results!.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: EdgeInsets.all(8.0),
-                                  child: InkWell(
-                                    child: Card(
-                                      child: Container(
-                                        margin: EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Text(
-                                                "${state.productModel.results![index].name}"),
-                                            Text(
-                                                "Rp.${state.productModel.results![index].harga},00"),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Colors.black,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              )
             ]),
       ),
     );

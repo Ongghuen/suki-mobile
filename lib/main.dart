@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
-import 'package:mobile/logic/data/bloc/wishlist_bloc.dart';
+import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/router/app_router.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<AuthBloc>(

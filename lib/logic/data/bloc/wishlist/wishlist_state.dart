@@ -11,7 +11,8 @@ class WishlistInitial extends WishlistState {}
 class WishlistLoading extends WishlistState {}
 class WishlistLoaded extends WishlistState {
   WishlistModel data;
-  WishlistLoaded(this.data);
+  List<String> wishlistedProduct;
+  WishlistLoaded(this.data, this.wishlistedProduct);
 }
 class WishlistError extends WishlistState {
   String msg;

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
-import 'package:mobile/logic/data/bloc/wishlist_bloc.dart';
+import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 
 void main(List<String> args) {
   runApp(WishlistPage());

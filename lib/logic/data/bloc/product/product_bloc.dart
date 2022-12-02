@@ -20,7 +20,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         var res = await CallApi().getData(apiUrl);
         var body = json.decode(res.body);
         final product = ProductModel.fromJson(body);
-        print(body);
 
         emit(ProductLoaded(product));
       } catch (ex, trace) {
