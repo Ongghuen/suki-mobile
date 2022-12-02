@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
+import 'package:mobile/presentation/screens/dashboard_screen/main_page.dart';
 import 'package:mobile/presentation/screens/login_page.dart';
 
 class AuthPage extends StatefulWidget {
@@ -10,12 +12,14 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: udb.user == null ? const LoginPage() : const HomePage(),
-      body: const LoginPage()
-    );
+        body: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      if (state is AuthLoaded) {
+        return const MainPage();
+      }
+      return const LoginPage();
+    }));
   }
 }
