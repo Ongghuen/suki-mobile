@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   // instance bloc
   // inget, kalo make atau buat baru atau provide
   // baru ke provider instansinya pasti bakalan beda
@@ -29,14 +30,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF212529),
         elevation: 0,
-        leading: Padding(
+        actions: [Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
           ),
           child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
             if (state is AuthLoaded) {
               return IconButton(
-                icon: const Icon(Icons.arrow_left),
+                icon: const Icon(Icons.logout_outlined),
                 onPressed: () {
                   context
                       .read<AuthBloc>()
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             return IconButton(
                 onPressed: () {}, icon: const Icon(Icons.arrow_left));
           }),
-        ),
+        )],
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

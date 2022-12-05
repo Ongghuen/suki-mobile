@@ -41,7 +41,9 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         String apiUrl = "/api/register";
         var res = await CallApi().postData(apiUrl, event.data);
         var body = json.decode(res.body);
+
         if (res.statusCode == 201) {
+          emit(AuthRegistered());
           final auth = AuthModel.fromJson(body);
           emit(AuthLoaded(auth));
         } else {

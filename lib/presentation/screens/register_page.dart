@@ -171,17 +171,22 @@ class _RegisterPageState extends State<RegisterPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)),
                             backgroundColor: const Color(0xFF151515)),
-                        child: BlocBuilder<AuthBloc, AuthState>(
+                        child: BlocConsumer<AuthBloc, AuthState>(
+                            listener: (_, state) {
+                              if (state is AuthRegistered){
+                                Navigator.pop(context);
+                              }
+                            },
                             builder: (_, state) {
-                          if (state is AuthLoading) {
-                            return const CircularProgressIndicator(
-                              backgroundColor: Colors.black,
-                              color: Colors.white,
-                            );
-                          }
-                          return const Text("BUAT AKUN",
-                              style: TextStyle(fontSize: 18));
-                        }),
+                              if (state is AuthLoading) {
+                                return const CircularProgressIndicator(
+                                  backgroundColor: Colors.black,
+                                  color: Colors.white,
+                                );
+                              }
+                              return const Text("BUAT AKUN",
+                                  style: TextStyle(fontSize: 18));
+                            }),
                         onPressed: () async {
                           var data = {
                             "email": _emailController.text.trim(),

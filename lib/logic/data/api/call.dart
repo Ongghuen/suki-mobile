@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CallApi {
-  final String _url = "http://192.168.0.116:8000";
+  final String _url = "http://10.0.2.2:8000";
 
   getData(apiUrl, {token = ""}) async {
     try {
