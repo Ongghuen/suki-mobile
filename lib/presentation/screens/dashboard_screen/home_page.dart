@@ -39,18 +39,19 @@ class _HomePageState extends State<HomePage> {
               // container
               SafeArea(
                 child: SizedBox(
-                  height: size.height * 0.2,
+                  height: size.height * 0.22,
                   child: Stack(
                     children: [
                       Container(
-                        height: size.height * 0.2 - 27,
+                        height: size.height * 0.22 - 27,
                         width: double.infinity,
                         decoration: const BoxDecoration(
                             color: Color(0xFF212529),
                             borderRadius: BorderRadius.vertical(
                                 bottom: Radius.circular(20))),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 40),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,12 +63,14 @@ class _HomePageState extends State<HomePage> {
                                       scrollDirection: Axis.vertical,
                                       child: Container(
                                         width: 200,
-                                        child: BlocConsumer<AuthBloc, AuthState>(
-                                            listener: (_, state) {
+                                        child:
+                                            BlocConsumer<AuthBloc, AuthState>(
+                                                listener: (_, state) {
                                           if (state is AuthLogout) {
                                             showSnackbar(context, "Logged Out");
                                             Navigator.of(context)
-                                                .pushNamedAndRemoveUntil('/login',
+                                                .pushNamedAndRemoveUntil(
+                                                    '/login',
                                                     ModalRoute.withName('/'));
                                           }
                                         }, builder: (_, state) {
@@ -76,7 +79,8 @@ class _HomePageState extends State<HomePage> {
                                                 "Hi, ${state.userModel.user!.name?.split(" ")[0]}",
                                                 style: GoogleFonts.montserrat(
                                                   textStyle: const TextStyle(
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: Colors.white,
                                                       fontSize: 24),
                                                 ));
@@ -90,7 +94,8 @@ class _HomePageState extends State<HomePage> {
                                     Text("Welcome to Suki",
                                         style: GoogleFonts.montserrat(
                                           textStyle: const TextStyle(
-                                              color: Colors.white, fontSize: 18),
+                                              color: Colors.white,
+                                              fontSize: 18),
                                         )),
                                   ]),
 
@@ -168,6 +173,7 @@ class _HomePageState extends State<HomePage> {
                         child: ListView(
                           // This next line does the trick.
                           scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
                           children: <Widget>[
                             Padding(
                               padding:
@@ -212,174 +218,136 @@ class _HomePageState extends State<HomePage> {
                       SingleChildScrollView(
                         child: Column(
                           children: [
-                            Builder(builder: (context) {
-                              return ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black),
-                                  onPressed: () => context
-                                      .read<ProductBloc>()
-                                      .add(GetProductList()),
-                                  child: const Text("Reload"));
-                            }),
                             const SizedBox(
                               height: 24,
                             ),
                             BlocBuilder<ProductBloc, ProductState>(
                               builder: (context, state) {
-                                if (state is ProductInitial) {
-                                  return const Text("LOADING MAZ");
-                                } else if (state is ProductLoaded) {
-                                  return ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        state.productModel.results!.length,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        margin: EdgeInsets.all(8.0),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DetailProduct(
-                                                            productId: state
-                                                                .productModel
-                                                                .results![index]
-                                                                .id!
-                                                                .toInt())));
-                                          },
-                                          child: Card(
-                                            child: Container(
-                                              margin: EdgeInsets.all(8.0),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      state
+                                if (state is ProductLoaded) {
+                                  return SizedBox(
+                                    height: 250,
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          state.productModel.results!.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailProduct(
+                                                              productId: state
                                                                   .productModel
                                                                   .results![
                                                                       index]
-                                                                  .image ==
-                                                              null
-                                                          ? SizedBox(
-                                                              width: 50,
-                                                              child: Icon(Icons
-                                                                  .inventory),
-                                                            )
-                                                          : SizedBox(
-                                                              width: 50,
-                                                              child:
-                                                                  Image.network(
-                                                                "${apiUrlStorage}/${state.productModel.results![index].image}",
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                // Better way to load images from network flutter
-                                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                                loadingBuilder: (BuildContext
+                                                                  .id!
+                                                                  .toInt())));
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  state
+                                                              .productModel
+                                                              .results![index]
+                                                              .image ==
+                                                          null
+                                                      ? ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          child: Container(
+                                                            height: 150,
+                                                            width: 150,
+                                                            child: Icon(
+                                                              Icons.inventory,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          child: Image.network(
+                                                            "${apiUrlStorage}/${state.productModel.results![index].image}",
+                                                            fit: BoxFit.fill,
+                                                            height: 150,
+                                                            width: 150,
+                                                            // Better way to load images from network flutter
+                                                            // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                            loadingBuilder:
+                                                                (BuildContext
                                                                         context,
                                                                     Widget
                                                                         child,
                                                                     ImageChunkEvent?
                                                                         loadingProgress) {
-                                                                  if (loadingProgress ==
-                                                                      null)
-                                                                    return child;
-                                                                  return Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      value: loadingProgress.expectedTotalBytes !=
-                                                                              null
-                                                                          ? loadingProgress.cumulativeBytesLoaded /
-                                                                              loadingProgress.expectedTotalBytes!
-                                                                          : null,
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ),
-                                                            ),
+                                                              if (loadingProgress ==
+                                                                  null)
+                                                                return child;
+                                                              return Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  value: loadingProgress
+                                                                              .expectedTotalBytes !=
+                                                                          null
+                                                                      ? loadingProgress
+                                                                              .cumulativeBytesLoaded /
+                                                                          loadingProgress
+                                                                              .expectedTotalBytes!
+                                                                      : null,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
                                                       Container(
                                                         width: 100,
                                                         child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
                                                             Text(
-                                                                "${state.productModel.results![index].name}"),
+                                                              "${state.productModel.results![index].name}",
+                                                              style: GoogleFonts
+                                                                  .montserrat(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                            ),
                                                             Text(
                                                                 "Rp.${state.productModel.results![index].harga},00"),
                                                           ],
                                                         ),
                                                       ),
-                                                      BlocBuilder<WishlistBloc,
-                                                              WishlistState>(
-                                                          builder: (context,
-                                                              wstate) {
-                                                        if (wstate
-                                                            is WishlistLoaded) {
-                                                          return IconButton(
-                                                              onPressed: () {
-                                                                final astate =
-                                                                    context
-                                                                        .read<
-                                                                            AuthBloc>()
-                                                                        .state;
-                                                                if (astate
-                                                                    is AuthLoaded) {
-                                                                  var product_id = state
-                                                                      .productModel
-                                                                      .results![
-                                                                          index]
-                                                                      .id
-                                                                      .toString();
-                                                                  var data = {
-                                                                    "product_id":
-                                                                        product_id
-                                                                  };
-                                                                  wstate.wishlistedProduct
-                                                                          .contains(
-                                                                              product_id)
-                                                                      ? context.read<WishlistBloc>().add(DeleteProductFromWishlist(
-                                                                          product_id,
-                                                                          astate
-                                                                              .userModel
-                                                                              .token
-                                                                              .toString()))
-                                                                      : context.read<WishlistBloc>().add(AddProductToWishlist(
-                                                                          data,
-                                                                          astate
-                                                                              .userModel
-                                                                              .token
-                                                                              .toString()));
-                                                                }
-                                                              },
-                                                              icon: Icon(wstate.wishlistedProduct.contains(state
-                                                                      .productModel
-                                                                      .results![
-                                                                          index]
-                                                                      .id
-                                                                      .toString())
-                                                                  ? Icons
-                                                                      .favorite_outlined
-                                                                  : Icons
-                                                                      .favorite_outline));
-                                                        }
-                                                        return IconButton(
-                                                            onPressed: () {},
-                                                            icon: Icon(Icons
-                                                                .heart_broken));
-                                                      })
                                                     ],
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   );
                                 }
                                 return const Center(
@@ -389,6 +357,13 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                             ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black),
+                                onPressed: () => context
+                                    .read<ProductBloc>()
+                                    .add(GetProductList()),
+                                child: const Text("Reload")),
                           ],
                         ),
                       )

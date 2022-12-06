@@ -49,6 +49,7 @@ class _WishlistPageState extends State<WishlistPage> {
               } else if (state is WishlistLoaded) {
                 return ListView.builder(
                   scrollDirection: Axis.vertical,
+                  physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: state.data.results!.length,
                   itemBuilder: (context, index) {
@@ -67,7 +68,8 @@ class _WishlistPageState extends State<WishlistPage> {
                               child: Container(
                                 margin: EdgeInsets.all(8.0),
                                 child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     product.first.image == null
                                         ? SizedBox(
