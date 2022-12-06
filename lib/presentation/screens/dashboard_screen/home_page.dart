@@ -28,29 +28,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF212529),
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-            if (state is AuthLoaded) {
-              return IconButton(
-                icon: const Icon(Icons.logout_outlined),
-                onPressed: () {
-                  context
-                      .read<AuthBloc>()
-                      .add(UserAuthLogout(state.userModel.token));
-                },
-              );
-            }
-            return IconButton(
-                onPressed: () {}, icon: const Icon(Icons.arrow_left));
-          }),
-        ),
-      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -60,110 +37,112 @@ class _HomePageState extends State<HomePage> {
               // --
 
               // container
-              SizedBox(
-                height: size.height * 0.2,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: size.height * 0.2 - 27,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFF212529),
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(20))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: Container(
-                                      width: 200,
-                                      child: BlocConsumer<AuthBloc, AuthState>(
-                                          listener: (_, state) {
-                                        if (state is AuthLogout) {
-                                          showSnackbar(context, "Logged Out");
-                                          Navigator.of(context)
-                                              .pushNamedAndRemoveUntil('/login',
-                                                  ModalRoute.withName('/'));
-                                        }
-                                      }, builder: (_, state) {
-                                        if (state is AuthLoaded) {
-                                          return Text(
-                                              "Hi, ${state.userModel.user!.name?.split(" ")[0]}",
-                                              style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: 24),
-                                              ));
-                                        }
-                                        return const CircularProgressIndicator(
-                                          backgroundColor: Colors.black,
-                                        );
-                                      }),
+              SafeArea(
+                child: SizedBox(
+                  height: size.height * 0.2,
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: size.height * 0.2 - 27,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFF212529),
+                            borderRadius: BorderRadius.vertical(
+                                bottom: Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Container(
+                                        width: 200,
+                                        child: BlocConsumer<AuthBloc, AuthState>(
+                                            listener: (_, state) {
+                                          if (state is AuthLogout) {
+                                            showSnackbar(context, "Logged Out");
+                                            Navigator.of(context)
+                                                .pushNamedAndRemoveUntil('/login',
+                                                    ModalRoute.withName('/'));
+                                          }
+                                        }, builder: (_, state) {
+                                          if (state is AuthLoaded) {
+                                            return Text(
+                                                "Hi, ${state.userModel.user!.name?.split(" ")[0]}",
+                                                style: GoogleFonts.montserrat(
+                                                  textStyle: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: 24),
+                                                ));
+                                          }
+                                          return const CircularProgressIndicator(
+                                            backgroundColor: Colors.black,
+                                          );
+                                        }),
+                                      ),
                                     ),
-                                  ),
-                                  Text("Welcome to Suki",
-                                      style: GoogleFonts.montserrat(
-                                        textStyle: const TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      )),
-                                ]),
+                                    Text("Welcome to Suki",
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                              color: Colors.white, fontSize: 18),
+                                        )),
+                                  ]),
 
-                            // kanan
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(100))),
-                            ),
-                          ],
+                              // kanan
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(100))),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
 
-                    // text field buat search
-                    Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          child: TextField(
-                            onEditingComplete: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            controller: searchController,
-                            decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 10.0),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.black, width: 2),
-                                    borderRadius: BorderRadius.circular(16)),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(16)),
-                                hintText: 'Cari Barang atau Perabotan',
-                                prefixIcon: IconButton(
-                                  icon: const Icon(Icons.search),
-                                  color: Colors.black,
-                                  onPressed: () {
-                                    // search disini
-                                  },
-                                ),
-                                fillColor: const Color(0xFFF8F9FA),
-                                filled: true),
-                          ),
-                        ))
-                  ],
+                      // text field buat search
+                      Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              onEditingComplete: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              },
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 2),
+                                      borderRadius: BorderRadius.circular(16)),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(16)),
+                                  hintText: 'Cari Barang atau Perabotan',
+                                  prefixIcon: IconButton(
+                                    icon: const Icon(Icons.search),
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      // search disini
+                                    },
+                                  ),
+                                  fillColor: const Color(0xFFF8F9FA),
+                                  filled: true),
+                            ),
+                          ))
+                    ],
+                  ),
                 ),
               ),
 
@@ -242,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                                       .add(GetProductList()),
                                   child: const Text("Reload"));
                             }),
-                            SizedBox(
+                            const SizedBox(
                               height: 24,
                             ),
                             BlocBuilder<ProductBloc, ProductState>(
@@ -289,8 +268,8 @@ class _HomePageState extends State<HomePage> {
                                                               null
                                                           ? SizedBox(
                                                               width: 50,
-                                                              child: Icon(
-                                                                  Icons.inventory),
+                                                              child: Icon(Icons
+                                                                  .inventory),
                                                             )
                                                           : SizedBox(
                                                               width: 50,

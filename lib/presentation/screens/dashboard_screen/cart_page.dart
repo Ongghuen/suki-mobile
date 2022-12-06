@@ -52,16 +52,36 @@ class CartPage extends StatelessWidget {
                         //   "coba",
                         //   height: 36,
                         // ),
-                        title: Text(
-                          // value.cartItems[index][0],
-                          "coba",
-                          style: const TextStyle(fontSize: 18),
+                        title: Row(
+                          children: [
+                            Text(
+                              // value.cartItems[index][0],
+                              "coba",
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                          ],
                         ),
-                        subtitle: Text(
-                          "coba",
-                          // '\$' + value.cartItems[index][1],
-                          style: const TextStyle(fontSize: 12),
-                        ),
+                        subtitle: Row(
+                            children: [
+                              MaterialButton(
+                                minWidth: 10,
+                                onPressed: () {},
+                                child: const Text(
+                                  '+',
+                                ),
+                              ),
+                              const Text(
+                                '1',
+                              ),
+                              MaterialButton(
+                                minWidth: 10,
+                                onPressed: () {},
+                                child: const Text(
+                                  '-',
+                                ),
+                              ),
+                            ],
+                          ),
                         trailing: IconButton(
                             icon: const Icon(Icons.cancel),
                             onPressed: () => print("lol")

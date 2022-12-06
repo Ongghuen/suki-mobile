@@ -66,11 +66,10 @@ class _WishlistPageState extends State<WishlistPage> {
                             child: Card(
                               child: Container(
                                 margin: EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text("${state.data.results![index].name}"),
-                                    product.first.image ==
-                                            null
+                                child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    product.first.image == null
                                         ? SizedBox(
                                             width: 50,
                                             child: Icon(Icons.chair),
@@ -105,8 +104,14 @@ class _WishlistPageState extends State<WishlistPage> {
                                               },
                                             ),
                                           ),
-                                    Text(
-                                        "Rp.${state.data.results![index].harga},00"),
+                                    Column(
+                                      children: <Widget>[
+                                        Text(
+                                            "${state.data.results![index].name}"),
+                                        Text(
+                                            "Rp.${state.data.results![index].harga},00"),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,96 +16,31 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(top: 50.0),
-          child: Stack(children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 80.0),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  )),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 80.0,
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          controller: names,
-                          decoration: InputDecoration(
-                            labelText: 'Names',
-                            prefixIcon: Icon(Icons.person),
-                            border: myInputBorder(),
-                            enabledBorder: myInputBorder(),
-                            focusedBorder: myFocusBorder(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        TextField(
-                          controller: username,
-                          decoration: InputDecoration(
-                            labelText: 'Username',
-                            prefixIcon: Icon(Icons.people),
-                            border: myInputBorder(),
-                            enabledBorder: myInputBorder(),
-                            focusedBorder: myFocusBorder(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        TextField(
-                          controller: email,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: Icon(Icons.email),
-                            border: myInputBorder(),
-                            enabledBorder: myInputBorder(),
-                            focusedBorder: myFocusBorder(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        TextField(
-                          controller: password,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            prefixIcon: Icon(Icons.password),
-                            border: myInputBorder(),
-                            enabledBorder: myInputBorder(),
-                            focusedBorder: myFocusBorder(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('Update'),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 25.0, vertical: 20.0),
-                              textStyle: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
-          ]),
+            child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+              if (state is AuthLoaded) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text("Logout"),
+                    IconButton(
+                      icon: const Icon(Icons.logout_outlined),
+                      onPressed: () {
+                        context
+                            .read<AuthBloc>()
+                            .add(UserAuthLogout(state.userModel.token));
+                      },
+                    ),
+                  ],
+                );
+              }
+              return IconButton(
+                  onPressed: () {}, icon: const Icon(Icons.arrow_left));
+            }),
+          ),
         ),
       ),
     );
