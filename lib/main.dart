@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
@@ -12,6 +13,14 @@ void main(List<String> args) async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.grey[50], // navigation bar color
+    systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icon
+    // statusBarBrightness: Brightness.dark,//status bar brigtness
+    // statusBarIconBrightness:Brightness.dark , //status barIcon Brightness
+    // systemNavigationBarDividerColor: Colors.greenAccent,//Navigation bar divider color
+  ));
 
   runApp(MultiBlocProvider(
     providers: [

@@ -8,6 +8,7 @@ import 'package:mobile/presentation/utils/default.dart';
 
 class DetailProduct extends StatefulWidget {
   final int productId;
+
   const DetailProduct({Key? key, required this.productId}) : super(key: key);
 
   @override
@@ -92,39 +93,36 @@ class _DetailProductState extends State<DetailProduct> {
                 height: height / 1.7,
                 child: Stack(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: product.first.image == null
-                              ? const SizedBox(
-                                  width: 50,
-                                  child: Icon(Icons.inventory),
-                                )
-                              : Image.network(
-                                  "${apiUrlStorage}${product.first.image}",
-                                  fit: BoxFit.fill,
-                                  // Better way to load images from network flutter
-                                  // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                )),
-                    )
+                    Align(
+                        alignment: Alignment.center,
+                        child: product.first.image == null
+                            ? const SizedBox(
+                                width: 50,
+                                child: Icon(Icons.inventory),
+                              )
+                            : Image.network(
+                                "${apiUrlStorage}${product.first.image}",
+                                fit: BoxFit.fill,
+                                // Better way to load images from network flutter
+                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  );
+                                },
+                              ))
                   ],
                 ),
               ),
@@ -134,6 +132,7 @@ class _DetailProductState extends State<DetailProduct> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +157,7 @@ class _DetailProductState extends State<DetailProduct> {
                         "${product.first.desc}",
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -174,7 +173,8 @@ class _DetailProductState extends State<DetailProduct> {
                         ),
                         Container(
                           height: 40.0,
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
                             color: Colors.black87,
                             borderRadius: BorderRadius.circular(50.0),

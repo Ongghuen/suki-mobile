@@ -7,6 +7,12 @@ const urlEmu = "http://10.0.2.2:8000";
 const apiUrl = urlEmu;
 const apiUrlStorage = apiUrl + "/storage/";
 
+String truncateWithEllipsis(int cutoff, String myString) {
+  return (myString.length <= cutoff)
+      ? myString
+      : '${myString.substring(0, cutoff)}...';
+}
+
 class NoGlow extends ScrollBehavior {
   @override
   Widget buildViewportChrome(

@@ -34,6 +34,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+
     // TODO: implement initState
     final state = context.read<AuthBloc>().state;
     if (state is AuthLoaded) {
