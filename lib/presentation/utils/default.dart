@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-// const urlNetwork = "http://192.168.100.12:8000";
-const urlEmu = "http://10.0.2.2:8000";
+const url = "http://192.168.100.8:8000";
+// const url = "http://10.0.2.2:8000";
 
 // url api yang dipake
-const apiUrl = urlEmu;
+const apiUrl = url;
 const apiUrlStorage = apiUrl + "/storage/";
 
 String truncateWithEllipsis(int cutoff, String myString) {
