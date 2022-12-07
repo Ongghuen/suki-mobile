@@ -23,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   // final ListingBloc _listingBloc = ListingBloc();
 
   TextEditingController searchController = TextEditingController();
+  List<String> categories = ["Semua", "Kursi", "Lol", "Hahay", "Lmao"];
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -180,45 +182,50 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 14),
                           height: 100,
-                          child: ListView(
-                            // This next line does the trick.
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Container(
-                                  width: 90.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Container(
-                                  width: 60.0,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Container(
-                                  width: 100.0,
-                                  color: Colors.black38,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Container(
-                                  width: 100.0,
-                                  color: Colors.black26,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: ListView.builder(
+                              // This next line does the trick.
+                              scrollDirection: Axis.horizontal,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: categories.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Icon(Icons.archive),
+                                        Text(categories[index],
+                                            style: GoogleFonts.montserrat(
+                                              textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: selectedIndex == index
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            )),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 20 / 4),
+                                          //top padding 5
+                                          height: 2,
+                                          width: 30,
+                                          color: selectedIndex == index
+                                              ? Colors.black
+                                              : Colors.transparent,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
                         Text("Produk",
                             style: GoogleFonts.montserrat(
@@ -497,9 +504,7 @@ class _HomePageState extends State<HomePage> {
                                                                             FontWeight.bold),
                                                               ),
                                                               Text(
-                                                                "${truncateWithEllipsis
-                                                                  (20, state
-                                                                  .productModel.results![index].desc.toString())}",
+                                                                "${truncateWithEllipsis(20, state.productModel.results![index].desc.toString())}",
                                                                 style: GoogleFonts
                                                                     .montserrat(
                                                                         fontWeight:
