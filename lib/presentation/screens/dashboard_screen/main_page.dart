@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
+import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/cart_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/home_page.dart';
@@ -44,6 +45,9 @@ class _MainPageState extends State<MainPage> {
       context
           .read<WishlistBloc>()
           .add(GetWishlistUserList(state.userModel.token.toString()));
+      context
+          .read<TransactionBloc>()
+          .add(GetTransactionLists(state.userModel.token.toString()));
     }
     super.initState();
   }

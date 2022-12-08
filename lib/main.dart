@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
+import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/router/app_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,6 +33,9 @@ void main(List<String> args) async {
       ),
       BlocProvider<WishlistBloc>(
         create: (_) => WishlistBloc(),
+      ),
+      BlocProvider<TransactionBloc>(
+        create: (_) => TransactionBloc(),
       ),
     ],
     child: MaterialApp(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 
 void main(List<String> args) {
   runApp(CartPage());
@@ -37,59 +39,68 @@ class CartPage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(8)),
-                      child: ListTile(
-                        // leading: Image.asset(
-                        //   // value.cartItems[index][2],
-                        //   "coba",
-                        //   height: 36,
-                        // ),
-                        title: Row(
-                          children: [
-                            Text(
-                              // value.cartItems[index][0],
-                              "coba",
-                              style: const TextStyle(fontSize: 18),
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  if (state is TransactionLoaded) {
+                    print(state.data);
+                    return Text('state lol');
+                  }
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8)),
+                          child: ListTile(
+                            // leading: Image.asset(
+                            //   // value.cartItems[index][2],
+                            //   "coba",
+                            //   height: 36,
+                            // ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  // value.cartItems[index][0],
+                                  "coba",
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        subtitle: Row(
-                            children: [
-                              MaterialButton(
-                                minWidth: 10,
-                                onPressed: () {},
-                                child: const Text(
-                                  '+',
+                            subtitle: Row(
+                              children: [
+                                MaterialButton(
+                                  minWidth: 10,
+                                  onPressed: () {},
+                                  child: const Text(
+                                    '+',
+                                  ),
                                 ),
-                              ),
-                              const Text(
-                                '1',
-                              ),
-                              MaterialButton(
-                                minWidth: 10,
-                                onPressed: () {},
-                                child: const Text(
-                                  '-',
+                                const Text(
+                                  '1',
                                 ),
-                              ),
-                            ],
+                                MaterialButton(
+                                  minWidth: 10,
+                                  onPressed: () {},
+                                  child: const Text(
+                                    '-',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: IconButton(
+                                icon: const Icon(Icons.cancel),
+                                onPressed: () => print("lol")
+                                // Provider.of<CartModel>(context, listen: false)
+                                // .removeItemFromCart(index),
+                                ),
                           ),
-                        trailing: IconButton(
-                            icon: const Icon(Icons.cancel),
-                            onPressed: () => print("lol")
-                            // Provider.of<CartModel>(context, listen: false)
-                            // .removeItemFromCart(index),
-                            ),
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
