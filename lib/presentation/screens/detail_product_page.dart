@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
+import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
+import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class DetailProduct extends StatefulWidget {
@@ -62,6 +64,7 @@ class _DetailProductState extends State<DetailProduct> {
                           String productId = product.first.id.toString();
 
                           var data = {"product_id": productId};
+
                           wstate.wishlistedProduct.contains(productId)
                               ? context.read<WishlistBloc>().add(
                                   DeleteProductFromWishlist(productId,
@@ -179,21 +182,35 @@ class _DetailProductState extends State<DetailProduct> {
                             color: Colors.black87,
                             borderRadius: BorderRadius.circular(50.0),
                           ),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => const CheckoutPage()));
+                          child: BlocBuilder<DetailTransactionBloc,
+                              DetailTransactionState>(
+                            builder: (context, state) {
+                              return GestureDetector(
+                                onTap: () {
+                                  var data = {"product_id": widget.productId
+                                      .toString()};
+                                  final astate = context.read<AuthBloc>().state;
+                                  if (astate is AuthLoaded) {
+                                    context.read<DetailTransactionBloc>().add(
+                                        AddProductToDetailTransactionList(
+                                            data, astate.userModel.token!));
+                                    print(
+                                        "WOYYY====; ${data} and ${astate.userModel.token}");
+                                    showSnackbar(context, "Berhasil Hore");
+                                  } else {
+                                    showSnackbar(context, "Gagal");
+                                  }
+                                },
+                                child: const Center(
+                                  child: Text(
+                                    'Tambah ke Keranjang',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              );
                             },
-                            child: const Center(
-                              child: Text(
-                                'Tambah ke Keranjang',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ),
                           ),
                         )
                       ],

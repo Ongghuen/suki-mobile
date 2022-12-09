@@ -36,7 +36,8 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
 
     on<AddProductToWishlist>((event, emit) async {
       String apiUrl = "/api/wishlists";
-      await CallApi().postData(apiUrl, event.productId, token: event.token);
+      await CallApi().postData(apiUrl, data: event.productId, token: event
+          .token);
       add(GetWishlistUserList(event.token));
     });
 

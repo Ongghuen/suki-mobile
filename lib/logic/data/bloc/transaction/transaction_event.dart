@@ -9,5 +9,12 @@ abstract class TransactionEvent extends Equatable {
 
 class GetTransactionLists extends TransactionEvent {
   var token;
+
   GetTransactionLists(this.token);
+}
+
+class CheckoutTransactionLists extends TransactionEvent {
+  var token;
+
+  CheckoutTransactionLists(this.token);
 }

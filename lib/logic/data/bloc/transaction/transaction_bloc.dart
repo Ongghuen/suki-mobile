@@ -20,17 +20,22 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         var res = await CallApi().getData(apiUrl, token: event.token);
         var body = json.decode(res.body);
         final data = TransactionModel.fromJson(body);
-        print(data.customs);
-        print(data.ongoing!.id);
-        print(data.orders);
-
-        // taroh product id aunthenticated user ke list
-        // List<String> wishlisted = [];
-        // for (var i = 0; i < data.results!.length; i++) {
-        //   wishlisted.add(data.results![i].pivot!.productId.toString());
-        // }
 
         emit(TransactionLoaded(data));
+      } catch (ex, trace) {
+        emit(TransactionError("sum ting wong"));
+        print("$ex $trace");
+      }
+    });
+    on<CheckoutTransactionLists>((event, emit) async {
+      try {
+        String apiUrl = "/api/orders/create";
+        var res = await CallApi().postData(apiUrl, token: event.token);
+        if (res.statusCode == 200) {
+          print("ntaps");
+        }else{
+          print("lmao");
+        }
       } catch (ex, trace) {
         emit(TransactionError("sum ting wong"));
         print("$ex $trace");

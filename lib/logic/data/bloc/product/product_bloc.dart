@@ -21,7 +21,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         var body = json.decode(res.body);
         final product = ProductModel.fromJson(body);
 
-        emit(ProductLoaded(product));
+        if (res.statusCode == 200) {
+          emit(ProductLoaded(product));
+        }else{
+          emit(ProductError("LOLOLOL ERROR"));
+        }
       } catch (ex, trace) {
         print("$ex $trace");
       }

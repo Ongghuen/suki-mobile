@@ -6,3 +6,22 @@ abstract class DetailTransactionEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetOngoingDetailTransactionList extends DetailTransactionEvent {
+  var token;
+  GetOngoingDetailTransactionList(this.token);
+}
+
+class GetDetailTransactionList extends DetailTransactionEvent {
+  var transaction_id;
+  var token;
+
+  GetDetailTransactionList(this.transaction_id, this.token);
+}
+
+class AddProductToDetailTransactionList extends DetailTransactionEvent {
+  var data;
+  var token;
+
+  AddProductToDetailTransactionList(this.data, this.token);
+}

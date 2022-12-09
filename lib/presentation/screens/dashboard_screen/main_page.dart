@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
+import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
@@ -33,10 +34,7 @@ class _MainPageState extends State<MainPage> {
     const ProfilePage(),
   ];
 
-  @override
-  void initState() {
-
-    // TODO: implement initState
+  void initStartBlocs() {
     final state = context.read<AuthBloc>().state;
     if (state is AuthLoaded) {
       // get products
@@ -48,7 +46,15 @@ class _MainPageState extends State<MainPage> {
       context
           .read<TransactionBloc>()
           .add(GetTransactionLists(state.userModel.token.toString()));
+      context.read<DetailTransactionBloc>().add(
+          GetOngoingDetailTransactionList(state.userModel.token.toString()));
     }
+  }
+
+  @override
+  void initState() {
+    initStartBlocs();
+    // TODO: implement initState
     super.initState();
   }
 
@@ -64,7 +70,7 @@ class _MainPageState extends State<MainPage> {
             child: GNav(
                 onTabChange: (value) {
                   setState(() {
-                    _selectedIndex = value;
+                    value != 5 ? _selectedIndex = value : initStartBlocs();
                   });
                 },
                 gap: 2,
@@ -72,8 +78,10 @@ class _MainPageState extends State<MainPage> {
                 activeColor: Colors.white,
                 tabBackgroundColor: Colors.black,
                 duration: const Duration(milliseconds: 200),
-                iconSize: 26,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                // iconSize: 26,
+                iconSize: 10,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 tabs: const [
                   GButton(
                     icon: Icons.home_outlined,
@@ -89,6 +97,9 @@ class _MainPageState extends State<MainPage> {
                   ),
                   GButton(
                     icon: Icons.person_outline,
+                  ),
+                  GButton(
+                    icon: Icons.reset_tv_outlined,
                   )
                 ]),
           ),

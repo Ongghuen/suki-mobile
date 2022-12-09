@@ -8,3 +8,15 @@ abstract class DetailTransactionState extends Equatable {
 }
 
 class DetailTransactionInitial extends DetailTransactionState {}
+
+class DetailTransactionLoading extends DetailTransactionState {}
+
+class DetailTransactionLoaded extends DetailTransactionState {
+  var data;
+  DetailTransactionLoaded(this.data);
+}
+
+class DetailTransactionError extends DetailTransactionState {
+  String msg;
+  DetailTransactionError(this.msg);
+}

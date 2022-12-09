@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
-import 'package:mobile/presentation/screens/checkout_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
-class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+class CheckoutPage extends StatefulWidget {
+  const CheckoutPage({Key? key}) : super(key: key);
 
+  @override
+  State<CheckoutPage> createState() => _CheckoutPageState();
+}
+
+class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +33,7 @@ class CartPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              "Keranjang",
+              "Checkout",
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -128,67 +133,42 @@ class CartPage extends StatelessWidget {
 
           // total amount + pay now
 
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.black,
-              ),
-              padding: const EdgeInsets.all(24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Total Harga',
-                        style: TextStyle(color: Colors.white),
-                      ),
-
-                      const SizedBox(height: 8),
-                      // total price
-                      Text(
-                        // '\Rp.${value.calculateTotal()}',
-                        'Rp.10.000 hahahay',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+          GestureDetector(
+            onTap: () {
+              final state = context.read<AuthBloc>().state;
+              if (state is AuthLoaded) {
+                context
+                    .read<TransactionBloc>()
+                    .add(CheckoutTransactionLists(state.userModel.token));
+                context.read<DetailTransactionBloc>().add(
+                    GetOngoingDetailTransactionList(state.userModel.token));
+                Navigator.pop(context);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.black,
+                ),
+                padding: const EdgeInsets.all(24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'CONFIRM PEMBAYARAN???',
+                          style: TextStyle(color: Colors.white),
                         ),
-                      ),
-                    ],
-                  ),
-
-                  // pay now
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder:
-                          (context) => CheckoutPage()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        children: const [
-                          Text(
-                            'Bayar',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                  ),
-                ],
+
+                    // pay now
+                  ],
+                ),
               ),
             ),
           )

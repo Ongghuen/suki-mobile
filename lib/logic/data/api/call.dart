@@ -19,9 +19,10 @@ class CallApi {
     }
   }
 
-  postData(apiUrl, data, {token = ""}) async {
+  postData(apiUrl, {data = "", token = ""}) async {
     try {
       var fullUrl = _url + apiUrl;
+      print("call to $fullUrl. with data: $data, and token $token");
       return await http.post(Uri.parse(fullUrl), body: data, headers: {
         "Accept": "application/json",
         'Authorization': 'Bearer $token'
@@ -34,6 +35,7 @@ class CallApi {
   deleteData(apiUrl, {data = "", token = ""}) async {
     try {
       var fullUrl = _url + apiUrl;
+      print(fullUrl);
       return await http.delete(Uri.parse(fullUrl), body: data, headers: {
         "Accept": "application/json",
         'Authorization': 'Bearer $token'

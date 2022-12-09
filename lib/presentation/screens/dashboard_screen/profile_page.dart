@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
+import 'package:mobile/presentation/auths/auth_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -20,7 +21,16 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
             ),
-            child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            child:
+                BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+              if (state is AuthLogout) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => AuthPage()),
+                    (route) => false);
+              }
+            }, builder: (context, state) {
               if (state is AuthLoaded) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.end,

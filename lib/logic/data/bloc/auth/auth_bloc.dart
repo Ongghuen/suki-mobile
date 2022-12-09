@@ -18,7 +18,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         emit(AuthLoading());
 
         String apiUrl = "/api/login";
-        var res = await CallApi().postData(apiUrl, event.data);
+        var res = await CallApi().postData(apiUrl, data: event.data);
         var body = json.decode(res.body);
         if (res.statusCode == 201) {
           final auth = AuthModel.fromJson(body);
@@ -39,7 +39,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         emit(AuthLoading());
 
         String apiUrl = "/api/register";
-        var res = await CallApi().postData(apiUrl, event.data);
+        var res = await CallApi().postData(apiUrl,data: event.data);
         var body = json.decode(res.body);
 
         if (res.statusCode == 201) {
@@ -57,15 +57,17 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     on<UserAuthLogout>((event, emit) async {
       String apiUrl = "/api/logout";
 
-      var res = await CallApi().postData(apiUrl, [], token: event.token);
+      var res = await CallApi().postData(apiUrl, token: event.token);
       var body = json.decode(res.body);
 
       if (res.statusCode == 200) {
         emit(AuthLogout());
-        print("yuhyuh byebye hydratedbloc");
         HydratedBloc.storage.clear();
+        print("yuhyuh byebye hydratedbloc");
       } else {
-        emit(AuthError("Logout Failed"));
+        emit(AuthLogout());
+        HydratedBloc.storage.clear();
+        emit(AuthError("Logout Failed but your data is destroyed ;)"));
       }
     });
   }
