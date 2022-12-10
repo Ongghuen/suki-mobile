@@ -18,8 +18,15 @@ String truncateWithEllipsis(int cutoff, String myString) {
 // ini buat scroll gada glow
 class NoGlow extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child,
+      AxisDirection axisDirection) {
     return child;
   }
+}
+
+BoxDecoration outlineBasic() {
+  return BoxDecoration(
+    border: Border.all(width: 1),
+    borderRadius: BorderRadius.all(Radius.circular(5)),
+  );
 }

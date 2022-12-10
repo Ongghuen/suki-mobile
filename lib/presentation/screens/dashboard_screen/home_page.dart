@@ -201,7 +201,6 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Icon(Icons.archive),
                                         Text(categories[index],
                                             style: GoogleFonts.montserrat(
                                               textStyle: TextStyle(

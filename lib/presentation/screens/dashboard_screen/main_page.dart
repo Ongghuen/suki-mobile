@@ -77,20 +77,18 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: Container(
             color: Theme.of(context).scaffoldBackgroundColor,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
               child: GNav(
                   onTabChange: (value) {
                     setState(() {
                       value != 5 ? _selectedIndex = value : initStartBlocs();
                     });
                   },
-                  gap: 2,
                   color: Colors.black,
                   activeColor: Colors.white,
                   tabBackgroundColor: Colors.black,
                   duration: const Duration(milliseconds: 200),
-                  // iconSize: 26,
-                  iconSize: 10,
+                  iconSize: 26,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   tabs: const [
@@ -109,9 +107,6 @@ class _MainPageState extends State<MainPage> {
                     GButton(
                       icon: Icons.person_outline,
                     ),
-                    GButton(
-                      icon: Icons.reset_tv_outlined,
-                    )
                   ]),
             ),
           )),

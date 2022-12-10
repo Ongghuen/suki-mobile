@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/auths/auth_page.dart';
+import 'package:mobile/presentation/utils/default.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,54 +16,324 @@ class ProfilePage extends StatelessWidget {
     TextEditingController password = TextEditingController();
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(top: 50.0),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-              if (state is AuthLoaded) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                    if (state is AuthLoaded) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Logout",
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.logout_outlined,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(UserAuthLogout(state.userModel.token));
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    return IconButton(
+                        onPressed: () {}, icon: const Icon(Icons.arrow_left));
+                  }),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Logout"),
-                    IconButton(
-                      icon: const Icon(Icons.logout_outlined),
-                      onPressed: () {
-                        context
-                            .read<AuthBloc>()
-                            .add(UserAuthLogout(state.userModel.token));
-                      },
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 75,
+                          width: 75,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                            backgroundImage: NetworkImage(
+                                "https://avatars.githubusercontent.com/u/12584890?v=4"),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Raihan",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            Text("0821210921"),
+                          ],
+                        ),
+                      ],
                     ),
+                    IconButton(
+                        onPressed: () {}, icon: Icon(Icons.settings_outlined))
                   ],
-                );
-              }
-              return IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_left));
-            }),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.chair_outlined,
+                                size: 32,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: 200,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Request Custom Furniture",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text("Anda dapat meminta furnitur custom "
+                                        "sesuai keinginan anda."),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                          )
+                        ],
+                      ),
+                    ),
+                    decoration: outlineBasic(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 10),
+                            child: Row(
+                              children: [
+                                Text("Daftar Transaksi",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16,
+                                )
+                              ],
+                            ),
+                          ),
+                          decoration: outlineBasic(),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40.0, vertical: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Ke Keranjang",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16,
+                                )
+                              ],
+                            ),
+                          ),
+                          decoration: outlineBasic(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // aktivitas saya
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                  child: Text("Aktivitas Saya",
+                      style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold))),
+                ),
+
+                // transaksi
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.shopping_cart_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Transaksi",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                // wishlist
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.favorite_outline),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Wishlist",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                // customs
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.chair_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Customs",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                // semua kategori
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                  child: Text("Kategori",
+                      style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold))),
+                ),
+
+                // kursi
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.chair_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Kursi",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                // pusat bantuan
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                  child: Text("Pusat Bantuan",
+                      style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold))),
+                ),
+
+                // Idk
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.support_agent_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Whatsapp Admin",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  OutlineInputBorder myInputBorder() {
-    return OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        borderSide: BorderSide(
-          color: Colors.black,
-          width: 3,
-        ));
-  }
-
-  OutlineInputBorder myFocusBorder() {
-    return OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        borderSide: BorderSide(
-          color: Color(0xffcbf49),
-          width: 3,
-        ));
   }
 }
