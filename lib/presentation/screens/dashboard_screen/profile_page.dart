@@ -16,43 +16,27 @@ class ProfilePage extends StatelessWidget {
     TextEditingController password = TextEditingController();
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.grey[800],
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                    if (state is AuthLoaded) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Logout",
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.logout_outlined,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(UserAuthLogout(state.userModel.token));
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                    return IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.arrow_left));
-                  }),
+                Text(
+                  "Profile Menu",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   height: 24,
@@ -273,7 +257,7 @@ class ProfilePage extends StatelessWidget {
                 // semua kategori
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 18.0),
-                  child: Text("Kategori",
+                  child: Text("Kategori Umum",
                       style: GoogleFonts.montserrat(
                           textStyle: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold))),
@@ -293,6 +277,27 @@ class ProfilePage extends StatelessWidget {
                         ),
                         Text(
                           "Kursi",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Meja
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.table_bar_outlined),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Meja",
                           style: TextStyle(fontSize: 16),
                         )
                       ],
@@ -337,3 +342,35 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+
+// Container(
+// padding: EdgeInsets.only(top: 20.0),
+// child: BlocBuilder<AuthBloc, AuthState>(
+// builder: (context, state) {
+// if (state is AuthLoaded) {
+// return Row(
+// mainAxisAlignment: MainAxisAlignment.end,
+// children: [
+// Text(
+// "Logout",
+// style: TextStyle(
+// color: Colors.red, fontWeight: FontWeight.bold),
+// ),
+// IconButton(
+// icon: const Icon(
+// Icons.logout_outlined,
+// color: Colors.red,
+// ),
+// onPressed: () {
+// context
+//     .read<AuthBloc>()
+//     .add(UserAuthLogout(state.userModel.token));
+// },
+// ),
+// ],
+// );
+// }
+// return IconButton(
+// onPressed: () {}, icon: const Icon(Icons.arrow_left));
+// }),
+// ),
