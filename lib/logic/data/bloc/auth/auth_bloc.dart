@@ -8,6 +8,7 @@ import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/models/user.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
@@ -39,7 +40,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         emit(AuthLoading());
 
         String apiUrl = "/api/register";
-        var res = await CallApi().postData(apiUrl,data: event.data);
+        var res = await CallApi().postData(apiUrl, data: event.data);
         var body = json.decode(res.body);
 
         if (res.statusCode == 201) {
@@ -70,7 +71,16 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         emit(AuthError("Logout Failed but your data is destroyed ;)"));
       }
     });
+    on<UserAuthCheckToken>((event, emit) async {
+      var apiUrl = '/api/checktoken';
+      var res = await CallApi().getData(apiUrl, token: event.token);
+      if (res.statusCode == 401) {
+        emit(AuthLogout());
+        HydratedBloc.storage.clear();
+      }
+    });
   }
+
   @override
   AuthState? fromJson(Map<String, dynamic> json) {
     print("ok masuk from json!");

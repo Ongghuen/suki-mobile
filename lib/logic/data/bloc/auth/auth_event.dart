@@ -21,3 +21,8 @@ class UserAuthLogout extends AuthEvent {
   var token;
   UserAuthLogout(this.token);
 }
+
+class UserAuthCheckToken extends AuthEvent {
+  var token;
+  UserAuthCheckToken(this.token);
+}

@@ -43,83 +43,85 @@ class CartPage extends StatelessWidget {
               child: BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
                 builder: (context, state) {
                   if (state is DetailTransactionLoaded) {
-                    return state.data.results!.isEmpty ?Center(child: Text
-                      ('Ayoo beli furniturmu di catalog!')) : ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: state.data.results!.length,
-                      itemBuilder: (context, index) {
-                        return BlocBuilder<ProductBloc, ProductState>(
-                            builder: (_, pstate) {
-                          if (pstate is ProductLoaded) {
-                            var product = pstate.productModel.results!.where(
-                                (element) =>
-                                    element.id ==
-                                    state
-                                        .data.results![index].pivot!.productId);
+                    return state.data.results!.isEmpty
+                        ? Center(
+                            child: Text('Ayoo beli furniturmu di catalog!'))
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: state.data.results!.length,
+                            itemBuilder: (context, index) {
+                              return BlocBuilder<ProductBloc, ProductState>(
+                                  builder: (_, pstate) {
+                                if (pstate is ProductLoaded) {
+                                  var product = pstate.productModel.results!
+                                      .where((element) =>
+                                          element.id ==
+                                          state.data.results![index].pivot!
+                                              .productId);
 
-                            return InkWell(
-                              child: Card(
-                                child: Container(
-                                  margin: EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      product.first.image == null
-                                          ? SizedBox(
-                                              width: 50,
-                                              child: Icon(Icons.chair),
-                                            )
-                                          : SizedBox(
-                                              width: 50,
-                                              child: Image.network(
-                                                "${apiUrlStorage}${product.first.image}",
-                                                fit: BoxFit.fill,
-                                                // Better way to load images from network flutter
-                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                loadingBuilder:
-                                                    (BuildContext context,
-                                                        Widget child,
-                                                        ImageChunkEvent?
-                                                            loadingProgress) {
-                                                  if (loadingProgress == null)
-                                                    return child;
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      value: loadingProgress
-                                                                  .expectedTotalBytes !=
-                                                              null
-                                                          ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                              loadingProgress
-                                                                  .expectedTotalBytes!
-                                                          : null,
+                                  return InkWell(
+                                    child: Card(
+                                      child: Container(
+                                        margin: EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            product.first.image == null
+                                                ? SizedBox(
+                                                    width: 50,
+                                                    child: Icon(Icons.chair),
+                                                  )
+                                                : SizedBox(
+                                                    width: 50,
+                                                    child: Image.network(
+                                                      "${apiUrlStorage}${product.first.image}",
+                                                      fit: BoxFit.fill,
+                                                      // Better way to load images from network flutter
+                                                      // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                      loadingBuilder: (BuildContext
+                                                              context,
+                                                          Widget child,
+                                                          ImageChunkEvent?
+                                                              loadingProgress) {
+                                                        if (loadingProgress ==
+                                                            null) return child;
+                                                        return Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            value: loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                        .cumulativeBytesLoaded /
+                                                                    loadingProgress
+                                                                        .expectedTotalBytes!
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
-                                                  );
-                                                },
-                                              ),
+                                                  ),
+                                            Column(
+                                              children: <Widget>[
+                                                Text(
+                                                    "${state.data.results![index].name}"),
+                                                Text(
+                                                    "Rp.${state.data.results![index].harga},00"),
+                                              ],
                                             ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text(
-                                              "${state.data.results![index].name}"),
-                                          Text(
-                                              "Rp.${state.data.results![index].harga},00"),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          return CircularProgressIndicator();
-                        });
-                      },
-                    );
+                                    ),
+                                  );
+                                }
+                                return CircularProgressIndicator();
+                              });
+                            },
+                          );
                   }
                   return CircularProgressIndicator();
                 },
@@ -165,8 +167,10 @@ class CartPage extends StatelessWidget {
                   // pay now
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder:
-                          (context) => CheckoutPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CheckoutPage()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
