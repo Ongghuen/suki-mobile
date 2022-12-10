@@ -6,6 +6,7 @@ import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/screens/checkout_page.dart';
+import 'package:mobile/presentation/screens/detail_product_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class CartPage extends StatelessWidget {
@@ -61,65 +62,114 @@ class CartPage extends StatelessWidget {
                                           state.data.results![index].pivot!
                                               .productId);
 
-                                  return InkWell(
-                                    child: Card(
-                                      child: Container(
-                                        margin: EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
+                                  return Container(
+                                    margin:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => DetailProduct(
+                                                    productId: product.first.id!
+                                                        .toInt())));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
-                                          children: [
-                                            product.first.image == null
-                                                ? SizedBox(
-                                                    width: 50,
-                                                    child: Icon(Icons.chair),
-                                                  )
-                                                : SizedBox(
-                                                    width: 50,
-                                                    child: Image.network(
-                                                      "${apiUrlStorage}${product.first.image}",
-                                                      fit: BoxFit.fill,
-                                                      // Better way to load images from network flutter
-                                                      // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent?
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            value: loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                        .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes!
-                                                                : null,
-                                                          ),
-                                                        );
-                                                      },
+                                              children: [
+                                                product.first.image == null
+                                                    ? ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      15),
+                                                  child: Container(
+                                                    height: 100,
+                                                    width: 100,
+                                                    child: Icon(
+                                                      Icons.inventory,
                                                     ),
                                                   ),
-                                            Column(
-                                              children: <Widget>[
-                                                Text(
-                                                    "${state.data.results![index].name}"),
-                                                Text(
-                                                    "Rp.${state.data.results![index].harga},00"),
+                                                )
+                                                    : ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      15),
+                                                  child: Image.network(
+                                                    "${apiUrlStorage}/${product.first.image}",
+                                                    fit: BoxFit.fill,
+                                                    height: 100,
+                                                    width: 100,
+                                                    // Better way to load images from network flutter
+                                                    // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                    loadingBuilder: (BuildContext
+                                                    context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                        loadingProgress) {
+                                                      if (loadingProgress ==
+                                                          null) return child;
+                                                      return Center(
+                                                        child:
+                                                        CircularProgressIndicator(
+                                                          value: loadingProgress
+                                                              .expectedTotalBytes !=
+                                                              null
+                                                              ? loadingProgress
+                                                              .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                              : null,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 100,
+                                                  width: 150,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "${product.first.name}",
+                                                        style:
+                                                        GoogleFonts.montserrat(
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold),
+                                                      ),
+                                                      Text(
+                                                        "${truncateWithEllipsis(20, product.first.desc.toString())}",
+                                                        style:
+                                                        GoogleFonts.montserrat(
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .normal),
+                                                      ),
+                                                      Text(
+                                                          "Rp.${product.first.harga},00"),
+                                                    ],
+                                                  ),
+                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   );
                                 }
                                 return CircularProgressIndicator();
-                              });
+                                  });
                             },
                           );
                   }
@@ -145,16 +195,9 @@ class CartPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Total Harga',
-                        style: TextStyle(color: Colors.white),
-                      ),
-
-                      const SizedBox(height: 8),
                       // total price
                       Text(
-                        // '\Rp.${value.calculateTotal()}',
-                        'Rp.10.000 hahahay',
+                        'CHECKOUT???',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -165,34 +208,45 @@ class CartPage extends StatelessWidget {
                   ),
 
                   // pay now
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CheckoutPage()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        children: const [
-                          Text(
-                            'Bayar',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
+                      builder: (context, state) {
+                    if (state is DetailTransactionLoaded) {
+                      return state.data.results!.isEmpty
+                          ? Text(
+                              ':| Tidak ada item',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CheckoutPage()));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(28),
+                                ),
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      'Bayar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                    }
+                    return Text("nope");
+                  })
                 ],
               ),
             ),

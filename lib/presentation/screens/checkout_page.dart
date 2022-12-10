@@ -156,14 +156,29 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'CONFIRM PEMBAYARAN???',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
+                    Text(
+                      'CONFIRM PEMBAYARAN???',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        children: const [
+                          Text(
+                            'LETSGOO',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
 
                     // pay now

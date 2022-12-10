@@ -140,10 +140,18 @@ class _DetailProductState extends State<DetailProduct> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${product.first.name}",
-                              style: const TextStyle(
-                                  fontSize: 32, fontWeight: FontWeight.bold),
+                            SizedBox(
+                              width: 350,
+                              child: SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  "${product.first.name}",
+                                  style: const TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
                             Text(
                               "Rp.${product.first.harga},00",
@@ -187,15 +195,14 @@ class _DetailProductState extends State<DetailProduct> {
                             builder: (context, state) {
                               return GestureDetector(
                                 onTap: () {
-                                  var data = {"product_id": widget.productId
-                                      .toString()};
+                                  var data = {
+                                    "product_id": widget.productId.toString()
+                                  };
                                   final astate = context.read<AuthBloc>().state;
                                   if (astate is AuthLoaded) {
                                     context.read<DetailTransactionBloc>().add(
                                         AddProductToDetailTransactionList(
                                             data, astate.userModel.token!));
-                                    print(
-                                        "WOYYY====; ${data} and ${astate.userModel.token}");
                                     showSnackbar(context, "Berhasil Hore");
                                   } else {
                                     showSnackbar(context, "Gagal");
