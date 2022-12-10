@@ -43,7 +43,8 @@ class CartPage extends StatelessWidget {
               child: BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
                 builder: (context, state) {
                   if (state is DetailTransactionLoaded) {
-                    return ListView.builder(
+                    return state.data.results!.isEmpty ?Center(child: Text
+                      ('Ayoo beli furniturmu di catalog!')) : ListView.builder(
                       scrollDirection: Axis.vertical,
                       physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
