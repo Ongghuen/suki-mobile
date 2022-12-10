@@ -20,7 +20,14 @@ class DetailTransactionBloc
         var res = await CallApi().getData(apiUrl, token: event.token);
         var body = json.decode(res.body);
         final data = DetailTransactionModel.fromJson(body);
-        emit(DetailTransactionLoaded(data));
+
+        List<String> oncart = [];
+        for (var i = 0; i < data.results!.length; i++) {
+          oncart.add(data.results![i].pivot!.productId.toString());
+        }
+        print(oncart);
+
+        emit(DetailTransactionLoaded(data, oncart));
       } catch (ex, trace) {
         emit(DetailTransactionError("sum ting wong"));
       }
@@ -33,9 +40,13 @@ class DetailTransactionBloc
         var res = await CallApi().getData(apiUrl, token: event.token);
         var body = json.decode(res.body);
         final data = DetailTransactionModel.fromJson(body);
-        print(data.results!.first.id);
 
-        emit(DetailTransactionLoaded(data));
+        List<String> oncart = [];
+        for (var i = 0; i < data.results!.length; i++) {
+          oncart.add(data.results![i].pivot!.productId.toString());
+        }
+
+        emit(DetailTransactionLoaded(data, oncart));
       } catch (ex, trace) {
         emit(DetailTransactionError("sum ting wong"));
       }
@@ -45,9 +56,8 @@ class DetailTransactionBloc
         emit(DetailTransactionLoading());
 
         String apiUrl = "/api/orders/detail";
-        var res =
-            await CallApi().postData(apiUrl,data: event.data, token: event
-                .token);
+        var res = await CallApi()
+            .postData(apiUrl, data: event.data, token: event.token);
         if (res.statusCode == 200) {
           print("MASUK????");
         }
@@ -55,6 +65,30 @@ class DetailTransactionBloc
       } catch (ex, trace) {
         emit(DetailTransactionError("sum ting wong"));
       }
+    });
+    on<AddQTYProductToDetailTransactionList>((event, emit) async {
+      print("ini nambah");
+      add(GetOngoingDetailTransactionList(event.token));
+    });
+    on<SubstractQTYProductToDetailTransactionList>((event, emit) async {
+      print("ini ngurang");
+      add(GetOngoingDetailTransactionList(event.token));
+    });
+    on<DeleteProductToDetailTransactionList>((event, emit) async {
+      try {
+        emit(DetailTransactionLoading());
+
+        String apiUrl = "/api/orders/detail";
+        var res = await CallApi()
+            .deleteData(apiUrl, data: event.data, token: event.token);
+        if (res.statusCode == 200) {
+          print("KEAPUS HAHAY");
+        }
+        add(GetOngoingDetailTransactionList(event.token));
+      } catch (ex, trace) {
+        emit(DetailTransactionError("sum ting wong"));
+      }
+      add(GetOngoingDetailTransactionList(event.token));
     });
   }
 }

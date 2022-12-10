@@ -13,10 +13,13 @@ class DetailTransactionLoading extends DetailTransactionState {}
 
 class DetailTransactionLoaded extends DetailTransactionState {
   var data;
-  DetailTransactionLoaded(this.data);
+  List<String> oncart;
+
+  DetailTransactionLoaded(this.data, this.oncart);
 }
 
 class DetailTransactionError extends DetailTransactionState {
   String msg;
+
   DetailTransactionError(this.msg);
 }

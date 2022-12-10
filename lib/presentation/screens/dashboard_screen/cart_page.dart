@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
@@ -9,9 +11,14 @@ import 'package:mobile/presentation/screens/checkout_page.dart';
 import 'package:mobile/presentation/screens/detail_product_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,114 +69,165 @@ class CartPage extends StatelessWidget {
                                           state.data.results![index].pivot!
                                               .productId);
 
-                                  return Container(
-                                    margin:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => DetailProduct(
-                                                    productId: product.first.id!
-                                                        .toInt())));
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                              children: [
-                                                product.first.image == null
-                                                    ? ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      15),
-                                                  child: Container(
+                                  return Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (BuildContext context) =>
+                                              deleteItem(product.first.id),
+                                          backgroundColor: Color(0xFFb50000),
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.playlist_remove_outlined,
+                                          label: 'Hapus',
+                                        ),
+                                      ],
+                                    ),
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 12),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailProduct(
+                                                          productId: product
+                                                              .first.id!
+                                                              .toInt())));
+                                        },
+                                        child: Column(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  product.first.image == null
+                                                      ? ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          child: Container(
+                                                            height: 100,
+                                                            width: 100,
+                                                            child: Icon(
+                                                              Icons.inventory,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          child: Image.network(
+                                                            "${apiUrlStorage}/${product.first.image}",
+                                                            fit: BoxFit.fill,
+                                                            height: 100,
+                                                            width: 100,
+                                                            // Better way to load images from network flutter
+                                                            // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                            loadingBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    Widget
+                                                                        child,
+                                                                    ImageChunkEvent?
+                                                                        loadingProgress) {
+                                                              if (loadingProgress ==
+                                                                  null)
+                                                                return child;
+                                                              return Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  value: loadingProgress
+                                                                              .expectedTotalBytes !=
+                                                                          null
+                                                                      ? loadingProgress
+                                                                              .cumulativeBytesLoaded /
+                                                                          loadingProgress
+                                                                              .expectedTotalBytes!
+                                                                      : null,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                  Container(
                                                     height: 100,
-                                                    width: 100,
-                                                    child: Icon(
-                                                      Icons.inventory,
+                                                    width: 150,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "${product.first.name}",
+                                                          style: GoogleFonts
+                                                              .montserrat(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                            "Rp.${product.first.harga},00"),
+                                                        Container(
+                                                          width: 150,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {},
+                                                                  icon: Icon(Icons
+                                                                      .remove_circle_outline)),
+                                                              Text(state
+                                                                          .data
+                                                                          .results![
+                                                                              index]
+                                                                          .pivot!
+                                                                          .qty ==
+                                                                      null
+                                                                  ? "0"
+                                                                  : state
+                                                                      .data
+                                                                      .results![
+                                                                          index]
+                                                                      .pivot!
+                                                                      .qty
+                                                                      .toString()),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {},
+                                                                  icon: Icon(Icons
+                                                                      .add_circle_outline)),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                )
-                                                    : ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      15),
-                                                  child: Image.network(
-                                                    "${apiUrlStorage}/${product.first.image}",
-                                                    fit: BoxFit.fill,
-                                                    height: 100,
-                                                    width: 100,
-                                                    // Better way to load images from network flutter
-                                                    // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                    loadingBuilder: (BuildContext
-                                                    context,
-                                                        Widget child,
-                                                        ImageChunkEvent?
-                                                        loadingProgress) {
-                                                      if (loadingProgress ==
-                                                          null) return child;
-                                                      return Center(
-                                                        child:
-                                                        CircularProgressIndicator(
-                                                          value: loadingProgress
-                                                              .expectedTotalBytes !=
-                                                              null
-                                                              ? loadingProgress
-                                                              .cumulativeBytesLoaded /
-                                                              loadingProgress
-                                                                  .expectedTotalBytes!
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                                Container(
-                                                  height: 100,
-                                                  width: 150,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        "${product.first.name}",
-                                                        style:
-                                                        GoogleFonts.montserrat(
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold),
-                                                      ),
-                                                      Text(
-                                                        "${truncateWithEllipsis(20, product.first.desc.toString())}",
-                                                        style:
-                                                        GoogleFonts.montserrat(
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .normal),
-                                                      ),
-                                                      Text(
-                                                          "Rp.${product.first.harga},00"),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
                                 }
                                 return CircularProgressIndicator();
-                                  });
+                              });
                             },
                           );
                   }
@@ -254,5 +312,16 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  deleteItem(id) {
+    var product_id = {"product_id": id.toString()};
+
+    final astate = context.read<AuthBloc>().state;
+    if (astate is AuthLoaded) {
+      context.read<DetailTransactionBloc>().add(
+          DeleteProductToDetailTransactionList(
+              product_id, astate.userModel.token));
+    }
   }
 }

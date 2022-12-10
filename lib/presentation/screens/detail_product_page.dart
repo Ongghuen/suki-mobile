@@ -52,41 +52,6 @@ class _DetailProductState extends State<DetailProduct> {
               ),
             ),
             centerTitle: true,
-            actions: [
-              BlocBuilder<WishlistBloc, WishlistState>(builder: (_, wstate) {
-                if (wstate is WishlistLoaded) {
-                  return IconButton(
-                      color: Colors.black,
-                      onPressed: () {
-                        final astate = context.read<AuthBloc>().state;
-
-                        if (astate is AuthLoaded) {
-                          String productId = product.first.id.toString();
-
-                          var data = {"product_id": productId};
-
-                          wstate.wishlistedProduct.contains(productId)
-                              ? context.read<WishlistBloc>().add(
-                                  DeleteProductFromWishlist(productId,
-                                      astate.userModel.token.toString()))
-                              : context.read<WishlistBloc>().add(
-                                  AddProductToWishlist(
-                                      data, astate.userModel.token.toString()));
-                        }
-                      },
-                      icon: Icon(wstate.wishlistedProduct
-                              .contains(product.first.id.toString())
-                          ? Icons.favorite_outlined
-                          : Icons.favorite_outline));
-                }
-                return IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.heart_broken,
-                      color: Colors.black,
-                    ));
-              })
-            ],
           ),
 
           //
@@ -172,52 +137,101 @@ class _DetailProductState extends State<DetailProduct> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        RichText(
-                          text: const TextSpan(children: [
-                            TextSpan(
-                              text: 'Total Price\n',
-                            ),
-                            TextSpan(
-                              text: "Hahay",
-                            ),
-                          ]),
-                        ),
-                        Container(
-                          height: 40.0,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.black87,
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          child: BlocBuilder<DetailTransactionBloc,
-                              DetailTransactionState>(
-                            builder: (context, state) {
-                              return GestureDetector(
-                                onTap: () {
-                                  var data = {
-                                    "product_id": widget.productId.toString()
-                                  };
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: BlocBuilder<WishlistBloc, WishlistState>(
+                              builder: (_, wstate) {
+                            if (wstate is WishlistLoaded) {
+                              return IconButton(
+                                color: Colors.black,
+                                onPressed: () {
                                   final astate = context.read<AuthBloc>().state;
+
                                   if (astate is AuthLoaded) {
-                                    context.read<DetailTransactionBloc>().add(
-                                        AddProductToDetailTransactionList(
-                                            data, astate.userModel.token!));
-                                    showSnackbar(context, "Berhasil Hore");
-                                  } else {
-                                    showSnackbar(context, "Gagal");
+                                    String productId =
+                                        product.first.id.toString();
+
+                                    var data = {"product_id": productId};
+
+                                    wstate.wishlistedProduct.contains(productId)
+                                        ? context.read<WishlistBloc>().add(
+                                            DeleteProductFromWishlist(
+                                                productId,
+                                                astate.userModel.token
+                                                    .toString()))
+                                        : context.read<WishlistBloc>().add(
+                                            AddProductToWishlist(
+                                                data,
+                                                astate.userModel.token
+                                                    .toString()));
                                   }
                                 },
-                                child: const Center(
-                                  child: Text(
-                                    'Tambah ke Keranjang',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
+                                icon: Icon(wstate.wishlistedProduct
+                                        .contains(product.first.id.toString())
+                                    ? Icons.favorite_outlined
+                                    : Icons.favorite_outline),
+                                iconSize: 36,
                               );
-                            },
+                            }
+                            return IconButton(
+                                iconSize: 36,
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.heart_broken,
+                                  color: Colors.black,
+                                ));
+                          }),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 40.0,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.black87,
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            child: BlocBuilder<DetailTransactionBloc,
+                                DetailTransactionState>(
+                              builder: (context, state) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (state is DetailTransactionLoaded) {
+                                      if (state.oncart.contains(
+                                          widget.productId.toString())) {
+                                        showSnackbar(context, "Udah ada kali");
+                                      }else{
+                                        var data = {
+                                          "product_id":
+                                          widget.productId.toString()
+                                        };
+
+                                        final astate =
+                                            context.read<AuthBloc>().state;
+                                        if (astate is AuthLoaded) {
+                                          context.read<DetailTransactionBloc>().add(
+                                              AddProductToDetailTransactionList(
+                                                  data,
+                                                  astate.userModel.token!));
+                                          showSnackbar(
+                                              context, "Berhasil Hore");
+                                        } else {
+                                          showSnackbar(context, "Gagal");
+                                        }
+                                      }
+                                    }
+                                  },
+                                  child: const Center(
+                                    child: Text(
+                                      'Tambah ke Keranjang',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         )
                       ],

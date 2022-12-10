@@ -25,3 +25,26 @@ class AddProductToDetailTransactionList extends DetailTransactionEvent {
 
   AddProductToDetailTransactionList(this.data, this.token);
 }
+
+class AddQTYProductToDetailTransactionList extends DetailTransactionEvent {
+  var data;
+  var token;
+
+  AddQTYProductToDetailTransactionList(this.data, this.token);
+}
+
+class SubstractQTYProductToDetailTransactionList extends
+DetailTransactionEvent {
+  var data;
+  var token;
+
+  SubstractQTYProductToDetailTransactionList(this.data, this.token);
+}
+
+class DeleteProductToDetailTransactionList extends
+DetailTransactionEvent {
+  var data;
+  var token;
+
+  DeleteProductToDetailTransactionList(this.data, this.token);
+}
