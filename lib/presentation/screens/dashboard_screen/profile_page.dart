@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
-import 'package:mobile/presentation/auths/auth_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -23,9 +20,9 @@ class ProfilePage extends StatelessWidget {
           color: Colors.grey[800],
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
@@ -72,7 +69,10 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     IconButton(
-                        onPressed: () {}, icon: Icon(Icons.settings_outlined))
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/detail-profile');
+                        },
+                        icon: Icon(Icons.settings_outlined))
                   ],
                 ),
                 SizedBox(
@@ -133,7 +133,9 @@ class ProfilePage extends StatelessWidget {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/transaction');
+                        },
                         child: Container(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -342,35 +344,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-// Container(
-// padding: EdgeInsets.only(top: 20.0),
-// child: BlocBuilder<AuthBloc, AuthState>(
-// builder: (context, state) {
-// if (state is AuthLoaded) {
-// return Row(
-// mainAxisAlignment: MainAxisAlignment.end,
-// children: [
-// Text(
-// "Logout",
-// style: TextStyle(
-// color: Colors.red, fontWeight: FontWeight.bold),
-// ),
-// IconButton(
-// icon: const Icon(
-// Icons.logout_outlined,
-// color: Colors.red,
-// ),
-// onPressed: () {
-// context
-//     .read<AuthBloc>()
-//     .add(UserAuthLogout(state.userModel.token));
-// },
-// ),
-// ],
-// );
-// }
-// return IconButton(
-// onPressed: () {}, icon: const Icon(Icons.arrow_left));
-// }),
-// ),
