@@ -7,10 +7,10 @@ abstract class TransactionEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class GetTransactionLists extends TransactionEvent {
+class GetAllTransactionLists extends TransactionEvent {
   var token;
 
-  GetTransactionLists(this.token);
+  GetAllTransactionLists(this.token);
 }
 
 class CheckoutTransactionLists extends TransactionEvent {

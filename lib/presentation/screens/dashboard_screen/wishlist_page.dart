@@ -172,7 +172,7 @@ class _WishlistPageState extends State<WishlistPage> {
                                                   if (state is AuthLoaded) {
                                                     return IconButton(
                                                       icon: Icon(Icons
-                                                          .remove_circle_outline),
+                                                          .favorite_outlined),
                                                       onPressed: () {
                                                         String productId = product
                                                             .first.id

@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
           .add(GetWishlistUserList(state.userModel.token.toString()));
       context
           .read<TransactionBloc>()
-          .add(GetTransactionLists(state.userModel.token.toString()));
+          .add(GetAllTransactionLists(state.userModel.token.toString()));
       context.read<DetailTransactionBloc>().add(
           GetOngoingDetailTransactionList(state.userModel.token.toString()));
     }

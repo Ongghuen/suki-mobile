@@ -178,7 +178,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                   ),
                                 ],
                               ),
-                              Text("status gitu"),
+                              Text("Terkonfirmasi"),
                             ],
                           ),
 
@@ -194,7 +194,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: Container(
-                                  color: Colors.red,
+                                  color: Colors.green[700],
                                   height: 50,
                                   width: 50,
                                   child: Icon(

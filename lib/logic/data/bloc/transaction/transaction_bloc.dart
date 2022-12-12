@@ -11,7 +11,7 @@ part 'transaction_state.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc() : super(TransactionInitial()) {
-    on<GetTransactionLists>((event, emit) async {
+    on<GetAllTransactionLists>((event, emit) async {
       // TODO: implement event handler
       try {
         emit(TransactionLoading());
