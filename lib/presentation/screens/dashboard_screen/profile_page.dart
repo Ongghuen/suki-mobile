@@ -159,7 +159,9 @@ class ProfilePage extends StatelessWidget {
                         width: 10,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed("/cart");
+                        },
                         child: Container(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
