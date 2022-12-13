@@ -1,7 +1,8 @@
 class DetailTransactionModel {
   List<Results>? results;
+  List<Details>? details;
 
-  DetailTransactionModel({this.results});
+  DetailTransactionModel({this.results, this.details});
 
   DetailTransactionModel.fromJson(Map<String, dynamic> json) {
     if (json['results'] != null) {
@@ -10,12 +11,92 @@ class DetailTransactionModel {
         results!.add(new Results.fromJson(v));
       });
     }
+
+    if (json['details'] != null) {
+      details = <Details>[];
+      json['details'].forEach((v) {
+        details!.add(new Details.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.results != null) {
       data['results'] = this.results!.map((v) => v.toJson()).toList();
+    }
+
+    if (this.results != null) {
+      data['details'] = this.details!.map((v) => v.toJson()).toList();
+    }
+
+    return data;
+  }
+}
+
+class Details {
+  int? id;
+  String? status;
+  int? userId;
+  Null? buktiBayar;
+  String? alamat;
+  Null? totalHarga;
+  Null? tglTransaksi;
+  Null? tglSelesai;
+  String? categories;
+  String? createdAt;
+  String? updatedAt;
+  List<Results>? products;
+
+  Details(
+      {this.id,
+        this.status,
+        this.userId,
+        this.buktiBayar,
+        this.alamat,
+        this.totalHarga,
+        this.tglTransaksi,
+        this.tglSelesai,
+        this.categories,
+        this.createdAt,
+        this.updatedAt,
+        this.products});
+
+  Details.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['status'];
+    userId = json['user_id'];
+    buktiBayar = json['bukti_bayar'];
+    alamat = json['alamat'];
+    totalHarga = json['total_harga'];
+    tglTransaksi = json['tgl_transaksi'];
+    tglSelesai = json['tgl_selesai'];
+    categories = json['categories'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    if (json['products'] != null) {
+      products = <Results>[];
+      json['products'].forEach((v) {
+        products!.add(new Results.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['status'] = this.status;
+    data['user_id'] = this.userId;
+    data['bukti_bayar'] = this.buktiBayar;
+    data['alamat'] = this.alamat;
+    data['total_harga'] = this.totalHarga;
+    data['tgl_transaksi'] = this.tglTransaksi;
+    data['tgl_selesai'] = this.tglSelesai;
+    data['categories'] = this.categories;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.products != null) {
+      data['products'] = this.products!.map((v) => v.toJson()).toList();
     }
     return data;
   }

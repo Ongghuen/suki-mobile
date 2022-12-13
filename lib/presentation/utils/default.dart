@@ -30,3 +30,7 @@ BoxDecoration outlineBasic() {
     borderRadius: BorderRadius.all(Radius.circular(5)),
   );
 }
+
+loading(){
+  return Center(child: CircularProgressIndicator(color: Colors.black,));
+}
