@@ -9,6 +9,7 @@ import 'package:mobile/presentation/screens/dashboard_screen/wishlist_page.dart'
 import 'package:mobile/presentation/screens/login_page.dart';
 import 'package:mobile/presentation/screens/profile_detail.dart';
 import 'package:mobile/presentation/screens/register_page.dart';
+import 'package:mobile/presentation/screens/transaction_konfirmasi_checkout_page.dart';
 import 'package:mobile/presentation/screens/transaction_menunggu_pembayaran_page.dart';
 import 'package:mobile/presentation/screens/transaction_page.dart';
 
@@ -41,6 +42,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ProfileDetailPage());
       case '/transaction':
         return MaterialPageRoute(builder: (_) => const TransactionPage());
+      case '/transaction-confirm':
+        return MaterialPageRoute(builder: (_) => const TransactionKonfirmasiCheckoutPage());
       case '/menunggu-pembayaran':
         return MaterialPageRoute(
             builder: (_) => const TransactionMenungguPembayaranPage());

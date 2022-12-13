@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
-import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
-import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/screens/checkout_page.dart';
 import 'package:mobile/presentation/screens/detail_product_page.dart';
 import 'package:mobile/presentation/utils/default.dart';

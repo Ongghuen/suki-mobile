@@ -18,8 +18,8 @@ String truncateWithEllipsis(int cutoff, String myString) {
 // ini buat scroll gada glow
 class NoGlow extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(BuildContext context, Widget child,
-      AxisDirection axisDirection) {
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
@@ -31,6 +31,16 @@ BoxDecoration outlineBasic() {
   );
 }
 
-loading(){
-  return Center(child: CircularProgressIndicator(color: Colors.black,));
+loading() {
+  return Center(
+      child: CircularProgressIndicator(
+    color: Colors.black,
+  ));
+}
+
+divider() {
+  return Divider(
+    thickness: 2,
+    color: Colors.black54,
+  );
 }

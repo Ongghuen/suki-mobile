@@ -4,8 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
-import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
-import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
+import 'package:mobile/presentation/screens/transaction_konfirmasi_checkout_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -26,127 +25,302 @@ class _CheckoutPageState extends State<CheckoutPage> {
           color: Colors.grey[800],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Let's order fresh items for you
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Let's order fresh items for you
+            Text(
               "Checkout",
               style: GoogleFonts.montserrat(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ),
 
-          // list view of cart
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
-                builder: (context, state) {
-                  if (state is DetailTransactionLoaded) {
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: state.data.results!.length,
-                      itemBuilder: (context, index) {
-                        return BlocBuilder<ProductBloc, ProductState>(
-                            builder: (_, pstate) {
-                          if (pstate is ProductLoaded) {
-                            var product = pstate.productModel.results!.where(
-                                (element) =>
-                                    element.id ==
-                                    state
-                                        .data.results![index].pivot!.productId);
+            // spacing
+            SizedBox(
+              height: 10,
+            ),
 
-                            return InkWell(
-                              child: Card(
-                                child: Container(
-                                  margin: EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      product.first.image == null
-                                          ? SizedBox(
-                                              width: 50,
-                                              child: Icon(Icons.chair),
-                                            )
-                                          : SizedBox(
-                                              width: 50,
-                                              child: Image.network(
-                                                "${apiUrlStorage}${product.first.image}",
-                                                fit: BoxFit.fill,
-                                                // Better way to load images from network flutter
-                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                loadingBuilder:
-                                                    (BuildContext context,
+            // divider
+            divider(),
+
+            BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
+              builder: (context, state) {
+                if (state is DetailTransactionLoaded) {
+                  var checkout = state.data.details.firstWhere((e) =>
+                      e.status ==
+                      "Pendi"
+                          "ng");
+                  return BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, astate) {
+                      if (astate is AuthLoaded) {
+                        var auth = astate.userModel.user!;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Alamat Pengiriman",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+
+                            // spacing
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                            // inside
+                            Text(
+                              "${auth.name}",
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "${auth.phone}",
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "${auth.address}",
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w400),
+                            ),
+
+                            // spacing
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        );
+                      }
+                      return loading();
+                    },
+                  );
+                }
+                return loading();
+              },
+            ),
+
+            // divider
+            divider(),
+
+            // list view of cart
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child:
+                    BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
+                  builder: (context, state) {
+                    if (state is DetailTransactionLoaded) {
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.data.results!.length,
+                        itemBuilder: (context, index) {
+                          return BlocBuilder<ProductBloc, ProductState>(
+                              builder: (_, pstate) {
+                            if (pstate is ProductLoaded) {
+                              var product = pstate.productModel.results!.where(
+                                  (element) =>
+                                      element.id ==
+                                      state.data.results![index].pivot!
+                                          .productId);
+
+                              return Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          product.first.image == null
+                                              ? ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Container(
+                                                    height: 100,
+                                                    width: 100,
+                                                    child: Icon(
+                                                      Icons.inventory,
+                                                    ),
+                                                  ),
+                                                )
+                                              : ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Image.network(
+                                                    "${apiUrlStorage}/${product.first.image}",
+                                                    fit: BoxFit.fill,
+                                                    height: 100,
+                                                    width: 100,
+                                                    // Better way to load images from network flutter
+                                                    // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                    loadingBuilder: (BuildContext
+                                                            context,
                                                         Widget child,
                                                         ImageChunkEvent?
                                                             loadingProgress) {
-                                                  if (loadingProgress == null)
-                                                    return child;
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      value: loadingProgress
-                                                                  .expectedTotalBytes !=
-                                                              null
-                                                          ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                              loadingProgress
-                                                                  .expectedTotalBytes!
-                                                          : null,
-                                                    ),
-                                                  );
-                                                },
-                                              ),
+                                                      if (loadingProgress ==
+                                                          null) return child;
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          value: loadingProgress
+                                                                      .expectedTotalBytes !=
+                                                                  null
+                                                              ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                              : null,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                          Container(
+                                            height: 100,
+                                            width: 150,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${product.first.name}",
+                                                  style: GoogleFonts.montserrat(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                    "Rp.${product.first.harga},00"),
+                                                Text(
+                                                    "${state.data.results![index].pivot!.qty} barang"),
+                                              ],
                                             ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text(
-                                              "${state.data.results![index].name}"),
-                                          Text(
-                                              "Rp.${state.data.results![index].harga},00"),
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            );
-                          }
-                          return CircularProgressIndicator();
-                        });
-                      },
-                    );
-                  }
-                  return CircularProgressIndicator();
-                },
+                              );
+                            }
+                            return CircularProgressIndicator();
+                          });
+                        },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
               ),
             ),
-          ),
 
-          // total amount + pay now
+            // divider
+            divider(),
 
-          GestureDetector(
-            onTap: () {
-              final state = context.read<AuthBloc>().state;
-              if (state is AuthLoaded) {
-                context
-                    .read<TransactionBloc>()
-                    .add(CheckoutTransactionLists(state.userModel.token));
-                context.read<DetailTransactionBloc>().add(
-                    GetOngoingDetailTransactionList(state.userModel.token));
-                Navigator.pop(context);
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Ringkasan Belanja",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+
+                // spacing
+                SizedBox(
+                  height: 10,
+                ),
+
+                // inside
+                Column(
+                  children: [
+                    // total harga
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total Harga",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          "test",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+
+                    // total ongkos kirim
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total Ongkos Service",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          "test",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+
+                    // total tagihan
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total Tagihan",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "test",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                // spacing
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+
+            // total amount + pay now
+
+            InkWell(
+              onTap: () {
+                // final state = context.read<AuthBloc>().state;
+                // if (state is AuthLoaded) {
+                //   context
+                //       .read<TransactionBloc>()
+                //       .add(CheckoutTransactionLists(state.userModel.token));
+                //   context.read<DetailTransactionBloc>().add(
+                //       GetOngoingDetailTransactionList(state.userModel.token));
+                Navigator.of(context).pushNamed('/transaction-confirm');
+                // }
+              },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -154,40 +328,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 padding: const EdgeInsets.all(24),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'CONFIRM PEMBAYARAN???',
-                      style: TextStyle(color: Colors.white),
+                      'BUAT PESANAN',
+                      style: GoogleFonts.montserrat(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        children: const [
-                          Text(
-                            'LETSGOO',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-
                     // pay now
                   ],
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

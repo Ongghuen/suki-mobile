@@ -22,8 +22,11 @@ class AuthModel {
 class User {
   int? id;
   String? name;
-  String? email;
+  Null? image;
+  String? address;
   String? phone;
+  String? username;
+  String? email;
   int? roleId;
   String? emailVerifiedAt;
   String? createdAt;
@@ -31,19 +34,25 @@ class User {
 
   User(
       {this.id,
-      this.name,
-      this.email,
-      this.phone,
-      this.roleId,
-      this.emailVerifiedAt,
-      this.createdAt,
-      this.updatedAt});
+        this.name,
+        this.image,
+        this.address,
+        this.phone,
+        this.username,
+        this.email,
+        this.roleId,
+        this.emailVerifiedAt,
+        this.createdAt,
+        this.updatedAt});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    email = json['email'];
+    image = json['image'];
+    address = json['address'];
     phone = json['phone'];
+    username = json['username'];
+    email = json['email'];
     roleId = json['role_id'];
     emailVerifiedAt = json['email_verified_at'];
     createdAt = json['created_at'];
@@ -54,8 +63,11 @@ class User {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
-    data['email'] = this.email;
+    data['image'] = this.image;
+    data['address'] = this.address;
     data['phone'] = this.phone;
+    data['username'] = this.username;
+    data['email'] = this.email;
     data['role_id'] = this.roleId;
     data['email_verified_at'] = this.emailVerifiedAt;
     data['created_at'] = this.createdAt;
