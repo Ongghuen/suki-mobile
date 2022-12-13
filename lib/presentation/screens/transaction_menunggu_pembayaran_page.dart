@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/presentation/utils/default.dart';
@@ -15,6 +16,16 @@ class TransactionMenungguPembayaranPage extends StatefulWidget {
 
 class _TransactionMenungguPembayaranPageState
     extends State<TransactionMenungguPembayaranPage> {
+
+  void restartBlocs() {
+    final state = context.read<AuthBloc>().state;
+    if (state is AuthLoaded) {
+      context.read<AuthBloc>().add(UserAuthCheckToken(state.userModel.token));
+      context.read<DetailTransactionBloc>().add(
+          GetOngoingDetailTransactionList(state.userModel.token.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +69,7 @@ class _TransactionMenungguPembayaranPageState
                         return RefreshIndicator(
                           color: Colors.black,
                           onRefresh: () async {
+                            restartBlocs();
                           },
                           child: belumBayar.length == 0
                               ? Center(

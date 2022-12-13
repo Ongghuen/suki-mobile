@@ -14,10 +14,6 @@ import 'package:mobile/presentation/screens/dashboard_screen/profile_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/search_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/wishlist_page.dart';
 
-void main(List<String> args) {
-  runApp(const MainPage());
-}
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -63,53 +59,56 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthLogout) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => AuthPage()),
-              (route) => false);
-        }
-      },
-      child: Scaffold(
-          body: pageList.elementAt(_selectedIndex),
-          bottomNavigationBar: Container(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
-              child: GNav(
-                  onTabChange: (value) {
-                    setState(() {
-                      value != 5 ? _selectedIndex = value : initStartBlocs();
-                    });
-                  },
-                  color: Colors.black,
-                  activeColor: Colors.white,
-                  tabBackgroundColor: Colors.black,
-                  duration: const Duration(milliseconds: 200),
-                  iconSize: 26,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  tabs: const [
-                    GButton(
-                      icon: Icons.home_outlined,
-                    ),
-                    GButton(
-                      icon: Icons.favorite_outline,
-                    ),
-                    GButton(
-                      icon: Icons.search_outlined,
-                    ),
-                    GButton(
-                      icon: Icons.shopping_cart_outlined,
-                    ),
-                    GButton(
-                      icon: Icons.person_outline,
-                    ),
-                  ]),
-            ),
-          ), ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthLogout) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) => AuthPage()),
+                (route) => false);
+          }
+        },
+        child: Scaffold(
+            body: pageList.elementAt(_selectedIndex),
+            bottomNavigationBar: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                child: GNav(
+                    onTabChange: (value) {
+                      setState(() {
+                        value != 5 ? _selectedIndex = value : initStartBlocs();
+                      });
+                    },
+                    color: Colors.black,
+                    activeColor: Colors.white,
+                    tabBackgroundColor: Colors.black,
+                    duration: const Duration(milliseconds: 200),
+                    iconSize: 26,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    tabs: const [
+                      GButton(
+                        icon: Icons.home_outlined,
+                      ),
+                      GButton(
+                        icon: Icons.favorite_outline,
+                      ),
+                      GButton(
+                        icon: Icons.search_outlined,
+                      ),
+                      GButton(
+                        icon: Icons.shopping_cart_outlined,
+                      ),
+                      GButton(
+                        icon: Icons.person_outline,
+                      ),
+                    ]),
+              ),
+            ), ),
+      ),
     );
   }
 }
