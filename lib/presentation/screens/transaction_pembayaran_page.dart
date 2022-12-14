@@ -165,7 +165,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "BCA Transfer",
+                                    "Bank Transfer",
                                     style: GoogleFonts.montserrat(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600),

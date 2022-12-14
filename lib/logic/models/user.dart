@@ -22,7 +22,7 @@ class AuthModel {
 class User {
   int? id;
   String? name;
-  Null? image;
+  String? image;
   String? address;
   String? phone;
   String? username;

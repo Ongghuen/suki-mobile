@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -38,42 +40,85 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(
                   height: 24,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          height: 75,
-                          width: 75,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            backgroundImage: NetworkImage(
-                                "https://avatars.githubusercontent.com/u/12584890?v=4"),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthLoaded) {
+                      var user = state.userModel.user;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Container(
+                                  color: Colors.grey,
+                                  height: 60,
+                                  width: 60,
+                                  child: user?.image ==
+                                          null
+                                      ? Icon(
+                                          Icons.person,
+                                    size: 30,
+                                    color: Colors.white,
+                                        )
+                                      : Image.network(
+                                          "${apiUrlStorage}/${user?.image}",
+                                          fit: BoxFit.fill,
+                                          height: 80,
+                                          width: 80,
+                                          // Better way to load images from network flutter
+                                          // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${user?.name}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  Text("${user?.phone}"),
+                                ],
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Raihan",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            Text("0821210921"),
-                          ],
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/detail-profile');
-                        },
-                        icon: Icon(Icons.settings_outlined))
-                  ],
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed('/detail-profile');
+                              },
+                              icon: Icon(Icons.settings_outlined))
+                        ],
+                      );
+                    }
+                    return loading();
+                  },
                 ),
                 SizedBox(
                   height: 20,
@@ -107,8 +152,8 @@ class ProfilePage extends StatelessWidget {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text("Anda dapat meminta furnitur custom "
-                                        "sesuai keinginan anda."),
+                                    Text("Anda dapat meminta furnitur "
+                                        "sesuai dengan keinginan anda."),
                                   ],
                                 ),
                               ),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
-import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/screens/detail_product_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
@@ -84,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                                             }
                                           }, builder: (_, state) {
                                             if (state is AuthLoaded) {
+                                              var user = state.userModel.user;
                                               return Text(
                                                   "Hi, ${state.userModel.user!.name?.split(" ")[0]}",
                                                   style: GoogleFonts.montserrat(
@@ -107,13 +107,56 @@ class _HomePageState extends State<HomePage> {
                                     ]),
 
                                 // kanan
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(100))),
+                                BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, state) {
+                                    if(state is AuthLoaded){
+                                      var user = state.userModel.user;
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child:
+                                      user?.image ==
+                                          null
+                                          ? Container(
+                                        color: Colors.white,
+                                        height: 50,
+                                        width: 50,
+                                            child: const Icon(
+                                        Icons.person,
+                                        size: 40,
+                                        color: Colors.black54,
+                                      ),
+                                          )
+                                          : Image.network(
+                                        "${apiUrlStorage}/${user?.image}",
+                                        fit: BoxFit.fill,
+                                        height: 50,
+                                        width: 50,
+                                        // Better way to load images from network flutter
+                                        // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent?
+                                            loadingProgress) {
+                                          if (loadingProgress == null)
+                                            return child;
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                  .expectedTotalBytes !=
+                                                  null
+                                                  ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                      )
+                                      );
+                                    }
+                                    return loading();
+                                  },
                                 ),
                               ],
                             ),
@@ -187,8 +230,8 @@ class _HomePageState extends State<HomePage> {
                             child: ListView.builder(
                                 // This next line does the trick.
                                 scrollDirection: Axis.horizontal,
-                                physics: AlwaysScrollableScrollPhysics
-                                  (parent: BouncingScrollPhysics()),
+                                physics: AlwaysScrollableScrollPhysics(
+                                    parent: BouncingScrollPhysics()),
                                 itemCount: categories.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
@@ -251,13 +294,12 @@ class _HomePageState extends State<HomePage> {
                                         physics: BouncingScrollPhysics(),
                                         shrinkWrap: true,
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: state
-                                            .productModel.results!.length,
+                                        itemCount:
+                                            state.productModel.results!.length,
                                         itemBuilder: (context, index) {
                                           return Container(
-                                            margin:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 12),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 12),
                                             child: InkWell(
                                               onTap: () {
                                                 Navigator.push(
@@ -281,8 +323,7 @@ class _HomePageState extends State<HomePage> {
                                                   children: <Widget>[
                                                     state
                                                                 .productModel
-                                                                .results![
-                                                                    index]
+                                                                .results![index]
                                                                 .image ==
                                                             null
                                                         ? ClipRRect(
@@ -294,8 +335,7 @@ class _HomePageState extends State<HomePage> {
                                                               height: 150,
                                                               width: 150,
                                                               child: Icon(
-                                                                Icons
-                                                                    .inventory,
+                                                                Icons.inventory,
                                                               ),
                                                             ),
                                                           )
@@ -307,18 +347,18 @@ class _HomePageState extends State<HomePage> {
                                                             child:
                                                                 Image.network(
                                                               "${apiUrlStorage}/${state.productModel.results![index].image}",
-                                                              fit:
-                                                                  BoxFit.fill,
+                                                              fit: BoxFit.fill,
                                                               height: 150,
                                                               width: 150,
                                                               // Better way to load images from network flutter
                                                               // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                              loadingBuilder: (BuildContext
-                                                                      context,
-                                                                  Widget
-                                                                      child,
-                                                                  ImageChunkEvent?
-                                                                      loadingProgress) {
+                                                              loadingBuilder:
+                                                                  (BuildContext
+                                                                          context,
+                                                                      Widget
+                                                                          child,
+                                                                      ImageChunkEvent?
+                                                                          loadingProgress) {
                                                                 if (loadingProgress ==
                                                                     null)
                                                                   return child;
@@ -352,10 +392,10 @@ class _HomePageState extends State<HomePage> {
                                                             children: [
                                                               Text(
                                                                 "${state.productModel.results![index].name}",
-                                                                style: GoogleFonts.montserrat(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                style: GoogleFonts
+                                                                    .montserrat(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                               ),
                                                               Text(
                                                                   "Rp.${state.productModel.results![index].harga},00"),
@@ -400,13 +440,12 @@ class _HomePageState extends State<HomePage> {
                                       physics: BouncingScrollPhysics(),
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
-                                      itemCount: state
-                                          .productModel.results!.length,
+                                      itemCount:
+                                          state.productModel.results!.length,
                                       itemBuilder: (context, index) {
                                         return Container(
-                                          margin:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 12),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 12),
                                           child: InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -447,8 +486,7 @@ class _HomePageState extends State<HomePage> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           15),
-                                                              child:
-                                                                  Container(
+                                                              child: Container(
                                                                 height: 100,
                                                                 width: 100,
                                                                 child: Icon(
@@ -462,11 +500,11 @@ class _HomePageState extends State<HomePage> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           15),
-                                                              child: Image
-                                                                  .network(
+                                                              child:
+                                                                  Image.network(
                                                                 "${apiUrlStorage}/${state.productModel.results![index].image}",
-                                                                fit: BoxFit
-                                                                    .fill,
+                                                                fit:
+                                                                    BoxFit.fill,
                                                                 height: 100,
                                                                 width: 100,
                                                                 // Better way to load images from network flutter
@@ -483,8 +521,10 @@ class _HomePageState extends State<HomePage> {
                                                                   return Center(
                                                                     child:
                                                                         CircularProgressIndicator(
-                                                                      value: loadingProgress.expectedTotalBytes != null
-                                                                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                                      value: loadingProgress.expectedTotalBytes !=
+                                                                              null
+                                                                          ? loadingProgress.cumulativeBytesLoaded /
+                                                                              loadingProgress.expectedTotalBytes!
                                                                           : null,
                                                                     ),
                                                                   );
@@ -501,17 +541,19 @@ class _HomePageState extends State<HomePage> {
                                                           children: [
                                                             Text(
                                                               "${state.productModel.results![index].name}",
-                                                              style: GoogleFonts.montserrat(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                              style: GoogleFonts
+                                                                  .montserrat(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
                                                             ),
                                                             Text(
                                                               "${truncateWithEllipsis(20, state.productModel.results![index].desc.toString())}",
-                                                              style: GoogleFonts.montserrat(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal),
+                                                              style: GoogleFonts
+                                                                  .montserrat(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
                                                             ),
                                                             Text(
                                                                 "Rp.${state.productModel.results![index].harga},00"),
