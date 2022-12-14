@@ -200,16 +200,12 @@ class _WishlistPageState extends State<WishlistPage> {
                                   ),
                                 );
                               }
-                              return CircularProgressIndicator();
+                              return loading();
                             });
                           },
                         );
                 }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.black,
-                  ),
-                );
+                return loading();
               },
             ),
           ),

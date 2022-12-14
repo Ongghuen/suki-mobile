@@ -160,7 +160,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
                 // transaction card
                 Container(
-                  height: 500,
+                  height: 650,
                   child: BlocBuilder<DetailTransactionBloc,
                       DetailTransactionState>(
                     builder: (context, state) {
