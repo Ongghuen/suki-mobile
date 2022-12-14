@@ -18,3 +18,11 @@ class CheckoutTransactionLists extends TransactionEvent {
 
   CheckoutTransactionLists(this.token);
 }
+
+class ChangeTransactionStatus extends TransactionEvent {
+  var transactionId;
+  String status;
+  var token;
+
+  ChangeTransactionStatus(this.transactionId, this.status, this.token);
+}

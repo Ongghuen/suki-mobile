@@ -33,7 +33,25 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         var res = await CallApi().postData(apiUrl, token: event.token);
         if (res.statusCode == 200) {
           print("ntaps");
-        }else{
+        } else {
+          print("lmao");
+        }
+      } catch (ex, trace) {
+        emit(TransactionError("sum ting wong"));
+        print("$ex $trace");
+      }
+    });
+    on<ChangeTransactionStatus>((event, emit) async {
+      try {
+        String apiUrl = "/api/orders/status/${event.transactionId}";
+        var data = {"status": event.status};
+
+        var res =
+            await CallApi().postData(apiUrl, data: data, token: event.token);
+
+        if (res.statusCode == 200) {
+          print("ntaps");
+        } else {
           print("lmao");
         }
       } catch (ex, trace) {

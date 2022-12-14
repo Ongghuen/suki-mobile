@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
+import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/main_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
@@ -37,7 +38,23 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
     }
   }
 
-  void finalize() async {
+  void finalize() {
+    var auth = AuthBloc().state;
+    if (auth is AuthLoaded) {
+      context.read<TransactionBloc>().add(ChangeTransactionStatus(widget
+          .transactionId, "Menunggu_Konfirmasi", auth.userModel.token));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+          ModalRoute.withName("/main"));
+      showSnackbar(
+          context,
+          "Transaksi akan segera dikonfirmasi oleh "
+          "admin!");
+    }
+  }
+
+  void showFinalizeDialog() async {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -61,12 +78,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainPage()),
-                  ModalRoute.withName("/main"));
-              showSnackbar(context, "Transaksi menunggu untuk dikonfirmasi "
-                  "admin!");
+              finalize();
             },
             child: Text(
               'OK',
@@ -284,16 +296,19 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                   if (state is DetailTransactionLoaded) {
                     var checkout = state.data.details
                         .firstWhere((e) => e.id == widget.transactionId);
-                    return checkout.buktiBayar != null ? Center(
-                        child: TextButton(
-                            onPressed: () {
-                              uploadImage();
-                            },
-                            child: Text("Ganti "
-                                "Gambar", style: GoogleFonts.montserrat
-                              (color: Colors.black ),))
-                    ) : Text
-                      ("") ;
+                    return checkout.buktiBayar != null
+                        ? Center(
+                            child: TextButton(
+                                onPressed: () {
+                                  uploadImage();
+                                },
+                                child: Text(
+                                  "Ganti "
+                                  "Gambar",
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black),
+                                )))
+                        : Text("");
                   }
                   return loading();
                 },
@@ -332,7 +347,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                       onTap: () async {
                         checkout.buktiBayar == null
                             ? uploadImage()
-                            : finalize();
+                            : showFinalizeDialog();
                       },
                       child: Container(
                         decoration: BoxDecoration(
