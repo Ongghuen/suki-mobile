@@ -23,6 +23,8 @@ class TransactionDetailsProductPage extends StatefulWidget {
       _TransactionDetailsProductPageState();
 }
 
+const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+
 class _TransactionDetailsProductPageState
     extends State<TransactionDetailsProductPage> {
   void uploadImage() async {

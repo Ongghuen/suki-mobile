@@ -65,7 +65,8 @@ class _TransactionMenungguPembayaranPageState
                     builder: (context, state) {
                       if (state is DetailTransactionLoaded) {
                         var belumBayar = state.data.details
-                            .where((e) => e.status == "Belum_Bayar")
+                            .where((e) => e.status == "Belum_Bayar" && e
+                            .categories == "Product")
                             .toList();
 
                         return RefreshIndicator(

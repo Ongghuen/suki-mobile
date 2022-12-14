@@ -168,7 +168,8 @@ class _TransactionPageState extends State<TransactionPage> {
                     builder: (context, state) {
                       if (state is DetailTransactionLoaded) {
                         var details = state.data.details
-                            .where((e) => e.status != "Belum_Bayar")
+                            .where((e) => e.status != "Belum_Bayar" && e
+                            .status != "Pending")
                             .toList();
 
                         return RefreshIndicator(
@@ -176,7 +177,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           onRefresh: () async {
                             restartBlocs();
                           },
-                          child: details.length == 1
+                          child: details.length == 0
                               ? Center(
                             child: SingleChildScrollView(
                               physics: AlwaysScrollableScrollPhysics(
@@ -198,7 +199,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               : ListView.builder(
                               physics: AlwaysScrollableScrollPhysics(
                                   parent: BouncingScrollPhysics()),
-                              itemCount: details.length - 1,
+                              itemCount: details.length,
                               itemBuilder:
                                   (BuildContext context, int index) {
                                 // transaction card
