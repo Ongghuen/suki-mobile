@@ -192,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             "email": _emailController.text.trim(),
                             "username": _usernameController.text.trim(),
                             "name": _nameController.text.trim(),
-                            "noTelp": _noTelpController.text.trim(),
+                            "phone": _noTelpController.text.trim(),
                             "password": _passController.text.trim(),
                             "password_confirmation":
                                 _passConfirmationController.text.trim(),
