@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
-import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
+import 'package:mobile/presentation/screens/transaction_pembayaran_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class TransactionMenungguPembayaranPage extends StatefulWidget {
@@ -18,7 +18,9 @@ class _TransactionMenungguPembayaranPageState
     extends State<TransactionMenungguPembayaranPage> {
 
   void restartBlocs() {
-    final state = context.read<AuthBloc>().state;
+    final state = context
+        .read<AuthBloc>()
+        .state;
     if (state is AuthLoaded) {
       context.read<AuthBloc>().add(UserAuthCheckToken(state.userModel.token));
       context.read<DetailTransactionBloc>().add(
@@ -96,12 +98,20 @@ class _TransactionMenungguPembayaranPageState
                               itemBuilder: (BuildContext context, int index) {
                                 // transaction card
                                 return InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                        builder: (context) =>
+                                        TransactionPembayaranPage(
+                                            transactionId: belumBayar[index].id)
+                                    ));
+                                  },
 
                                   // outer padding
                                   child: Padding(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                    const EdgeInsets.symmetric(vertical: 8),
                                     child: Container(
                                       // inner padding
                                       child: Padding(
@@ -109,13 +119,13 @@ class _TransactionMenungguPembayaranPageState
                                             horizontal: 20, vertical: 20),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             // pertama
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              MainAxisAlignment
+                                                  .spaceBetween,
                                               children: [
                                                 Row(
                                                   children: [
@@ -125,13 +135,15 @@ class _TransactionMenungguPembayaranPageState
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
-                                                            "${belumBayar[index].categories}"),
+                                                            "${belumBayar[index]
+                                                                .categories}"),
                                                         Text(
-                                                          "${belumBayar[index].createdAt}",
+                                                          "${belumBayar[index]
+                                                              .createdAt}",
                                                           style: TextStyle(
                                                               fontSize: 12),
                                                         ),
@@ -154,49 +166,55 @@ class _TransactionMenungguPembayaranPageState
                                                 // image item
                                                 ClipRRect(
                                                   borderRadius:
-                                                      BorderRadius.circular(5),
+                                                  BorderRadius.circular(5),
                                                   child: Container(
                                                     color: Colors.red,
                                                     height: 50,
                                                     width: 50,
                                                     child:
-                                                        belumBayar[index]
-                                                                    .products
-                                                                    .first
-                                                                    .image ==
+                                                    belumBayar[index]
+                                                        .products
+                                                        .first
+                                                        .image ==
+                                                        null
+                                                        ? Icon(
+                                                      Icons.inventory,
+                                                    )
+                                                        : Image.network(
+                                                      "${apiUrlStorage}/${belumBayar[index]
+                                                          .products.first
+                                                          .image}",
+                                                      fit:
+                                                      BoxFit.fill,
+                                                      height: 100,
+                                                      width: 100,
+                                                      // Better way to load images from network flutter
+                                                      // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                      loadingBuilder: (
+                                                          BuildContext
+                                                          context,
+                                                          Widget
+                                                          child,
+                                                          ImageChunkEvent?
+                                                          loadingProgress) {
+                                                        if (loadingProgress ==
+                                                            null)
+                                                          return child;
+                                                        return Center(
+                                                          child:
+                                                          CircularProgressIndicator(
+                                                            value: loadingProgress
+                                                                .expectedTotalBytes !=
                                                                 null
-                                                            ? Icon(
-                                                                Icons.inventory,
-                                                              )
-                                                            : Image.network(
-                                                                "${apiUrlStorage}/${belumBayar[index].products.first.image}",
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                height: 100,
-                                                                width: 100,
-                                                                // Better way to load images from network flutter
-                                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                                loadingBuilder: (BuildContext
-                                                                        context,
-                                                                    Widget
-                                                                        child,
-                                                                    ImageChunkEvent?
-                                                                        loadingProgress) {
-                                                                  if (loadingProgress ==
-                                                                      null)
-                                                                    return child;
-                                                                  return Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      value: loadingProgress.expectedTotalBytes !=
-                                                                              null
-                                                                          ? loadingProgress.cumulativeBytesLoaded /
-                                                                              loadingProgress.expectedTotalBytes!
-                                                                          : null,
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ),
+                                                                ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                                loadingProgress
+                                                                    .expectedTotalBytes!
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
 
@@ -208,16 +226,20 @@ class _TransactionMenungguPembayaranPageState
                                                 // nama barang
                                                 Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "${belumBayar[index].products.first.name}",
+                                                      "${belumBayar[index]
+                                                          .products.first
+                                                          .name}",
                                                       style: TextStyle(
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                          FontWeight.bold),
                                                     ),
                                                     Text(
-                                                        "${belumBayar[index].products.first.pivot.qty}x"),
+                                                        "${belumBayar[index]
+                                                            .products.first
+                                                            .pivot.qty}x"),
                                                   ],
                                                 ),
                                               ],
@@ -226,30 +248,31 @@ class _TransactionMenungguPembayaranPageState
                                             // spacing
                                             SizedBox(
                                               height: belumBayar[index]
-                                                              .products
-                                                              .length -
-                                                          1 ==
-                                                      0
+                                                  .products
+                                                  .length -
+                                                  1 ==
+                                                  0
                                                   ? 0
                                                   : 10,
                                             ),
 
                                             // kasi keterangan kalo ada barang lain
                                             Text(belumBayar[index]
-                                                            .products
-                                                            .length -
-                                                        1 ==
-                                                    0
+                                                .products
+                                                .length -
+                                                1 ==
+                                                0
                                                 ? ""
-                                                : "+${belumBayar[index].products.length - 1} produk lainnya"),
+                                                : "+${belumBayar[index].products
+                                                .length - 1} produk lainnya"),
 
                                             // spacing
                                             SizedBox(
                                               height: belumBayar[index]
-                                                              .products
-                                                              .length -
-                                                          1 ==
-                                                      0
+                                                  .products
+                                                  .length -
+                                                  1 ==
+                                                  0
                                                   ? 0
                                                   : 10,
                                             ),
@@ -257,34 +280,35 @@ class _TransactionMenungguPembayaranPageState
                                             // kolom 3
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              MainAxisAlignment
+                                                  .spaceBetween,
                                               children: [
                                                 // total belanja
                                                 Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                                   children: [
                                                     Text("Total Belanja:"),
                                                     Text(
-                                                      "Rp ${belumBayar[index].totalHarga}",
+                                                      "Rp ${belumBayar[index]
+                                                          .totalHarga}",
                                                       style: TextStyle(
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                          FontWeight.bold),
                                                     ),
                                                   ],
                                                 ),
 
                                                 // button detail
-                                                ElevatedButton(
-                                                  onPressed: () {},
-                                                  child: Text("Ayo Bayar!"),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.black54,
+                                                Container(
+                                                  decoration: outlineBasic(),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .all(8.0),
+                                                    child: Text("Bayar "
+                                                        "Sekarang"),
                                                   ),
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ],

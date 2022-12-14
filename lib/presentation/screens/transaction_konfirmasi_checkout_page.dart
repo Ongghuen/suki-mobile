@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
-import 'package:mobile/presentation/screens/transaction_after_konfirmasi_checkout_page.dart';
+import 'package:mobile/presentation/screens/transaction_pembayaran_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class TransactionKonfirmasiCheckoutPage extends StatefulWidget {
@@ -202,8 +202,9 @@ class _TransactionKonfirmasiCheckoutPageState
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  TransactionAfterConfirmedCheckoutPage(
-                                      transactionId: checkout.id)),
+                                  TransactionPembayaranPage(
+                                      transactionId: checkout.id))
+                          ,
                         );
                       }
                     },

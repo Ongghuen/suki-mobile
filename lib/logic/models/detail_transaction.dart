@@ -38,11 +38,11 @@ class Details {
   int? id;
   String? status;
   int? userId;
-  Null? buktiBayar;
+  String? buktiBayar;
   String? alamat;
-  Null? totalHarga;
-  Null? tglTransaksi;
-  Null? tglSelesai;
+  int? totalHarga;
+  String? tglTransaksi;
+  String? tglSelesai;
   String? categories;
   String? createdAt;
   String? updatedAt;

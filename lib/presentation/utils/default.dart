@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // const url = "http://192.168.43.112:8000";
 const url = "http://10.0.2.2:8000";
@@ -18,8 +19,8 @@ String truncateWithEllipsis(int cutoff, String myString) {
 // ini buat scroll gada glow
 class NoGlow extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child,
+      AxisDirection axisDirection) {
     return child;
   }
 }
@@ -34,8 +35,8 @@ BoxDecoration outlineBasic() {
 loading() {
   return Center(
       child: CircularProgressIndicator(
-    color: Colors.black,
-  ));
+        color: Colors.black,
+      ));
 }
 
 divider() {
@@ -43,4 +44,8 @@ divider() {
     thickness: 2,
     color: Colors.black54,
   );
+}
+
+TextStyle textStyleDefault() {
+  return GoogleFonts.montserrat(color: Colors.black);
 }

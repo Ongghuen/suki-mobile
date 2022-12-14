@@ -224,12 +224,12 @@ class _CartPageState extends State<CartPage> {
                                     ),
                                   );
                                 }
-                                return CircularProgressIndicator();
+                                return loading();
                               });
                             },
                           );
                   }
-                  return CircularProgressIndicator();
+                  return loading();
                 },
               ),
             ),
@@ -253,7 +253,7 @@ class _CartPageState extends State<CartPage> {
                     children: [
                       // total price
                       Text(
-                        'CHECKOUT???',
+                        'CHECKOUT',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

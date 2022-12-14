@@ -14,6 +14,7 @@ class CallApi {
         "Accept": "application/json",
         'Authorization': 'Bearer $token'
       });
+      // .timeout(Duration(seconds: 3));
     } catch (ex, stacktrace) {
       print("Exception occured: $ex stackTrace: $stacktrace");
     }
@@ -40,6 +41,31 @@ class CallApi {
         "Accept": "application/json",
         'Authorization': 'Bearer $token'
       });
+    } catch (ex, stacktrace) {
+      print("Exception occured: $ex stackTrace: $stacktrace");
+    }
+  }
+
+  multiPartData(apiUrl, {data = "", token = ""}) async {
+    try {
+      var fullUrl = _url + apiUrl;
+      print(fullUrl);
+      var req = await http.MultipartRequest('POST', Uri.parse(fullUrl));
+      req.files.add(await http.MultipartFile.fromPath("bukti_bayar", data));
+      req.headers.addAll({'Authorization': 'Bearer $token'});
+
+
+      var res = await req.send();
+      //for getting and decoding the response into json format
+      var response = await http.Response.fromStream(res);
+      final responseData = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        print(data);
+        print(req.headers);
+      } else {
+        print("ERROR");
+      }
     } catch (ex, stacktrace) {
       print("Exception occured: $ex stackTrace: $stacktrace");
     }
