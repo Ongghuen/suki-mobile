@@ -11,17 +11,22 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  google_fonts: ^3.0.1
 
-  # ini perlu banget buat manipulasi data
+  # blocs and something
   flutter_bloc: ^8.1.1
   http: ^0.13.5
   equatable: ^2.0.5
-  google_nav_bar: ^5.0.6
   hydrated_bloc: ^9.0.0
-  path_provider: ^2.0.11
+
+  # ui
   lottie: ^2.0.0
+  google_fonts: ^3.0.1
   flutter_slidable: ^2.0.0
+  google_nav_bar: ^5.0.6
+
+  # utils
+  path_provider: ^2.0.11
+  image_picker: ^0.8.6
 
 dev_dependencies:
   flutter_test:
