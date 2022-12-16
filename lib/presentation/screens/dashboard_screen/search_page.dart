@@ -166,7 +166,11 @@ class _SearchPageState extends State<SearchPage> {
                                                                     .normal),
                                                   ),
                                                   Text(
-                                                      "Rp.${state.productModel.results![index].harga},00"),
+                                                      "${rupiahConvert
+                                                          .format(state
+                                                          .productModel
+                                                          .results![index]
+                                                          .harga)}"),
                                                 ],
                                               ),
                                             ),

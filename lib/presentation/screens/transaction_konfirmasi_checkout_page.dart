@@ -132,7 +132,7 @@ class _TransactionKonfirmasiCheckoutPageState
                                       fontSize: 16),
                                 ),
                                 Text(
-                                  "${state.totalHarga}",
+                                  "${rupiahConvert.format(state.totalHarga)}",
                                   style: GoogleFonts.montserrat(
                                       fontSize: 16),
                                 ),

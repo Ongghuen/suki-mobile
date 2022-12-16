@@ -119,7 +119,7 @@ class _DetailProductState extends State<DetailProduct> {
                               ),
                             ),
                             Text(
-                              "Rp.${product.first.harga},00",
+                              "${rupiahConvert.format(product.first.harga)}",
                               style: const TextStyle(fontSize: 18),
                             ),
                           ],

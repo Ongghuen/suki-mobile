@@ -211,10 +211,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                           FontWeight.bold),
                                                     ),
                                                     Text(
-                                                        "Rp.${state.data
+                                                        "${rupiahConvert
+                                                            .format(state.data
                                                             .results![index]
-                                                            .pivot.subTotal},"
-                                                            "00"),
+                                                            .pivot.subTotal)}"),
                                                     Text(
                                                         "${state.data
                                                             .results![index]
@@ -276,7 +276,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     fontSize: 16),
                               ),
                               Text(
-                                "${state.totalHarga}",
+                                "${rupiahConvert.format(state.totalHarga)}",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16),
                               ),

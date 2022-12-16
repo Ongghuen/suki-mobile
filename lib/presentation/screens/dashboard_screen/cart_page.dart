@@ -177,7 +177,10 @@ class _CartPageState extends State<CartPage> {
                                                                           .bold),
                                                         ),
                                                         Text(
-                                                            "Rp.${product.first.harga},00"),
+                                                            "${rupiahConvert
+                                                                .format
+                                                            (product.first
+                                                                .harga)}"),
                                                         Container(
                                                           width: 150,
                                                           child: Row(

@@ -400,7 +400,8 @@ class _HomePageState extends State<HomePage> {
                                                                             FontWeight.bold),
                                                               ),
                                                               Text(
-                                                                  "Rp.${state.productModel.results![index].harga},00"),
+                                                                  "${rupiahConvert.format(state.productModel
+                                              .results![index].harga)}"),
                                                             ],
                                                           ),
                                                         ),
@@ -558,7 +559,8 @@ class _HomePageState extends State<HomePage> {
                                                                               .normal),
                                                             ),
                                                             Text(
-                                                                "Rp.${state.productModel.results![index].harga},00"),
+                                                                "${rupiahConvert.format(state
+                                                                    .productModel.results![index].harga)}"),
                                                           ],
                                                         ),
                                                       ),

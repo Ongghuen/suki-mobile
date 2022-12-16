@@ -200,7 +200,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "${checkout.totalHarga}",
+                                "${rupiahConvert.format(checkout.totalHarga)}",
                                 style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.w500),
                               ),

@@ -434,7 +434,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                                       children: [
                                                         Text("Total Belanja:"),
                                                         Text(
-                                                          "Rp ${details[index].totalHarga}",
+                                                          "${rupiahConvert
+                                                              .format(details[index].totalHarga)}",
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight

@@ -163,7 +163,10 @@ class _WishlistPageState extends State<WishlistPage> {
                                                                       .normal),
                                                     ),
                                                     Text(
-                                                        "Rp.${product.first.harga},00"),
+                                                        "${rupiahConvert
+                                                            .format(product
+                                                            .first
+                                                            .harga)}"),
                                                   ],
                                                 ),
                                               ),

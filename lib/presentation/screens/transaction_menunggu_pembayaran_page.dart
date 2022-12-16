@@ -291,8 +291,10 @@ class _TransactionMenungguPembayaranPageState
                                                   children: [
                                                     Text("Total Belanja:"),
                                                     Text(
-                                                      "${belumBayar[index]
-                                                          .totalHarga}",
+                                                      "${rupiahConvert
+                                                          .format
+                                                        (belumBayar[index]
+                                                          .totalHarga)}",
                                                       style: TextStyle(
                                                           fontWeight:
                                                           FontWeight.bold),
