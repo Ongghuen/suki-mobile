@@ -291,7 +291,7 @@ class _TransactionMenungguPembayaranPageState
                                                   children: [
                                                     Text("Total Belanja:"),
                                                     Text(
-                                                      "Rp ${belumBayar[index]
+                                                      "${belumBayar[index]
                                                           .totalHarga}",
                                                       style: TextStyle(
                                                           fontWeight:

@@ -14,9 +14,10 @@ class GetAllTransactionLists extends TransactionEvent {
 }
 
 class CheckoutTransactionLists extends TransactionEvent {
+  var data;
   var token;
 
-  CheckoutTransactionLists(this.token);
+  CheckoutTransactionLists(this.data, this.token);
 }
 
 class ChangeTransactionStatus extends TransactionEvent {

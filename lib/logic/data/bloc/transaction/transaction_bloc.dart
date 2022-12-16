@@ -30,7 +30,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<CheckoutTransactionLists>((event, emit) async {
       try {
         String apiUrl = "/api/orders/create";
-        var res = await CallApi().postData(apiUrl, token: event.token);
+        print(event.data);
+        var res = await CallApi().postData(apiUrl, data: event.data, token: event
+            .token);
         if (res.statusCode == 200) {
           print("ntaps");
         } else {

@@ -22,12 +22,14 @@ class DetailTransactionBloc
         final data = DetailTransactionModel.fromJson(body);
 
         List<String> oncart = [];
+        int tempTotHarga = 0;
         for (var i = 0; i < data.results!.length; i++) {
+          tempTotHarga = tempTotHarga +
+              int.parse(data.results![i].pivot!.subTotal.toString());
           oncart.add(data.results![i].pivot!.productId.toString());
         }
-        print(oncart);
 
-        emit(DetailTransactionLoaded(data, oncart));
+        emit(DetailTransactionLoaded(data, oncart, tempTotHarga));
       } catch (ex, trace) {
         emit(DetailTransactionError("sum ting wong"));
       }
@@ -42,11 +44,14 @@ class DetailTransactionBloc
         final data = DetailTransactionModel.fromJson(body);
 
         List<String> oncart = [];
+        int tempTotHarga = 0;
         for (var i = 0; i < data.results!.length; i++) {
+          tempTotHarga = tempTotHarga +
+              int.parse(data.results![i].pivot!.subTotal.toString());
           oncart.add(data.results![i].pivot!.productId.toString());
         }
 
-        emit(DetailTransactionLoaded(data, oncart));
+        emit(DetailTransactionLoaded(data, oncart, tempTotHarga));
       } catch (ex, trace) {
         emit(DetailTransactionError("sum ting wong"));
       }

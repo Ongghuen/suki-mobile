@@ -120,54 +120,27 @@ class _TransactionKonfirmasiCheckoutPageState
                   Column(
                     children: [
                       // total harga
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Total Harga",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            "test",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-
-                      // total ongkos kirim
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Total Ongkos Service",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            "test",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-
-                      // total tagihan
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Total Tagihan",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          Text(
-                            "test",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                        ],
+                      BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
+                        builder: (context, state) {
+                          if (state is DetailTransactionLoaded) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Tagihan",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16),
+                                ),
+                                Text(
+                                  "${state.totalHarga}",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16),
+                                ),
+                              ],
+                            );
+                          }
+                          return loading();
+                        },
                       ),
                     ],
                   ),
@@ -188,16 +161,20 @@ class _TransactionKonfirmasiCheckoutPageState
                   var checkout = state.data.details.firstWhere((e) =>
                       e.status ==
                       "Pendi"
-                          "ng");
+                          "ng" && e.categories == "Product");
                   return InkWell(
                     onTap: () {
-                      final state = context.read<AuthBloc>().state;
-                      if (state is AuthLoaded) {
+                      var data = {
+                        "total_harga": "${state.totalHarga}"
+                      };
+                      final astate = context.read<AuthBloc>().state;
+                      if (astate is AuthLoaded) {
                         context.read<TransactionBloc>().add(
-                            CheckoutTransactionLists(state.userModel.token));
+                            CheckoutTransactionLists(data,astate.userModel
+                                .token));
                         context.read<DetailTransactionBloc>().add(
                             GetOngoingDetailTransactionList(
-                                state.userModel.token));
+                                astate.userModel.token));
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
