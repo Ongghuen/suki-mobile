@@ -49,14 +49,15 @@ class _CartPageState extends State<CartPage> {
               child: BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
                 builder: (context, state) {
                   if (state is DetailTransactionLoaded) {
-                    return state.data.results!.isEmpty
+                    var checkout = state.data.results!;
+                    return checkout.isEmpty
                         ? Center(
                             child: Text('Ayoo beli furniturmu di catalog!'))
                         : ListView.builder(
                             scrollDirection: Axis.vertical,
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: state.data.results!.length,
+                            itemCount: checkout.length,
                             itemBuilder: (context, index) {
                               return BlocBuilder<ProductBloc, ProductState>(
                                   builder: (_, pstate) {
@@ -186,7 +187,36 @@ class _CartPageState extends State<CartPage> {
                                                             children: [
                                                               IconButton(
                                                                   onPressed:
-                                                                      () {},
+                                                                      () {
+                                                                    var data = {
+                                                                      "produc"
+                                                                          "t_"
+                                                                          "id"
+                                                                          "": "${state.data.results![index].id}",
+                                                                      "qty":
+                                                                          "${checkout[index].pivot!.qty != 1 ? checkout[index].pivot!.qty - 1 : deleteItem(state.data.results![index].id)}",
+                                                                      "sub_total":
+                                                                          "${
+                                                                              checkout[index].harga * (checkout[index].pivot!.qty - 1)}"
+                                                                    };
+                                                                    final astate = context
+                                                                        .read<
+                                                                            AuthBloc>()
+                                                                        .state;
+                                                                    if (astate
+                                                                        is AuthLoaded) {
+                                                                      print(state
+                                                                          .data
+                                                                          .results![
+                                                                              index]
+                                                                          .id);
+                                                                      context.read<DetailTransactionBloc>().add(SubstractQTYProductToDetailTransactionList(
+                                                                          data,
+                                                                          astate
+                                                                              .userModel
+                                                                              .token));
+                                                                    }
+                                                                  },
                                                                   icon: Icon(Icons
                                                                       .remove_circle_outline)),
                                                               Text(state
@@ -206,7 +236,36 @@ class _CartPageState extends State<CartPage> {
                                                                       .toString()),
                                                               IconButton(
                                                                   onPressed:
-                                                                      () {},
+                                                                      () {
+                                                                    var data = {
+                                                                      "produc"
+                                                                          "t_"
+                                                                          "id"
+                                                                          "": "${state.data.results![index].id}",
+                                                                      "qty":
+                                                                          "${checkout[index].pivot!.qty + 1}",
+                                                                      "sub_total":
+                                                                          "${
+                                                                              checkout[index].harga * (checkout[index].pivot!.qty + 1)}"
+                                                                    };
+                                                                    final astate = context
+                                                                        .read<
+                                                                            AuthBloc>()
+                                                                        .state;
+                                                                    if (astate
+                                                                        is AuthLoaded) {
+                                                                      print(state
+                                                                          .data
+                                                                          .results![
+                                                                              index]
+                                                                          .id);
+                                                                      context.read<DetailTransactionBloc>().add(AddQTYProductToDetailTransactionList(
+                                                                          data,
+                                                                          astate
+                                                                              .userModel
+                                                                              .token));
+                                                                    }
+                                                                  },
                                                                   icon: Icon(Icons
                                                                       .add_circle_outline)),
                                                             ],

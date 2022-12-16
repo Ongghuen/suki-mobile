@@ -194,41 +194,71 @@ class _DetailProductState extends State<DetailProduct> {
                             child: BlocBuilder<DetailTransactionBloc,
                                 DetailTransactionState>(
                               builder: (context, state) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    if (state is DetailTransactionLoaded) {
-                                      if (state.oncart.contains(
-                                          widget.productId.toString())) {
-                                        showSnackbar(context, "Udah ada kali");
-                                      }else{
-                                        var data = {
-                                          "product_id":
-                                          widget.productId.toString()
-                                        };
+                                return BlocBuilder<ProductBloc, ProductState>(
+                                  builder: (context, pstate) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        if(pstate is ProductLoaded) {
+                                          var product = pstate.productModel
+                                              .results!.firstWhere((e)
+                                          => e.id == widget.productId);
+                                          if (state is DetailTransactionLoaded) {
+                                            if (state.oncart.contains(
+                                                widget.productId.toString())) {
+                                              showSnackbar(
+                                                  context, "Udah ada kali");
+                                            } else {
+                                              var data = {
+                                                "product_id":
+                                                widget.productId.toString()
+                                              };
 
-                                        final astate =
-                                            context.read<AuthBloc>().state;
-                                        if (astate is AuthLoaded) {
-                                          context.read<DetailTransactionBloc>().add(
-                                              AddProductToDetailTransactionList(
-                                                  data,
-                                                  astate.userModel.token!));
-                                          showSnackbar(
-                                              context, "Berhasil Hore");
-                                        } else {
-                                          showSnackbar(context, "Gagal");
+                                              var dataDetail = {
+                                                "product_id":
+                                                "${product.id}",
+                                                "qty":
+                                                "1",
+                                                "sub_total":
+                                                "${product.harga}"
+                                              };
+
+                                              final astate =
+                                                  context
+                                                      .read<AuthBloc>()
+                                                      .state;
+                                              if (astate is AuthLoaded) {
+                                                context
+                                                    .read<
+                                                    DetailTransactionBloc>()
+                                                    .add(
+                                                    AddProductToDetailTransactionList(
+                                                        data,
+                                                        astate.userModel
+                                                            .token!));
+                                                context.read<DetailTransactionBloc>().add(AddQTYProductToDetailTransactionList(
+                                                    dataDetail,
+                                                    astate
+                                                        .userModel
+                                                        .token));
+                                                showSnackbar(
+                                                    context, "Berhasil Hore");
+                                              } else {
+                                                showSnackbar(context, "Gagal");
+                                              }
+                                            }
+                                          }
                                         }
-                                      }
-                                    }
+                                      },
+                                      child: const Center(
+                                        child: Text(
+                                          'Tambah ke Keranjang',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: const Center(
-                                    child: Text(
-                                      'Tambah ke Keranjang',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ),
                                 );
                               },
                             ),

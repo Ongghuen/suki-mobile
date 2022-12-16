@@ -67,13 +67,41 @@ class DetailTransactionBloc
       }
     });
     on<AddQTYProductToDetailTransactionList>((event, emit) async {
-      print("ini nambah");
+      try {
+        emit(DetailTransactionLoading());
+
+        String apiUrl = "/api/orders/detail";
+        var res = await CallApi()
+            .putData(apiUrl, data: event.data, token: event.token);
+        print(event.data);
+        if (res.statusCode == 200) {
+          print("MASUK????");
+        }
+        add(GetOngoingDetailTransactionList(event.token));
+      } catch (ex, trace) {
+        emit(DetailTransactionError("sum ting wong"));
+      }
       add(GetOngoingDetailTransactionList(event.token));
     });
+
     on<SubstractQTYProductToDetailTransactionList>((event, emit) async {
-      print("ini ngurang");
+      try {
+        emit(DetailTransactionLoading());
+
+        String apiUrl = "/api/orders/detail";
+        var res = await CallApi()
+            .putData(apiUrl, data: event.data, token: event.token);
+        print(event.data);
+        if (res.statusCode == 200) {
+          print(res.body);
+        }
+        add(GetOngoingDetailTransactionList(event.token));
+      } catch (ex, trace) {
+        emit(DetailTransactionError("sum ting wong"));
+      }
       add(GetOngoingDetailTransactionList(event.token));
     });
+
     on<DeleteProductToDetailTransactionList>((event, emit) async {
       try {
         emit(DetailTransactionLoading());

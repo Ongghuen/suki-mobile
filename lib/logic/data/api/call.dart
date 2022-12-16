@@ -33,6 +33,19 @@ class CallApi {
     }
   }
 
+  putData(apiUrl, {data = "", token = ""}) async {
+    try {
+      var fullUrl = _url + apiUrl;
+      print("call to $fullUrl. with data: $data, and token $token");
+      return await http.put(Uri.parse(fullUrl), body: data, headers: {
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token'
+      });
+    } catch (ex, stacktrace) {
+      print("Exception occured: $ex stackTrace: $stacktrace");
+    }
+  }
+
   deleteData(apiUrl, {data = "", token = ""}) async {
     try {
       var fullUrl = _url + apiUrl;

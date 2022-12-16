@@ -83,9 +83,11 @@ class _HomePageState extends State<HomePage> {
                                             }
                                           }, builder: (_, state) {
                                             if (state is AuthLoaded) {
-                                              var user = state.userModel.user;
+                                              var user = state.userModel.user!;
+                                              var name = truncateWithEllipsis
+                                                (12, user.name!.split(" ")[0]);
                                               return Text(
-                                                  "Hi, ${state.userModel.user!.name?.split(" ")[0]}",
+                                                  "Hi, ${name}",
                                                   style: GoogleFonts.montserrat(
                                                     textStyle: const TextStyle(
                                                         fontWeight:
@@ -98,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                                           }),
                                         ),
                                       ),
-                                      Text("Welcome to Suki",
+                                      Text("Welcome to Suki!",
                                           style: GoogleFonts.montserrat(
                                             textStyle: const TextStyle(
                                                 color: Colors.white,

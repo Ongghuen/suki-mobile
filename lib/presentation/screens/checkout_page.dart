@@ -202,7 +202,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                           FontWeight.bold),
                                                 ),
                                                 Text(
-                                                    "Rp.${product.first.harga},00"),
+                                                    "Rp.${state.data
+                                                        .results![index]
+                                                        .pivot.subTotal},"
+                                                        "00"),
                                                 Text(
                                                     "${state.data.results![index].pivot!.qty} barang"),
                                               ],
