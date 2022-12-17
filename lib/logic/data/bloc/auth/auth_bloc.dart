@@ -56,19 +56,16 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
 
     on<UserAuthUpdate>((event, emit) async {
       try {
-        print("sampe");
         String apiUrl = "/api/user";
         var res = await CallApi()
             .putData(apiUrl, data: event.data, token: event.token);
         var body = json.decode(res.body);
-        print(body);
+        final auth = AuthModel.fromJson(body);
 
-        if (res.statusCode == 200) {
-          final auth = AuthModel.fromJson(body);
-          emit(AuthLoaded(auth));
-        } else {
+        if (res.statusCode != 200) {
           emit(AuthError(body['message']));
         }
+        add(UserAuthRestart(event.token));
       } catch (ex, trace) {
         print("$ex $trace");
       }
@@ -76,7 +73,17 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
 
     on<UserAuthRestart>((event, emit) async {
       try {
-        emit(AuthLoaded(event.data));
+        String apiUrl = "/api/user";
+        var res = await CallApi()
+            .putData(apiUrl, data: {}, token: event.token);
+        var body = json.decode(res.body);
+        final auth = AuthModel.fromJson(body);
+
+        if (res.statusCode == 200) {
+          emit(AuthLoaded(auth));
+        } else {
+          print(body['message']);
+        }
       } catch (ex, trace) {
         print("$ex $trace");
       }

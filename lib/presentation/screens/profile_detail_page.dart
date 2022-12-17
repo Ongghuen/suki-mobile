@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/models/user.dart';
+import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class ProfileDetailPage extends StatefulWidget {
@@ -19,7 +20,6 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
   // controllers
   final _nameController = TextEditingController();
   final _noTelpController = TextEditingController();
-  final _emailController = TextEditingController();
   final _alamatController = TextEditingController();
 
   @override
@@ -27,7 +27,6 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
     // TODO: implement dispose
     _nameController.dispose();
     _noTelpController.dispose();
-    _emailController.dispose();
     _alamatController.dispose();
     super.dispose();
   }
@@ -58,7 +57,6 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
       var user = state.userModel.user!;
       _nameController.text = user.name!;
       _noTelpController.text = user.phone!;
-      _emailController.text = user.email!;
       user.address == null
           ? _alamatController.text = ""
           : _alamatController.text = user.address!;
@@ -77,7 +75,16 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
             onPressed: () => Navigator.pop(context),
           ),
           actions: [
-            BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state){
+                if(state is AuthError){
+                  showSnackbar(context, "${state.msg!.contains("taken") ? "Ti"
+                      "dak ada perubahan"
+                      : state.msg
+                  }");
+                }
+              },
+                builder: (context, state) {
               if (state is AuthLoaded) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -211,15 +218,6 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                         ),
                         //
 
-                        // ini input text atau form
-                        TextField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Email',
-                          ),
-                        ),
-
                         const SizedBox(
                           height: 10,
                         ),
@@ -274,7 +272,6 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                               onPressed: () async {
                                 var data = {
                                   "name": _nameController.text,
-                                  "email": _emailController.text.trim(),
                                   "phone": "${_noTelpController.text.trim()}",
                                   "alamat": "${_alamatController.text}",
                                 };
