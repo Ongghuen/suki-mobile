@@ -15,18 +15,11 @@ class ProfilePage extends StatelessWidget {
     TextEditingController password = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.grey[800],
-        ),
-      ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -290,7 +283,7 @@ class ProfilePage extends StatelessWidget {
                         horizontal: 4.0, vertical: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.chair_outlined),
+                        Icon(Icons.dashboard_customize_outlined),
                         SizedBox(
                           width: 10,
                         ),

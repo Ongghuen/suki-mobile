@@ -17,6 +17,12 @@ class UserAuthRegister extends AuthEvent {
   UserAuthRegister(this.data);
 }
 
+class UserAuthUpdate extends AuthEvent {
+  var data;
+  var token;
+  UserAuthUpdate(this.data, this.token);
+}
+
 class UserAuthLogout extends AuthEvent {
   var token;
   UserAuthLogout(this.token);
@@ -25,4 +31,9 @@ class UserAuthLogout extends AuthEvent {
 class UserAuthCheckToken extends AuthEvent {
   var token;
   UserAuthCheckToken(this.token);
+}
+
+class UserAuthRestart extends AuthEvent {
+  var data;
+  UserAuthRestart(this.data);
 }

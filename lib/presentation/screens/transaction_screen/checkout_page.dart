@@ -86,7 +86,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              "${auth.address}",
+                              "${auth.address == null ? "- *tolong isi "
+                                  "alamat terlebih dahulu" : auth.address}",
                               style: GoogleFonts.montserrat(
                                   fontWeight: FontWeight.w400),
                             ),

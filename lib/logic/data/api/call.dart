@@ -64,7 +64,7 @@ class CallApi {
       var fullUrl = _url + apiUrl;
       print(fullUrl);
       var req = await http.MultipartRequest('POST', Uri.parse(fullUrl));
-      req.files.add(await http.MultipartFile.fromPath("bukti_bayar", data));
+      req.files.add(await http.MultipartFile.fromPath("image", data));
       req.headers.addAll({'Authorization': 'Bearer $token'});
 
 

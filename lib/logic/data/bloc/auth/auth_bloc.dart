@@ -44,12 +44,39 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         var body = json.decode(res.body);
 
         if (res.statusCode == 201) {
-          emit(AuthRegistered());
           final auth = AuthModel.fromJson(body);
           emit(AuthLoaded(auth));
         } else {
           emit(AuthError(body['message']));
         }
+      } catch (ex, trace) {
+        print("$ex $trace");
+      }
+    });
+
+    on<UserAuthUpdate>((event, emit) async {
+      try {
+        print("sampe");
+        String apiUrl = "/api/user";
+        var res = await CallApi()
+            .putData(apiUrl, data: event.data, token: event.token);
+        var body = json.decode(res.body);
+        print(body);
+
+        if (res.statusCode == 200) {
+          final auth = AuthModel.fromJson(body);
+          emit(AuthLoaded(auth));
+        } else {
+          emit(AuthError(body['message']));
+        }
+      } catch (ex, trace) {
+        print("$ex $trace");
+      }
+    });
+
+    on<UserAuthRestart>((event, emit) async {
+      try {
+        emit(AuthLoaded(event.data));
       } catch (ex, trace) {
         print("$ex $trace");
       }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
-import 'package:mobile/presentation/screens/auth_screen/login_page.dart';
-import 'package:mobile/presentation/utils/components/snackbar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
