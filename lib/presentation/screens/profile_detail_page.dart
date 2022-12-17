@@ -21,6 +21,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
   final _nameController = TextEditingController();
   final _noTelpController = TextEditingController();
   final _alamatController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   void dispose() {
@@ -28,6 +29,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
     _nameController.dispose();
     _noTelpController.dispose();
     _alamatController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -57,6 +59,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
       var user = state.userModel.user!;
       _nameController.text = user.name!;
       _noTelpController.text = user.phone!;
+      _emailController.text = user.email!;
       user.address == null
           ? _alamatController.text = ""
           : _alamatController.text = user.address!;
@@ -78,10 +81,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state){
                 if(state is AuthError){
-                  showSnackbar(context, "${state.msg!.contains("taken") ? "Ti"
-                      "dak ada perubahan"
-                      : state.msg
-                  }");
+                  showSnackbar(context, "${state.msg}");
                 }
               },
                 builder: (context, state) {
@@ -218,6 +218,15 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                         ),
                         //
 
+                        // ini input text atau form
+                        TextField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'Email',
+                          ),
+                        ),
+
                         const SizedBox(
                           height: 10,
                         ),
@@ -232,6 +241,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                             labelText: 'Alamat',
                           ),
                         ),
+
 
                         //
                         const SizedBox(
@@ -274,7 +284,14 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                                   "name": _nameController.text,
                                   "phone": "${_noTelpController.text.trim()}",
                                   "alamat": "${_alamatController.text}",
+                                  "email": "${_emailController.text}",
                                 };
+                                if(_emailController.text == user!.email){
+                                  data.remove("email");
+                                }
+                                if(_noTelpController.text == user!.phone){
+                                  data.remove("phone");
+                                }
                                 context.read<AuthBloc>().add(UserAuthUpdate(
                                     data, state.userModel.token));
                               },
