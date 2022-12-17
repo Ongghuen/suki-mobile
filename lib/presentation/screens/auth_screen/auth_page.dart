@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/main_page.dart';
-import 'package:mobile/presentation/screens/login_page.dart';
+import 'package:mobile/presentation/screens/auth_screen/login_page.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);

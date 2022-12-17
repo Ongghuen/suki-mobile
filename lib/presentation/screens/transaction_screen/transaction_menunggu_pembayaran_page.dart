@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
-import 'package:mobile/presentation/screens/transaction_pembayaran_page.dart';
+import 'package:mobile/presentation/screens/transaction_screen/transaction_pembayaran_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class TransactionMenungguPembayaranPage extends StatefulWidget {

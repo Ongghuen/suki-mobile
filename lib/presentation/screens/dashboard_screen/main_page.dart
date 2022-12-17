@@ -7,7 +7,7 @@ import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_blo
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
-import 'package:mobile/presentation/auths/auth_page.dart';
+import 'package:mobile/presentation/screens/auth_screen/auth_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/cart_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/home_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/profile_page.dart';

@@ -5,10 +5,6 @@ import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/presentation/screens/detail_product_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
-void main(List<String> args) {
-  runApp(SearchPage());
-}
-
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -17,6 +13,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  TextEditingController search = TextEditingController();
+  var searchValue = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +28,12 @@ class _SearchPageState extends State<SearchPage> {
                 child: TextField(
                   onEditingComplete: () {
                     FocusManager.instance.primaryFocus?.unfocus();
+                    setState(() {
+                      searchValue = search.text.toString();
+                      print(searchValue);
+                    });
                   },
+                  controller: search,
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
@@ -58,14 +62,19 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
+
                       if (state is ProductLoaded) {
+                        var product = state.productModel.results!.where((e)
+                        => e.name!.toLowerCase().contains(searchValue
+                            .toLowerCase())).toList();
+
                         return SizedBox(
                           width: double.infinity,
                           child: ListView.builder(
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: state.productModel.results!.length,
+                            itemCount: product.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin:
@@ -76,8 +85,7 @@ class _SearchPageState extends State<SearchPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => DetailProduct(
-                                                productId: state.productModel
-                                                    .results![index].id!
+                                                productId: product[index].id!
                                                     .toInt())));
                                   },
                                   child: Container(
@@ -93,7 +101,7 @@ class _SearchPageState extends State<SearchPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            state.productModel.results![index]
+                                            product[index]
                                                         .image ==
                                                     null
                                                 ? ClipRRect(
@@ -113,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                                                         BorderRadius.circular(
                                                             15),
                                                     child: Image.network(
-                                                      "${apiUrlStorage}/${state.productModel.results![index].image}",
+                                                      "${apiUrlStorage}/${product![index].image}",
                                                       fit: BoxFit.fill,
                                                       height: 100,
                                                       width: 100,
@@ -150,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "${state.productModel.results![index].name}",
+                                                    "${product![index].name}",
                                                     style:
                                                         GoogleFonts.montserrat(
                                                             fontWeight:
@@ -158,7 +166,9 @@ class _SearchPageState extends State<SearchPage> {
                                                                     .bold),
                                                   ),
                                                   Text(
-                                                    "${truncateWithEllipsis(20, state.productModel.results![index].desc.toString())}",
+                                                    "${truncateWithEllipsis
+                                                      (20, product![index].desc
+                                                        .toString())}",
                                                     style:
                                                         GoogleFonts.montserrat(
                                                             fontWeight:
@@ -167,9 +177,8 @@ class _SearchPageState extends State<SearchPage> {
                                                   ),
                                                   Text(
                                                       "${rupiahConvert
-                                                          .format(state
-                                                          .productModel
-                                                          .results![index]
+                                                          .format
+                                                        (product![index]
                                                           .harga)}"),
                                                 ],
                                               ),
