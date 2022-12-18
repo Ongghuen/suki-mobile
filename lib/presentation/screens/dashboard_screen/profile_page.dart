@@ -235,7 +235,9 @@ class ProfilePage extends StatelessWidget {
 
                 // transaksi
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/transaction');
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.0, vertical: 10),
@@ -256,7 +258,9 @@ class ProfilePage extends StatelessWidget {
 
                 // wishlist
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/wishlist');
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.0, vertical: 10),

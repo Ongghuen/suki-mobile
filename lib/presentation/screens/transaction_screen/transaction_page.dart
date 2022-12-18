@@ -21,15 +21,9 @@ const List<String> statustList = <String>[
   'Selesai'
 ];
 
-const List<String> itemList = <String>[
-  'Semua Item',
-  'Product',
-  'Custom',
-];
-
 class _TransactionPageState extends State<TransactionPage> {
   String statusValue = statustList.first;
-  String itemValue = itemList.first;
+  String statusValueText = "";
 
   void restartBlocs() {
     final state = context.read<AuthBloc>().state;
@@ -70,74 +64,34 @@ class _TransactionPageState extends State<TransactionPage> {
                 SizedBox(
                   height: 24,
                 ),
-                Row(
-                  children: [
-                    Container(
-                      child: Container(
-                        height: 50,
-                        width: 180,
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: statusValue,
-                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                            underline: SizedBox(),
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold, color: Colors.black),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                statusValue = value!;
-                              });
-                            },
-                            items: statustList
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Container(child: Text(value)),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      decoration: outlineBasic(),
+                Container(
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: statusValue,
+                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                      underline: SizedBox(),
+                      style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          statusValue = value!;
+                          statusValueText =
+                              value!.contains("Semua") ? "" : value!;
+                        });
+                      },
+                      items: statustList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Container(child: Text(value)),
+                        );
+                      }).toList(),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      child: Container(
-                        height: 50,
-                        width: 150,
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: itemValue,
-                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                            underline: SizedBox(),
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold, color: Colors.black),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                itemValue = value!;
-                              });
-                            },
-                            items: itemList
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Container(child: Text(value)),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      decoration: outlineBasic(),
-                    ),
-                  ],
+                  ),
+                  decoration: outlineBasic(),
                 ),
                 SizedBox(
                   height: 10,
@@ -205,7 +159,8 @@ class _TransactionPageState extends State<TransactionPage> {
                         var details = state.data.details
                             .where((e) =>
                                 e.status != "Belum_Bayar" &&
-                                e.status != "Pending")
+                                e.status != "Pending" &&
+                                e.status!.contains(statusValueText))
                             .toList();
 
                         return RefreshIndicator(
@@ -434,8 +389,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                       children: [
                                                         Text("Total Belanja:"),
                                                         Text(
-                                                          "${rupiahConvert
-                                                              .format(details[index].totalHarga)}",
+                                                          "${rupiahConvert.format(details[index].totalHarga)}",
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight

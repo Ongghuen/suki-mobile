@@ -23,14 +23,13 @@ class _HomePageState extends State<HomePage> {
 
   TextEditingController search = TextEditingController();
   var searchValue = "";
-  List<String> categories = ["Semua", "Kursi", "Lol", "Hahay", "Lmao"];
+  var categoryValue = "";
+  List<String> categories = ["Semua", "Kursi", "Lemari", "Meja", "Pagar"];
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF212529),
@@ -67,34 +66,33 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SingleChildScrollView(
                                         scrollDirection: Axis.vertical,
                                         child: Container(
                                           width: 200,
                                           child:
-                                          BlocConsumer<AuthBloc, AuthState>(
-                                              listener: (_, state) {
-                                                if (state is AuthLogout) {
-                                                  showSnackbar(
-                                                      context, "Logged Out");
-                                                  Navigator.of(context)
-                                                      .pushNamedAndRemoveUntil(
+                                              BlocConsumer<AuthBloc, AuthState>(
+                                                  listener: (_, state) {
+                                            if (state is AuthLogout) {
+                                              showSnackbar(
+                                                  context, "Logged Out");
+                                              Navigator.of(context)
+                                                  .pushNamedAndRemoveUntil(
                                                       '/login',
                                                       ModalRoute.withName('/'));
-                                                }
-                                              }, builder: (_, state) {
+                                            }
+                                          }, builder: (_, state) {
                                             if (state is AuthLoaded) {
                                               var user = state.userModel.user!;
-                                              var name = truncateWithEllipsis
-                                                (12, user.name!.split(" ")[0]);
-                                              return Text(
-                                                  "Hi, ${name}",
+                                              var name = truncateWithEllipsis(
+                                                  12, user.name!.split(" ")[0]);
+                                              return Text("Hi, ${name}",
                                                   style: GoogleFonts.montserrat(
                                                     textStyle: const TextStyle(
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white,
                                                         fontSize: 24),
                                                   ));
@@ -117,50 +115,48 @@ class _HomePageState extends State<HomePage> {
                                     if (state is AuthLoaded) {
                                       var user = state.userModel.user;
                                       return ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              100),
-                                          child:
-                                          user?.image ==
-                                              null
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: user?.image == null
                                               ? Container(
-                                            color: Colors.white,
-                                            height: 50,
-                                            width: 50,
-                                            child: const Icon(
-                                              Icons.person,
-                                              size: 40,
-                                              color: Colors.black54,
-                                            ),
-                                          )
+                                                  color: Colors.white,
+                                                  height: 50,
+                                                  width: 50,
+                                                  child: const Icon(
+                                                    Icons.person,
+                                                    size: 40,
+                                                    color: Colors.black54,
+                                                  ),
+                                                )
                                               : Image.network(
-                                            "${apiUrlStorage}/${user?.image}",
-                                            fit: BoxFit.fill,
-                                            height: 50,
-                                            width: 50,
-                                            // Better way to load images from network flutter
-                                            // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                            loadingBuilder: (
-                                                BuildContext context,
-                                                Widget child,
-                                                ImageChunkEvent?
-                                                loadingProgress) {
-                                              if (loadingProgress == null)
-                                                return child;
-                                              return Center(
-                                                child: CircularProgressIndicator(
-                                                  value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                      null
-                                                      ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                      : null,
-                                                ),
-                                              );
-                                            },
-                                          )
-                                      );
+                                                  "${apiUrlStorage}/${user?.image}",
+                                                  fit: BoxFit.fill,
+                                                  height: 50,
+                                                  width: 50,
+                                                  // Better way to load images from network flutter
+                                                  // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                  loadingBuilder:
+                                                      (BuildContext context,
+                                                          Widget child,
+                                                          ImageChunkEvent?
+                                                              loadingProgress) {
+                                                    if (loadingProgress == null)
+                                                      return child;
+                                                    return Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        value: loadingProgress
+                                                                    .expectedTotalBytes !=
+                                                                null
+                                                            ? loadingProgress
+                                                                    .cumulativeBytesLoaded /
+                                                                loadingProgress
+                                                                    .expectedTotalBytes!
+                                                            : null,
+                                                      ),
+                                                    );
+                                                  },
+                                                ));
                                     }
                                     return loading();
                                   },
@@ -177,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                             right: 0,
                             child: Container(
                               margin:
-                              const EdgeInsets.symmetric(horizontal: 20),
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
                                 onEditingComplete: () {
                                   FocusManager.instance.primaryFocus?.unfocus();
@@ -194,10 +190,10 @@ class _HomePageState extends State<HomePage> {
                                         borderSide: const BorderSide(
                                             color: Colors.black, width: 2),
                                         borderRadius:
-                                        BorderRadius.circular(16)),
+                                            BorderRadius.circular(16)),
                                     border: OutlineInputBorder(
                                         borderRadius:
-                                        BorderRadius.circular(16)),
+                                            BorderRadius.circular(16)),
                                     hintText: 'Cari Barang atau Perabotan',
                                     prefixIcon: IconButton(
                                       icon: const Icon(Icons.search),
@@ -239,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                               print("lmao");
                             },
                             child: ListView.builder(
-                              // This next line does the trick.
+                                // This next line does the trick.
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(
                                     parent: BouncingScrollPhysics()),
@@ -249,37 +245,39 @@ class _HomePageState extends State<HomePage> {
                                     onTap: () {
                                       setState(() {
                                         selectedIndex = index;
+                                        categoryValue = index == 0 ? "" :
+                                        categories[index];
                                       });
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(categories[index],
-                                              style: GoogleFonts.montserrat(
-                                                textStyle: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  color: selectedIndex == index
-                                                      ? Colors.black
-                                                      : Colors.grey,
-                                                ),
-                                              )),
-                                          Container(
-                                            margin:
-                                            EdgeInsets.only(top: 20 / 4),
-                                            //top padding 5
-                                            height: 2,
-                                            width: 30,
-                                            color: selectedIndex == index
-                                                ? Colors.black
-                                                : Colors.transparent,
-                                          )
-                                        ],
-                                      ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 5),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(width: 1),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                              ),
+                                              child: Text(categories[index],
+                                                  style: GoogleFonts.montserrat(
+                                                    textStyle: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18,
+                                                      color: selectedIndex == index
+                                                          ? Colors.black
+                                                          : Colors.grey,
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(width: 15,)
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   );
                                 }),
@@ -300,18 +298,20 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context, state) {
                                   if (state is ProductLoaded) {
                                     var product = state.productModel.results!
-                                        .where((e) =>
-                                        e.name!.toLowerCase().contains(
-                                            searchValue
-                                                .toLowerCase())).toList();
+                                        .where((e) => e.name!
+                                            .toLowerCase()
+                                            .contains(
+                                                searchValue.toLowerCase()) &&
+                                        e.categories!.toLowerCase().contains
+                                          (categoryValue.toLowerCase()))
+                                        .toList();
                                     return SizedBox(
                                       height: 250,
                                       child: ListView.builder(
                                         physics: BouncingScrollPhysics(),
                                         shrinkWrap: true,
                                         scrollDirection: Axis.horizontal,
-                                        itemCount:
-                                        product.length,
+                                        itemCount: product.length,
                                         itemBuilder: (context, index) {
                                           return Container(
                                             margin: const EdgeInsets.symmetric(
@@ -323,103 +323,92 @@ class _HomePageState extends State<HomePage> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             DetailProduct(
-                                                                productId:
-                                                                product[
-                                                                index]
+                                                                productId: product[
+                                                                        index]
                                                                     .id!
                                                                     .toInt())));
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                    BorderRadius.circular(
-                                                        15)),
+                                                        BorderRadius.circular(
+                                                            15)),
                                                 child: Column(
                                                   children: <Widget>[
-                                                    product[index]
-                                                        .image ==
-                                                        null
+                                                    product[index].image == null
                                                         ? ClipRRect(
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          15),
-                                                      child: Container(
-                                                        height: 150,
-                                                        width: 150,
-                                                        child: Icon(
-                                                          Icons.inventory,
-                                                        ),
-                                                      ),
-                                                    )
-                                                        : ClipRRect(
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          15),
-                                                      child:
-                                                      Image.network(
-                                                        "${apiUrlStorage}/${product![index].image
-                                                        }",
-                                                        fit: BoxFit.fill,
-                                                        height: 150,
-                                                        width: 150,
-                                                        // Better way to load images from network flutter
-                                                        // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                        loadingBuilder:
-                                                            (BuildContext
-                                                        context,
-                                                            Widget
-                                                            child,
-                                                            ImageChunkEvent?
-                                                            loadingProgress) {
-                                                          if (loadingProgress ==
-                                                              null)
-                                                            return child;
-                                                          return Center(
-                                                            child:
-                                                            CircularProgressIndicator(
-                                                              value: loadingProgress
-                                                                  .expectedTotalBytes !=
-                                                                  null
-                                                                  ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes!
-                                                                  : null,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            child: Container(
+                                                              height: 150,
+                                                              width: 150,
+                                                              child: Icon(
+                                                                Icons.inventory,
+                                                              ),
                                                             ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
+                                                          )
+                                                        : ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            child:
+                                                                Image.network(
+                                                              "${apiUrlStorage}/${product![index].image}",
+                                                              fit: BoxFit.fill,
+                                                              height: 150,
+                                                              width: 150,
+                                                              // Better way to load images from network flutter
+                                                              // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                              loadingBuilder:
+                                                                  (BuildContext
+                                                                          context,
+                                                                      Widget
+                                                                          child,
+                                                                      ImageChunkEvent?
+                                                                          loadingProgress) {
+                                                                if (loadingProgress ==
+                                                                    null)
+                                                                  return child;
+                                                                return Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    value: loadingProgress.expectedTotalBytes !=
+                                                                            null
+                                                                        ? loadingProgress.cumulativeBytesLoaded /
+                                                                            loadingProgress.expectedTotalBytes!
+                                                                        : null,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
                                                     SizedBox(
                                                       height: 10,
                                                     ),
                                                     Row(
                                                       mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         Container(
                                                           width: 100,
                                                           child: Column(
                                                             crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Text(
                                                                 "${product[index].name}",
                                                                 style: GoogleFonts
                                                                     .montserrat(
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                               ),
                                                               Text(
-                                                                  "${rupiahConvert
-                                                                      .format(
-                                                                      product[index]
-                                                                          .harga)}"),
+                                                                  "${rupiahConvert.format(product[index].harga)}"),
                                                             ],
                                                           ),
                                                         ),
@@ -456,18 +445,20 @@ class _HomePageState extends State<HomePage> {
                               builder: (context, state) {
                                 if (state is ProductLoaded) {
                                   var product = state.productModel.results!
-                                      .where((e) =>
-                                      e.name!.toLowerCase().contains(
-                                          searchValue
-                                              .toLowerCase())).toList();
+                                      .where((e) => e.name!
+                                      .toLowerCase()
+                                      .contains(
+                                      searchValue.toLowerCase()) &&
+                                      e.categories!.toLowerCase().contains
+                                        (categoryValue.toLowerCase()))
+                                      .toList();
                                   return SizedBox(
                                     width: double.infinity,
                                     child: ListView.builder(
                                       physics: BouncingScrollPhysics(),
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
-                                      itemCount:
-                                      product.length,
+                                      itemCount: product.length,
                                       itemBuilder: (context, index) {
                                         return Container(
                                           margin: const EdgeInsets.symmetric(
@@ -479,17 +470,16 @@ class _HomePageState extends State<HomePage> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           DetailProduct(
-                                                              productId:
-                                                              product[
-                                                              index]
+                                                              productId: product[
+                                                                      index]
                                                                   .id!
                                                                   .toInt())));
                                             },
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      15)),
+                                                      BorderRadius.circular(
+                                                          15)),
                                               child: Column(
                                                 children: <Widget>[
                                                   SizedBox(
@@ -497,103 +487,87 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
+                                                        MainAxisAlignment
+                                                            .spaceAround,
                                                     children: [
-                                                      product[
-                                                      index]
-                                                          .image ==
-                                                          null
+                                                      product[index].image ==
+                                                              null
                                                           ? ClipRRect(
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            15),
-                                                        child: Container(
-                                                          height: 100,
-                                                          width: 100,
-                                                          child: Icon(
-                                                            Icons
-                                                                .inventory,
-                                                          ),
-                                                        ),
-                                                      )
-                                                          : ClipRRect(
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            15),
-                                                        child:
-                                                        Image.network(
-                                                          "${apiUrlStorage}/${product[index].image}",
-                                                          fit:
-                                                          BoxFit.fill,
-                                                          height: 100,
-                                                          width: 100,
-                                                          // Better way to load images from network flutter
-                                                          // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                          loadingBuilder: (
-                                                              BuildContext
-                                                              context,
-                                                              Widget
-                                                              child,
-                                                              ImageChunkEvent?
-                                                              loadingProgress) {
-                                                            if (loadingProgress ==
-                                                                null)
-                                                              return child;
-                                                            return Center(
-                                                              child:
-                                                              CircularProgressIndicator(
-                                                                value: loadingProgress
-                                                                    .expectedTotalBytes !=
-                                                                    null
-                                                                    ? loadingProgress
-                                                                    .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes!
-                                                                    : null,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15),
+                                                              child: Container(
+                                                                height: 100,
+                                                                width: 100,
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .inventory,
+                                                                ),
                                                               ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
+                                                            )
+                                                          : ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15),
+                                                              child:
+                                                                  Image.network(
+                                                                "${apiUrlStorage}/${product[index].image}",
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                                height: 100,
+                                                                width: 100,
+                                                                // Better way to load images from network flutter
+                                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                                loadingBuilder: (BuildContext
+                                                                        context,
+                                                                    Widget
+                                                                        child,
+                                                                    ImageChunkEvent?
+                                                                        loadingProgress) {
+                                                                  if (loadingProgress ==
+                                                                      null)
+                                                                    return child;
+                                                                  return Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      value: loadingProgress.expectedTotalBytes !=
+                                                                              null
+                                                                          ? loadingProgress.cumulativeBytesLoaded /
+                                                                              loadingProgress.expectedTotalBytes!
+                                                                          : null,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
                                                       Container(
                                                         height: 100,
                                                         width: 150,
                                                         child: Column(
                                                           crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
                                                             Text(
-                                                              "${product[index]
-                                                                  .name}",
+                                                              "${product[index].name}",
                                                               style: GoogleFonts
                                                                   .montserrat(
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
                                                             ),
                                                             Text(
-                                                              "${truncateWithEllipsis(
-                                                                  20,
-                                                                  product[index]
-                                                                  .desc
-                                                                  .toString())}",
+                                                              "${truncateWithEllipsis(20, product[index].desc.toString())}",
                                                               style: GoogleFonts
                                                                   .montserrat(
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
                                                             ),
                                                             Text(
-                                                                "${rupiahConvert
-                                                                    .format(
-                                                                    state
-                                                                        .productModel
-                                                                        .results![index]
-                                                                        .harga)}"),
+                                                                "${rupiahConvert.format(state.productModel.results![index].harga)}"),
                                                           ],
                                                         ),
                                                       ),
