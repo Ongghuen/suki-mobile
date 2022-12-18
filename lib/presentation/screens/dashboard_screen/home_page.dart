@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
-import 'package:mobile/presentation/screens/detail_product_page.dart';
+import 'package:mobile/presentation/screens/product_screen/detail_product_page.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                                               decoration: BoxDecoration(
                                                 border: Border.all(width: 1),
                                                 borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
+                                                    Radius.circular(5)),
                                               ),
                                               child: Text(categories[index],
                                                   style: GoogleFonts.montserrat(

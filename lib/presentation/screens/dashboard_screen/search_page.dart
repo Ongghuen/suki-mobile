@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
-import 'package:mobile/presentation/screens/detail_product_page.dart';
+import 'package:mobile/presentation/screens/product_screen/detail_product_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class SearchPage extends StatefulWidget {

@@ -9,7 +9,6 @@ import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_blo
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/main_page.dart';
-import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class TransactionDetailsCustomPage extends StatefulWidget {

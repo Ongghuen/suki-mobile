@@ -6,7 +6,7 @@ import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/presentation/screens/transaction_screen/checkout_page.dart';
-import 'package:mobile/presentation/screens/detail_product_page.dart';
+import 'package:mobile/presentation/screens/product_screen/detail_product_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class CartPage extends StatefulWidget {

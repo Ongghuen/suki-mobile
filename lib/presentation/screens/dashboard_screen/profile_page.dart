@@ -118,7 +118,9 @@ class ProfilePage extends StatelessWidget {
                 ),
 
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/request-custom');
+                  },
                   child: Container(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

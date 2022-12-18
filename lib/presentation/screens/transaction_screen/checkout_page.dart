@@ -171,11 +171,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "${auth.address == null ? "- *tolong isi "
-                                      "alamat terlebih dahulu" : auth.address}",
-                                  style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w400),
+                                SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    "${auth.address == null ? "- *tolong isi "
+                                        "alamat terlebih dahulu" : auth.address}",
+                                    style: GoogleFonts.montserrat(
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ),
                                 GestureDetector(
                                     onTap: () {

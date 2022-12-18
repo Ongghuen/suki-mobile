@@ -42,8 +42,9 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
         try {
           await CallApi().multiPartData('/api/user/upload',
               data: image.path, token: auth.userModel.token);
-          context.read<AuthBloc>().add(UserAuthUpdate("", auth.userModel
-              .token));
+          context
+              .read<AuthBloc>()
+              .add(UserAuthUpdate("", auth.userModel.token));
         } catch (ex) {
           print("$ex");
         }
@@ -78,13 +79,11 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
             onPressed: () => Navigator.pop(context),
           ),
           actions: [
-            BlocConsumer<AuthBloc, AuthState>(
-              listener: (context, state){
-                if(state is AuthError){
-                  showSnackbar(context, "${state.msg}");
-                }
-              },
-                builder: (context, state) {
+            BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+              if (state is AuthError) {
+                showSnackbar(context, "${state.msg}");
+              }
+            }, builder: (context, state) {
               if (state is AuthLoaded) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -242,7 +241,6 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                           ),
                         ),
 
-
                         //
                         const SizedBox(
                           height: 10,
@@ -286,10 +284,10 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                                   "alamat": "${_alamatController.text}",
                                   "email": "${_emailController.text}",
                                 };
-                                if(_emailController.text == user!.email){
+                                if (_emailController.text == user!.email) {
                                   data.remove("email");
                                 }
-                                if(_noTelpController.text == user!.phone){
+                                if (_noTelpController.text == user!.phone) {
                                   data.remove("phone");
                                 }
                                 context.read<AuthBloc>().add(UserAuthUpdate(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
@@ -198,11 +197,13 @@ class _DetailProductState extends State<DetailProduct> {
                                   builder: (context, pstate) {
                                     return GestureDetector(
                                       onTap: () {
-                                        if(pstate is ProductLoaded) {
-                                          var product = pstate.productModel
-                                              .results!.firstWhere((e)
-                                          => e.id == widget.productId);
-                                          if (state is DetailTransactionLoaded) {
+                                        if (pstate is ProductLoaded) {
+                                          var product = pstate
+                                              .productModel.results!
+                                              .firstWhere((e) =>
+                                                  e.id == widget.productId);
+                                          if (state
+                                              is DetailTransactionLoaded) {
                                             if (state.oncart.contains(
                                                 widget.productId.toString())) {
                                               showSnackbar(
@@ -210,36 +211,35 @@ class _DetailProductState extends State<DetailProduct> {
                                             } else {
                                               var data = {
                                                 "product_id":
-                                                widget.productId.toString()
+                                                    widget.productId.toString()
                                               };
 
                                               var dataDetail = {
-                                                "product_id":
-                                                "${product.id}",
-                                                "qty":
-                                                "1",
-                                                "sub_total":
-                                                "${product.harga}"
+                                                "product_id": "${product.id}",
+                                                "qty": "1",
+                                                "sub_total": "${product.harga}"
                                               };
 
-                                              final astate =
-                                                  context
-                                                      .read<AuthBloc>()
-                                                      .state;
+                                              final astate = context
+                                                  .read<AuthBloc>()
+                                                  .state;
                                               if (astate is AuthLoaded) {
                                                 context
                                                     .read<
-                                                    DetailTransactionBloc>()
+                                                        DetailTransactionBloc>()
                                                     .add(
-                                                    AddProductToDetailTransactionList(
-                                                        data,
-                                                        astate.userModel
-                                                            .token!));
-                                                context.read<DetailTransactionBloc>().add(AddQTYProductToDetailTransactionList(
-                                                    dataDetail,
-                                                    astate
-                                                        .userModel
-                                                        .token));
+                                                        AddProductToDetailTransactionList(
+                                                            data,
+                                                            astate.userModel
+                                                                .token!));
+                                                context
+                                                    .read<
+                                                        DetailTransactionBloc>()
+                                                    .add(
+                                                        AddQTYProductToDetailTransactionList(
+                                                            dataDetail,
+                                                            astate.userModel
+                                                                .token));
                                                 showSnackbar(
                                                     context, "Berhasil Hore");
                                               } else {
