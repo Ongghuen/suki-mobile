@@ -12,6 +12,12 @@ class TransactionCustomInitial extends TransactionCustomState {
 class TransactionCustomLoading extends TransactionCustomState {
 }
 class TransactionCustomLoaded extends TransactionCustomState {
+  DetailTransactionCustomModel data;
+  TransactionCustomLoaded(this.data);
+}
+class TransactionCustomSuccess extends TransactionCustomState {
 }
 class TransactionCustomError extends TransactionCustomState {
+  String msg;
+  TransactionCustomError(this.msg);
 }

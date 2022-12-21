@@ -7,7 +7,12 @@ abstract class TransactionCustomEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetTransactionCustom extends TransactionCustomEvent {
+class GetTransactionCustomLists extends TransactionCustomEvent {
+  var token;
+  GetTransactionCustomLists(this.token);
+}
+class RequestTransactionCustom extends TransactionCustomEvent {
   var data;
-  GetTransactionCustom(this.data);
+  var token;
+  RequestTransactionCustom(this.data, this.token);
 }

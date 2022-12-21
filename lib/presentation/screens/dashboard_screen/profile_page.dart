@@ -283,7 +283,9 @@ class ProfilePage extends StatelessWidget {
 
                 // customs
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/transaction-custom');
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.0, vertical: 10),

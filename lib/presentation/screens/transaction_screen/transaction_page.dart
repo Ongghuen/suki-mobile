@@ -39,7 +39,7 @@ class _TransactionPageState extends State<TransactionPage> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
             child: Column(
@@ -51,7 +51,7 @@ class _TransactionPageState extends State<TransactionPage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back_ios)),
+                        icon: const Icon(Icons.arrow_back_ios)),
                     Text(
                       "Daftar Transaksi",
                       style: GoogleFonts.montserrat(
@@ -61,17 +61,18 @@ class _TransactionPageState extends State<TransactionPage> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 Container(
+                  decoration: outlineBasic(),
                   child: ButtonTheme(
                     alignedDropdown: true,
                     child: DropdownButton<String>(
                       isExpanded: true,
                       value: statusValue,
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                      underline: SizedBox(),
+                      underline: const SizedBox(),
                       style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.bold, color: Colors.black),
                       onChanged: (String? value) {
@@ -79,21 +80,20 @@ class _TransactionPageState extends State<TransactionPage> {
                         setState(() {
                           statusValue = value!;
                           statusValueText =
-                              value!.contains("Semua") ? "" : value!;
+                              value.contains("Semua") ? "" : value;
                         });
                       },
                       items: statustList
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Container(child: Text(value)),
+                          child: Text(value),
                         );
                       }).toList(),
                     ),
                   ),
-                  decoration: outlineBasic(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
@@ -103,6 +103,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     Navigator.of(context).pushNamed("/menunggu-pembayaran");
                   },
                   child: Container(
+                    decoration: outlineBasic(),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
@@ -111,19 +112,19 @@ class _TransactionPageState extends State<TransactionPage> {
                         children: [
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.attach_money_rounded,
                                 size: 32,
                                 color: Colors.green,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               SizedBox(
                                 width: 200,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: const [
                                     Text(
                                       "Menunggu Pembayaran",
                                       style: TextStyle(
@@ -134,23 +135,22 @@ class _TransactionPageState extends State<TransactionPage> {
                               ),
                             ],
                           ),
-                          Icon(
+                          const Icon(
                             Icons.arrow_forward_ios,
                             size: 16,
                           )
                         ],
                       ),
                     ),
-                    decoration: outlineBasic(),
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
                 // transaction card
-                Container(
+                SizedBox(
                   height: 650,
                   child: BlocBuilder<DetailTransactionBloc,
                       DetailTransactionState>(
@@ -171,15 +171,15 @@ class _TransactionPageState extends State<TransactionPage> {
                           child: details.length == 0
                               ? Center(
                                   child: SingleChildScrollView(
-                                    physics: AlwaysScrollableScrollPhysics(
+                                    physics: const AlwaysScrollableScrollPhysics(
                                         parent: BouncingScrollPhysics()),
-                                    child: Container(
+                                    child: SizedBox(
                                       height: 400,
                                       width: 400,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: [
+                                        children: const [
                                           Text("Anda belum melakukan "
                                               "transaksi."),
                                         ],
@@ -188,7 +188,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                   ),
                                 )
                               : ListView.builder(
-                                  physics: AlwaysScrollableScrollPhysics(
+                                  physics: const AlwaysScrollableScrollPhysics(
                                       parent: BouncingScrollPhysics()),
                                   itemCount: details.length,
                                   itemBuilder:
@@ -236,9 +236,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Icon(
+                                                        const Icon(
                                                             Icons.shopping_bag),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 5,
                                                         ),
                                                         Column(
@@ -250,7 +250,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                                 "${details[index].categories}"),
                                                             Text(
                                                               "${details[index].createdAt}",
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 12),
                                                             ),
                                                           ],
@@ -258,12 +258,12 @@ class _TransactionPageState extends State<TransactionPage> {
                                                       ],
                                                     ),
                                                     Text(
-                                                        "${truncateWithEllipsis(10, details[index].status)}"),
+                                                        truncateWithEllipsis(10, details[index].status)),
                                                   ],
                                                 ),
 
                                                 // divider buat underline item
-                                                Divider(
+                                                const Divider(
                                                   color: Colors.black,
                                                 ),
 
@@ -284,11 +284,11 @@ class _TransactionPageState extends State<TransactionPage> {
                                                                     .first
                                                                     .image ==
                                                                 null
-                                                            ? Icon(
+                                                            ? const Icon(
                                                                 Icons.inventory,
                                                               )
                                                             : Image.network(
-                                                                "${apiUrlStorage}/${details[index].products.first.image}",
+                                                                "$apiUrlStorage/${details[index].products.first.image}",
                                                                 fit:
                                                                     BoxFit.fill,
                                                                 height: 100,
@@ -302,8 +302,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                                     ImageChunkEvent?
                                                                         loadingProgress) {
                                                                   if (loadingProgress ==
-                                                                      null)
+                                                                      null) {
                                                                     return child;
+                                                                  }
                                                                   return Center(
                                                                     child:
                                                                         CircularProgressIndicator(
@@ -320,7 +321,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                     ),
 
                                                     // spacing
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 10,
                                                     ),
 
@@ -332,7 +333,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                       children: [
                                                         Text(
                                                           "${details[index].products.first.name}",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -387,10 +388,10 @@ class _TransactionPageState extends State<TransactionPage> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text("Total Belanja:"),
+                                                        const Text("Total Belanja:"),
                                                         Text(
-                                                          "${rupiahConvert.format(details[index].totalHarga)}",
-                                                          style: TextStyle(
+                                                          rupiahConvert.format(details[index].totalHarga),
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -401,12 +402,12 @@ class _TransactionPageState extends State<TransactionPage> {
                                                     // button detail
                                                     ElevatedButton(
                                                       onPressed: () {},
-                                                      child: Text("Detail"),
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
                                                             Colors.black,
                                                       ),
+                                                      child: const Text("Detail"),
                                                     )
                                                   ],
                                                 ),
