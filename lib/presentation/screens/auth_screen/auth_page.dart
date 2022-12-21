@@ -13,6 +13,15 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    final state = context.read<AuthBloc>().state;
+    if (state is AuthLoaded) {
+      context.read<AuthBloc>().add(UserAuthCheckToken(state.userModel.token));
+    }
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {

@@ -6,6 +6,7 @@ import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
+import 'package:mobile/logic/data/bloc/transaction_custom/transaction_custom_bloc.dart';
 import 'package:mobile/logic/data/bloc/wishlist/wishlist_bloc.dart';
 import 'package:mobile/presentation/router/app_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,6 +41,9 @@ void main(List<String> args) async {
       ),
       BlocProvider<DetailTransactionBloc>(
         create: (_) => DetailTransactionBloc(),
+      ),
+      BlocProvider<TransactionCustomBloc>(
+        create: (_) => TransactionCustomBloc(),
       ),
     ],
     child: MaterialApp(

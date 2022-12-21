@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController search = TextEditingController();
   var searchValue = "";
   var categoryValue = "";
-  List<String> categories = ["Semua", "Kursi", "Lemari", "Meja", "Pagar"];
+  List<String> categories = ["Semua", "Kursi", "Meja", "Pagar", "Pintu", "Rak"];
   int selectedIndex = 0;
 
   @override
@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             Container(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 15, vertical: 5),
+                                                  horizontal: 24, vertical: 5),
                                               decoration: BoxDecoration(
                                                 color: selectedIndex == index
                                                     ? Colors.black : Colors
@@ -277,7 +277,7 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                   )),
                                             ),
-                                            SizedBox(width: 10,)
+                                            SizedBox(width: 16,)
                                           ],
                                         ),
                                       ],
