@@ -80,7 +80,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
           ),
           actions: [
             BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
-              if (state is AuthError) {
+              if (state is AuthUpdateError) {
                 showSnackbar(context, "${state.msg}");
               }
             }, builder: (context, state) {

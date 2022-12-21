@@ -194,10 +194,8 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         );
                       }
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.black,
-                        ),
+                      return Center(
+                        child: loading(),
                       );
                     },
                   ),

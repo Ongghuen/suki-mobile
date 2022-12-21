@@ -63,7 +63,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         final auth = AuthModel.fromJson(body);
 
         if (res.statusCode != 200) {
-          emit(AuthError(body['message']));
+          emit(AuthUpdateError(body['message']));
         }
         add(UserAuthRestart(event.token));
       } catch (ex, trace) {

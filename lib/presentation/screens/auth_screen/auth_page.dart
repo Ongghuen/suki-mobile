@@ -16,7 +16,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      if (state is AuthLoaded || state is AuthError) {
+      if (state is AuthLoaded || state is AuthUpdateError) {
         return const MainPage();
       }
       return const LoginPage();

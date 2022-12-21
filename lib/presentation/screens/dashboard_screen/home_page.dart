@@ -259,9 +259,12 @@ class _HomePageState extends State<HomePage> {
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 15, vertical: 5),
                                               decoration: BoxDecoration(
+                                                color: selectedIndex == index
+                                                    ? Colors.black : Colors
+                                                  .white,
                                                 border: Border.all(width: 1),
                                                 borderRadius: BorderRadius.all(
-                                                    Radius.circular(5)),
+                                                    Radius.circular(15)),
                                               ),
                                               child: Text(categories[index],
                                                   style: GoogleFonts.montserrat(
@@ -269,12 +272,12 @@ class _HomePageState extends State<HomePage> {
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 18,
                                                       color: selectedIndex == index
-                                                          ? Colors.black
-                                                          : Colors.grey,
+                                                          ? Colors.white
+                                                          : Colors.black,
                                                     ),
                                                   )),
                                             ),
-                                            SizedBox(width: 15,)
+                                            SizedBox(width: 10,)
                                           ],
                                         ),
                                       ],

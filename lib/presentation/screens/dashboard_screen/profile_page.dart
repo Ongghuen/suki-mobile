@@ -48,12 +48,11 @@ class ProfilePage extends StatelessWidget {
                                   color: Colors.grey,
                                   height: 60,
                                   width: 60,
-                                  child: user?.image ==
-                                          null
+                                  child: user?.image == null
                                       ? Icon(
                                           Icons.person,
-                                    size: 30,
-                                    color: Colors.white,
+                                          size: 30,
+                                          color: Colors.white,
                                         )
                                       : Image.network(
                                           "${apiUrlStorage}/${user?.image}",
@@ -113,6 +112,7 @@ class ProfilePage extends StatelessWidget {
                     return loading();
                   },
                 ),
+
                 SizedBox(
                   height: 20,
                 ),

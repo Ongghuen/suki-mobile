@@ -33,3 +33,8 @@ class AuthError extends AuthState {
   final String? msg;
   AuthError(this.msg);
 }
+
+class AuthUpdateError extends AuthState {
+  final String? msg;
+  AuthUpdateError(this.msg);
+}
