@@ -158,6 +158,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       if (state is DetailTransactionLoaded) {
                         var details = state.data.details
                             .where((e) =>
+                                e.categories == "Product" &&
                                 e.status != "Belum_Bayar" &&
                                 e.status != "Pending" &&
                                 e.status!.contains(statusValueText))
@@ -171,8 +172,9 @@ class _TransactionPageState extends State<TransactionPage> {
                           child: details.length == 0
                               ? Center(
                                   child: SingleChildScrollView(
-                                    physics: const AlwaysScrollableScrollPhysics(
-                                        parent: BouncingScrollPhysics()),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(
+                                            parent: BouncingScrollPhysics()),
                                     child: SizedBox(
                                       height: 400,
                                       width: 400,
@@ -250,15 +252,18 @@ class _TransactionPageState extends State<TransactionPage> {
                                                                 "${details[index].categories}"),
                                                             Text(
                                                               "${details[index].createdAt}",
-                                                              style: const TextStyle(
-                                                                  fontSize: 12),
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          12),
                                                             ),
                                                           ],
                                                         ),
                                                       ],
                                                     ),
-                                                    Text(
-                                                        truncateWithEllipsis(10, details[index].status)),
+                                                    Text(truncateWithEllipsis(
+                                                        10,
+                                                        details[index].status)),
                                                   ],
                                                 ),
 
@@ -388,9 +393,12 @@ class _TransactionPageState extends State<TransactionPage> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        const Text("Total Belanja:"),
+                                                        const Text(
+                                                            "Total Belanja:"),
                                                         Text(
-                                                          rupiahConvert.format(details[index].totalHarga),
+                                                          rupiahConvert.format(
+                                                              details[index]
+                                                                  .totalHarga),
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -407,7 +415,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                                         backgroundColor:
                                                             Colors.black,
                                                       ),
-                                                      child: const Text("Detail"),
+                                                      child:
+                                                          const Text("Detail"),
                                                     )
                                                   ],
                                                 ),

@@ -48,16 +48,16 @@ class _HomePageState extends State<HomePage> {
                 // container
                 SafeArea(
                   child: SizedBox(
-                    height: size.height * 0.2,
+                    height: size.height * 0.17,
                     child: Stack(
                       children: [
                         Container(
-                          height: size.height * 0.2 - 27,
+                          height: size.height * 0.17 - 20,
                           width: double.infinity,
                           decoration: const BoxDecoration(
                               color: Color(0xFF212529),
                               borderRadius: BorderRadius.vertical(
-                                  bottom: Radius.circular(20))),
+                                  bottom: Radius.circular(15))),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: Row(
@@ -191,10 +191,13 @@ class _HomePageState extends State<HomePage> {
                                             color: Colors.black, width: 2),
                                         borderRadius:
                                             BorderRadius.circular(16)),
-                                    border: OutlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.black, width: 2),
                                         borderRadius:
                                             BorderRadius.circular(16)),
                                     hintText: 'Cari Barang atau Perabotan',
+                                    labelStyle: GoogleFonts.montserrat(),
                                     prefixIcon: IconButton(
                                       icon: const Icon(Icons.search),
                                       color: Colors.black,
@@ -215,82 +218,71 @@ class _HomePageState extends State<HomePage> {
                   height: 20,
                 ),
 
+                // categories
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20,
+                      vertical: 20),
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Kategori",
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            )),
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                          height: 100,
-                          child: RefreshIndicator(
-                            onRefresh: () async {
-                              print("lmao");
-                            },
-                            child: ListView.builder(
-                                // This next line does the trick.
-                                scrollDirection: Axis.horizontal,
-                                physics: AlwaysScrollableScrollPhysics(
-                                    parent: BouncingScrollPhysics()),
-                                itemCount: categories.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedIndex = index;
-                                        categoryValue = index == 0 ? "" :
-                                        categories[index];
-                                      });
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 24, vertical: 5),
-                                              decoration: BoxDecoration(
-                                                color: selectedIndex == index
-                                                    ? Colors.black : Colors
-                                                  .white,
-                                                border: Border.all(width: 1),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(15)),
-                                              ),
-                                              child: Text(categories[index],
-                                                  style: GoogleFonts.montserrat(
-                                                    textStyle: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 18,
-                                                      color: selectedIndex == index
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                    ),
-                                                  )),
+                          height: 50,
+                          child: ListView.builder(
+                              // This next line does the trick.
+                              scrollDirection: Axis.horizontal,
+                              physics: AlwaysScrollableScrollPhysics(
+                                  parent: BouncingScrollPhysics()),
+                              itemCount: categories.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                      categoryValue = index == 0 ? "" :
+                                      categories[index];
+                                    });
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                            decoration: BoxDecoration(
+                                              color: selectedIndex == index
+                                                  ? Colors.black : Colors
+                                                .white,
+                                              border: Border.all(width: 1),
+
+                                              //border categories
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
                                             ),
-                                            SizedBox(width: 16,)
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
+                                            child: Text(categories[index],
+                                                style: GoogleFonts.montserrat(
+                                                  textStyle: TextStyle(
+                                                    fontWeight: FontWeight
+                                                        .w500,
+                                                    fontSize: 18,
+                                                    color: selectedIndex == index
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                  ),
+                                                )),
+                                          ),
+                                          SizedBox(width: 16,)
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
                         ),
-                        Text("Produk",
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            )),
                         SingleChildScrollView(
                           child: Column(
                             children: [

@@ -21,10 +21,13 @@ class _TransactionKonfirmasiCheckoutPageState
     extends State<TransactionKonfirmasiCheckoutPage> {
   metode_pembayaran _metode_bayar = metode_pembayaran.transfer;
 
+  void finalize() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(
@@ -120,7 +123,8 @@ class _TransactionKonfirmasiCheckoutPageState
                   Column(
                     children: [
                       // total harga
-                      BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
+                      BlocBuilder<DetailTransactionBloc,
+                          DetailTransactionState>(
                         builder: (context, state) {
                           if (state is DetailTransactionLoaded) {
                             return Row(
@@ -128,13 +132,11 @@ class _TransactionKonfirmasiCheckoutPageState
                               children: [
                                 Text(
                                   "Total Tagihan",
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16),
+                                  style: GoogleFonts.montserrat(fontSize: 16),
                                 ),
                                 Text(
                                   "${rupiahConvert.format(state.totalHarga)}",
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16),
+                                  style: GoogleFonts.montserrat(fontSize: 16),
                                 ),
                               ],
                             );
@@ -160,30 +162,62 @@ class _TransactionKonfirmasiCheckoutPageState
                 if (state is DetailTransactionLoaded) {
                   var checkout = state.data.details.firstWhere((e) =>
                       e.status ==
-                      "Pendi"
-                          "ng" && e.categories == "Product");
+                          "Pendi"
+                              "ng" &&
+                      e.categories == "Product");
                   return InkWell(
                     onTap: () {
-                      var data = {
-                        "total_harga": "${state.totalHarga}"
-                      };
-                      final astate = context.read<AuthBloc>().state;
-                      if (astate is AuthLoaded) {
-                        context.read<TransactionBloc>().add(
-                            CheckoutTransactionLists(data,astate.userModel
-                                .token));
-                        context.read<DetailTransactionBloc>().add(
-                            GetOngoingDetailTransactionList(
-                                astate.userModel.token));
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  TransactionPembayaranPage(
-                                      transactionId: checkout.id))
-                          ,
-                        );
-                      }
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text(
+                            'Konfirmasi Pembayaran?',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          content: Text(
+                            'Anda tidak dapat mengubah detail transaksi'
+                            ' lagi jika anda telah menyelesaikan pembayaran ini.',
+                            style: textStyleDefault(),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: Text(
+                                'Cancel',
+                                style: textStyleDefault(),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                var data = {
+                                  "total_harga": "${state.totalHarga}"
+                                };
+                                final astate = context.read<AuthBloc>().state;
+                                if (astate is AuthLoaded) {
+                                  context.read<TransactionBloc>().add(
+                                      CheckoutTransactionLists(
+                                          data, astate.userModel.token));
+                                  context.read<DetailTransactionBloc>().add(
+                                      GetOngoingDetailTransactionList(
+                                          astate.userModel.token));
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TransactionPembayaranPage(
+                                                transactionId: checkout.id)),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'OK',
+                                style: textStyleDefault(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -209,7 +243,8 @@ class _TransactionKonfirmasiCheckoutPageState
                 }
                 return loading();
               },
-            )
+            ),
+            SizedBox(height: 40,)
           ],
         ),
       ),

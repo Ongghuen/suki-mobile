@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
-import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
-import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction_custom/transaction_custom_bloc.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/main_page.dart';
@@ -78,22 +76,36 @@ class _TransactionDetailsCustomPageState
                               .firstWhere((e) => e.id == widget.transactionId);
                           return Column(
                             children: [
+                              Center(
+                                child: Text(
+                                  "Pesanan Furnitur Custom Anda telah "
+                                  "disetujui oleh Admin!",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
                               Text(
-                                  "Total Harga: ${rupiahConvert.format(custom.totalHarga)}"),
+                                  "Total Harga: ${rupiahConvert.format(custom.totalHarga)}",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500)),
                               Text(
-                                  "Down Payment: ${rupiahConvert.format(custom.customs!.first.dp)}"),
+                                  "Down Payment: ${rupiahConvert.format(custom.customs!.first.dp)}",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500)),
                               // ini input text atau form
                               SizedBox(
                                 height: 20,
                               ),
                               InkWell(
                                 onTap: () {
-                                  var auth = context.read<AuthBloc>().state;
-                                  if (auth is AuthLoaded) {
-                                    // context.read<AuthBloc>().add(
-                                    //     UserAuthUpdate(data, auth.userModel.token));
-                                    Navigator.pop(context);
-                                  }
+                                  changeStatus("Belum_Bayar");
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -106,6 +118,34 @@ class _TransactionDetailsCustomPageState
                                     children: [
                                       Text(
                                         'SETUJU',
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      // pay now
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  changeStatus("Gagal");
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.red[500],
+                                  ),
+                                  padding: const EdgeInsets.all(24),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'TOLAK',
                                         style: GoogleFonts.montserrat(
                                             color: Colors.white,
                                             fontSize: 18,
@@ -172,8 +212,8 @@ class _TransactionDetailsCustomPageState
     final state = context.read<AuthBloc>().state;
     if (state is AuthLoaded) {
       context.read<AuthBloc>().add(UserAuthCheckToken(state.userModel.token));
-      context.read<DetailTransactionBloc>().add(
-          GetOngoingDetailTransactionList(state.userModel.token.toString()));
+      context.read<TransactionCustomBloc>().add(
+          GetTransactionCustomLists(state.userModel.token.toString()));
     }
   }
 
@@ -190,15 +230,33 @@ class _TransactionDetailsCustomPageState
     }
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
+  void changeStatus(String status) {
+    var auth = AuthBloc().state;
+    if (auth is AuthLoaded) {
+      context.read<TransactionCustomBloc>().add(ChangeTransactionCustomStatus(
+          widget.transactionId.toString(), "${status}", auth.userModel.token));
+      restartBlocs();
+      Navigator.popUntil(
+          context,
+          (route) =>
+              route.settings.name ==
+              "/menunggu-pembayaran-custom");
+    }
+  }
+
+  void loadBloc() {
     var auth = AuthBloc().state;
     if (auth is AuthLoaded) {
       context
           .read<TransactionCustomBloc>()
           .add(GetTransactionCustomLists(auth.userModel.token));
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadBloc();
     super.initState();
   }
 
@@ -318,12 +376,82 @@ class _TransactionDetailsCustomPageState
                     if (state is TransactionCustomLoaded) {
                       var custom = state.data.details!
                           .firstWhere((e) => e.id == widget.transactionId);
-                      return Column(
-                        children: [
-                          SizedBox(height: 20,),
-                          Text("Nama: ${custom.customs!.first.name} "
-                              "ngab"),
-                        ],
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          loadBloc();
+                        },
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(
+                              parent: BouncingScrollPhysics()),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                decoration: outlineBasic(),
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 40),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                          child: Text(
+                                        "Furnitur yang "
+                                        "diajukan",
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      divider(),
+                                      Center(
+                                          child: Text(
+                                        "Judul: ${custom.customs!.first.name}",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w600),
+                                      )),
+                                      divider(),
+                                      Text(
+                                        "Jenis: ${custom.customs!.first.jenisCustom}",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        "Bahan: ${custom.customs!.first.bahan}",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        "Deskripsi: ${custom.customs!.first.desc}",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      divider(),
+                                      Text(
+                                        "Down Payment: "
+                                        "${custom.customs!.first.dp != 0 ? rupiahConvert.format(custom.customs!.first.dp) : "Menunggu Konfirmasi"}",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        "Total Harga: "
+                                        "${custom.totalHarga != 0 ? rupiahConvert.format(custom.totalHarga) : "Menunggu Konfirmasi"}",
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     }
                     return loading();
@@ -343,7 +471,7 @@ class _TransactionDetailsCustomPageState
                   var custom = state.data.details!
                       .firstWhere((e) => e.id == widget.transactionId);
                   return custom.status != "Dikirim"
-                      ? const Text("")
+                      ? const SizedBox()
                       : InkWell(
                           onTap: () async {
                             showPesananDiterimaDialog();

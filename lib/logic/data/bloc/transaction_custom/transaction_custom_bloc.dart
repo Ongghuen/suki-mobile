@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile/logic/data/api/call.dart';
-import 'package:mobile/logic/data/bloc/transaction/transaction_bloc.dart';
 import 'package:mobile/logic/models/detail_transaction_custom.dart';
 
 part 'transaction_custom_event.dart';
@@ -40,6 +38,24 @@ class TransactionCustomBloc
         } else {
           print(body['message']);
           emit(TransactionCustomError(body['message']));
+        }
+      } catch (ex, trace) {
+        emit(TransactionCustomError("sum ting wong"));
+        print("$ex $trace");
+      }
+    });
+    on<ChangeTransactionCustomStatus>((event, emit) async {
+      try {
+        String apiUrl = "/api/customs/status/${event.transactionId}";
+        var data = {"status": event.status};
+
+        var res =
+            await CallApi().postData(apiUrl, data: data, token: event.token);
+
+        if (res.statusCode == 200) {
+          print("ntaps");
+        } else {
+          print("lmao");
         }
       } catch (ex, trace) {
         emit(TransactionCustomError("sum ting wong"));

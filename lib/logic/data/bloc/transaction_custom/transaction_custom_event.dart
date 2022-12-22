@@ -9,10 +9,21 @@ abstract class TransactionCustomEvent extends Equatable {
 
 class GetTransactionCustomLists extends TransactionCustomEvent {
   var token;
+
   GetTransactionCustomLists(this.token);
 }
+
 class RequestTransactionCustom extends TransactionCustomEvent {
   var data;
   var token;
+
   RequestTransactionCustom(this.data, this.token);
+}
+
+class ChangeTransactionCustomStatus extends TransactionCustomEvent {
+  String status;
+  var transactionId;
+  var token;
+
+  ChangeTransactionCustomStatus(this.transactionId, this.status, this.token);
 }

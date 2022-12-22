@@ -103,6 +103,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(
@@ -424,7 +425,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 }
                 return loading();
               },
-            )
+            ),
+            SizedBox(height: 40,)
           ],
         ),
       ),

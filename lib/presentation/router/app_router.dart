@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/presentation/screens/auth_screen/auth_page.dart';
 import 'package:mobile/presentation/screens/custom_screen/request_custom_page.dart';
+import 'package:mobile/presentation/screens/custom_screen/transaction_custom_menunggu_pembayaran_page.dart';
 import 'package:mobile/presentation/screens/custom_screen/transaction_custom_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/cart_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/home_page.dart';
@@ -49,6 +50,9 @@ class AppRouter {
       case '/menunggu-pembayaran':
         return MaterialPageRoute(
             builder: (_) => const TransactionMenungguPembayaranPage());
+      case '/menunggu-pembayaran-custom':
+        return MaterialPageRoute(
+            builder: (_) => const TransactionCustomMenungguPembayaranPage());
       case '/request-custom':
         return MaterialPageRoute(
             builder: (_) => const CustomRequestPage());

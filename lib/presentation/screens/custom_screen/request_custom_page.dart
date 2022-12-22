@@ -36,15 +36,33 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
   TextEditingController judul = TextEditingController();
   TextEditingController deskripsi = TextEditingController();
 
+  void restartBlocs() {
+    final state = context.read<AuthBloc>().state;
+    if (state is AuthLoaded) {
+      context.read<AuthBloc>().add(UserAuthCheckToken(state.userModel.token));
+      context
+          .read<TransactionCustomBloc>()
+          .add(GetTransactionCustomLists(state.userModel.token.toString()));
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    restartBlocs();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<TransactionCustomBloc, TransactionCustomState>(
       listener: (context, state) {
-        if(state is TransactionCustomError){
+        if (state is TransactionCustomError) {
           showSnackbar(context, "${state.msg}");
-        }else if(state is TransactionCustomSuccess){
-          showSnackbar(context, "Berhasil!");
-          Navigator.of(context).pushNamed("/transaction-custom");
+          restartBlocs();
+        } else if (state is TransactionCustomSuccess) {
+          showSnackbar(context, "Berhasil! Check List Request Customs Anda!");
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
@@ -242,12 +260,22 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "AJUKAN REQUEST",
-                            style: GoogleFonts.montserrat(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                          BlocBuilder<TransactionCustomBloc,
+                              TransactionCustomState>(
+                            builder: (context, state) {
+                              if (state is TransactionCustomLoading) {
+                                return CircularProgressIndicator(
+                                  color: Colors.white,
+                                );
+                              }
+                              return Text(
+                                "AJUKAN REQUEST",
+                                style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              );
+                            },
                           ),
                           // pay now
                         ],

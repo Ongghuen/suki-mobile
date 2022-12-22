@@ -212,11 +212,11 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                             ],
                           );
                         }
-                        return loading();
+                        return SizedBox();
                       },
                     );
                   }
-                  return loading();
+                  return SizedBox();
                 },
               ),
 
@@ -239,7 +239,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                         return checkout.buktiBayar != null
                             ? Image.network(
                                 "${apiUrlStorage}/${checkout.buktiBayar}",
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: 700,
                                 // Better way to load images from network flutter
@@ -310,7 +310,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                                 )))
                         : Text("");
                   }
-                  return loading();
+                  return SizedBox();
                 },
               ),
 
@@ -373,9 +373,10 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                       ),
                     );
                   }
-                  return loading();
+                  return SizedBox();
                 },
-              )
+              ),
+              SizedBox(height: 40,)
             ],
           ),
         ),

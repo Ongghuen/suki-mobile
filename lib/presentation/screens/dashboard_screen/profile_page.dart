@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
+import 'package:mobile/presentation/screens/custom_screen/transaction_custom_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -19,7 +20,7 @@ class ProfilePage extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 55),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -284,7 +285,9 @@ class ProfilePage extends StatelessWidget {
                 // customs
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pushNamed('/transaction-custom');
+                    Navigator.of(context).push(MaterialPageRoute(builder:
+                        (context) => TransactionCustomPage(), settings: RouteSettings(name:
+                    "/transaction-custom")));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -296,7 +299,7 @@ class ProfilePage extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          "Customs",
+                          "List Request Customs",
                           style: TextStyle(fontSize: 16),
                         )
                       ],

@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/transaction_custom/transaction_custom_bloc.dart';
+import 'package:mobile/presentation/screens/custom_screen/transaction_custom_menunggu_pembayaran_page.dart';
 import 'package:mobile/presentation/screens/custom_screen/transaction_details_custom_page.dart';
+import 'package:mobile/presentation/screens/transaction_screen/transaction_pembayaran_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class TransactionCustomPage extends StatefulWidget {
@@ -15,8 +17,6 @@ class TransactionCustomPage extends StatefulWidget {
 
 const List<String> statustList = <String>[
   'Semua Status',
-  'Pending',
-  'Belum_Bayar',
   'Menunggu_Konfirmasi',
   'Terkonfirmasi',
   'Dikirim',
@@ -106,6 +106,62 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                   height: 10,
                 ),
 
+                // menunggu pembayaran
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            TransactionCustomMenungguPembayaranPage(),
+                        settings: RouteSettings(
+                            name: "/menunggu-pembayaran-custom")));
+                  },
+                  child: Container(
+                    decoration: outlineBasic(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.attach_money_rounded,
+                                size: 32,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: 200,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      "Pembayaran atau Konfirmasi",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+
                 // transaction card
                 Container(
                     height: 650,
@@ -121,6 +177,8 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                             var custom = state.data.details!
                                 .where((e) =>
                                     e.customs!.length != 0 &&
+                                    e.status! != "Belum_Bayar" &&
+                                    e.status! != "Pending" &&
                                     e.status!.contains(statusValueText))
                                 .toList();
                             return custom.length != 0
@@ -132,14 +190,26 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                         (BuildContext context, int index) {
                                       return InkWell(
                                         onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TransactionDetailsCustomPage(
-                                                          transactionId:
-                                                              custom[index]
-                                                                      .id ??
-                                                                  0)));
+                                          custom[index].status !=
+                                                  "Belum_Baya"
+                                                      "r"
+                                              ? Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          TransactionDetailsCustomPage(
+                                                              transactionId:
+                                                                  custom[index]
+                                                                          .id ??
+                                                                      0)))
+                                              : Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          TransactionPembayaranPage(
+                                                              transactionId:
+                                                                  custom[index]
+                                                                          .id ??
+                                                                      0)));
                                         },
 
                                         // outer padding
@@ -297,7 +367,24 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                         ),
                                       );
                                     })
-                                : Text("okay");
+                                : Center(
+                                    child: SingleChildScrollView(
+                                      physics: AlwaysScrollableScrollPhysics(
+                                          parent: BouncingScrollPhysics()),
+                                      child: Container(
+                                        height: 400,
+                                        width: 400,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text("Anda belum mengajukan "
+                                                "furnitur custom."),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
                           }
                           return loading();
                         },
