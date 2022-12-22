@@ -1,5 +1,6 @@
 class ProductModel {
   List<Results>? results;
+  List<Results>? topProduct;
 
   ProductModel({this.results});
 
@@ -10,12 +11,21 @@ class ProductModel {
         results!.add(new Results.fromJson(v));
       });
     }
+    if (json['topProduct'] != null) {
+      topProduct = <Results>[];
+      json['topProduct'].forEach((v) {
+        topProduct!.add(new Results.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.results != null) {
       data['results'] = this.results!.map((v) => v.toJson()).toList();
+    }
+    if (this.topProduct != null) {
+      data['topProduct'] = this.results!.map((v) => v.toJson()).toList();
     }
     return data;
   }

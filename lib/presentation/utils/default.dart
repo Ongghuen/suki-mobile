@@ -32,6 +32,12 @@ BoxDecoration outlineBasic() {
     borderRadius: BorderRadius.all(Radius.circular(5)),
   );
 }
+BoxDecoration productBox() {
+  return BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20)
+  );
+}
 
 loading() {
   return Center(

@@ -33,6 +33,7 @@ class _SearchPageState extends State<SearchPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextField(
+                  style: GoogleFonts.montserrat(),
                   onEditingComplete: () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     setState(() {
@@ -48,8 +49,10 @@ class _SearchPageState extends State<SearchPage> {
                           borderSide:
                               const BorderSide(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(16)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius:
+                          BorderRadius.circular(16)),
                       hintText: 'Cari Barang atau Perabotan',
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search),
@@ -69,11 +72,12 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
-
                       if (state is ProductLoaded) {
-                        var product = state.productModel.results!.where((e)
-                        => e.name!.toLowerCase().contains(searchValue
-                            .toLowerCase())).toList();
+                        var product = state.productModel.results!
+                            .where((e) => e.name!
+                                .toLowerCase()
+                                .contains(searchValue.toLowerCase()))
+                            .toList();
 
                         return SizedBox(
                           width: double.infinity,
@@ -92,7 +96,8 @@ class _SearchPageState extends State<SearchPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => DetailProduct(
-                                                productId: product[index].id!
+                                                productId: product[index]
+                                                    .id!
                                                     .toInt())));
                                   },
                                   child: Container(
@@ -108,9 +113,7 @@ class _SearchPageState extends State<SearchPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            product[index]
-                                                        .image ==
-                                                    null
+                                            product[index].image == null
                                                 ? ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -173,9 +176,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                     .bold),
                                                   ),
                                                   Text(
-                                                    "${truncateWithEllipsis
-                                                      (20, product![index].desc
-                                                        .toString())}",
+                                                    "${truncateWithEllipsis(20, product![index].desc.toString())}",
                                                     style:
                                                         GoogleFonts.montserrat(
                                                             fontWeight:
@@ -183,10 +184,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                     .normal),
                                                   ),
                                                   Text(
-                                                      "${rupiahConvert
-                                                          .format
-                                                        (product![index]
-                                                          .harga)}"),
+                                                      "${rupiahConvert.format(product![index].harga)}"),
                                                 ],
                                               ),
                                             ),

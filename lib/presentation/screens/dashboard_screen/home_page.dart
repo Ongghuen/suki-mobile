@@ -25,6 +25,14 @@ class _HomePageState extends State<HomePage> {
   var searchValue = "";
   var categoryValue = "";
   List<String> categories = ["Semua", "Kursi", "Meja", "Pagar", "Pintu", "Rak"];
+  List<IconData> categoriesIcon = [
+    Icons.fiber_manual_record_outlined,
+    Icons.chair_alt_outlined,
+    Icons.table_bar_outlined,
+    Icons.fence_outlined,
+    Icons.door_front_door_outlined,
+    Icons.night_shelter_outlined
+  ];
   int selectedIndex = 0;
 
   @override
@@ -130,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                                                 )
                                               : Image.network(
                                                   "${apiUrlStorage}/${user?.image}",
-                                                  fit: BoxFit.fill,
+                                                  fit: BoxFit.cover,
                                                   height: 50,
                                                   width: 50,
                                                   // Better way to load images from network flutter
@@ -175,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
+                                style: GoogleFonts.montserrat(),
                                 onEditingComplete: () {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   setState(() {
@@ -192,12 +201,10 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius:
                                             BorderRadius.circular(16)),
                                     enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.black, width: 2),
+                                        borderSide: BorderSide.none,
                                         borderRadius:
                                             BorderRadius.circular(16)),
                                     hintText: 'Cari Barang atau Perabotan',
-                                    labelStyle: GoogleFonts.montserrat(),
                                     prefixIcon: IconButton(
                                       icon: const Icon(Icons.search),
                                       color: Colors.black,
@@ -205,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                                         // search disini
                                       },
                                     ),
-                                    fillColor: const Color(0xFFF8F9FA),
+                                    fillColor: Colors.white,
                                     filled: true),
                               ),
                             ))
@@ -220,8 +227,8 @@ class _HomePageState extends State<HomePage> {
 
                 // categories
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20,
-                      vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(
@@ -230,7 +237,6 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           height: 50,
                           child: ListView.builder(
-                              // This next line does the trick.
                               scrollDirection: Axis.horizontal,
                               physics: AlwaysScrollableScrollPhysics(
                                   parent: BouncingScrollPhysics()),
@@ -240,8 +246,8 @@ class _HomePageState extends State<HomePage> {
                                   onTap: () {
                                     setState(() {
                                       selectedIndex = index;
-                                      categoryValue = index == 0 ? "" :
-                                      categories[index];
+                                      categoryValue =
+                                          index == 0 ? "" : categories[index];
                                     });
                                   },
                                   child: Column(
@@ -255,27 +261,42 @@ class _HomePageState extends State<HomePage> {
                                                 horizontal: 20, vertical: 10),
                                             decoration: BoxDecoration(
                                               color: selectedIndex == index
-                                                  ? Colors.black : Colors
-                                                .white,
-                                              border: Border.all(width: 1),
+                                                  ? Colors.black
+                                                  : Colors.white,
 
                                               //border categories
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10)),
                                             ),
-                                            child: Text(categories[index],
-                                                style: GoogleFonts.montserrat(
-                                                  textStyle: TextStyle(
-                                                    fontWeight: FontWeight
-                                                        .w500,
-                                                    fontSize: 18,
-                                                    color: selectedIndex == index
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                  ),
-                                                )),
+                                            child: Row(
+                                              children: [
+                                                Icon(categoriesIcon[index],
+                                                    color:
+                                                        selectedIndex == index
+                                                            ? Colors.white
+                                                            : Colors.grey),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(categories[index],
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                      textStyle: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 14,
+                                                        color: selectedIndex ==
+                                                                index
+                                                            ? Colors.white
+                                                            : Colors.grey,
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
                                           ),
-                                          SizedBox(width: 16,)
+                                          SizedBox(
+                                            width: 16,
+                                          )
                                         ],
                                       ),
                                     ],
@@ -293,130 +314,166 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context, state) {
                                   if (state is ProductLoaded) {
                                     var product = state.productModel.results!
-                                        .where((e) => e.name!
-                                            .toLowerCase()
-                                            .contains(
+                                        .where((e) =>
+                                            e.name!.toLowerCase().contains(
                                                 searchValue.toLowerCase()) &&
-                                        e.categories!.toLowerCase().contains
-                                          (categoryValue.toLowerCase()))
+                                            e.categories!
+                                                .toLowerCase()
+                                                .contains(categoryValue
+                                                    .toLowerCase()))
                                         .toList();
-                                    return SizedBox(
-                                      height: 250,
-                                      child: ListView.builder(
-                                        physics: BouncingScrollPhysics(),
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: product.length,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 12),
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DetailProduct(
-                                                                productId: product[
-                                                                        index]
-                                                                    .id!
-                                                                    .toInt())));
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15)),
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    product[index].image == null
-                                                        ? ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15),
-                                                            child: Container(
-                                                              height: 150,
-                                                              width: 150,
-                                                              child: Icon(
-                                                                Icons.inventory,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15),
-                                                            child:
-                                                                Image.network(
-                                                              "${apiUrlStorage}/${product![index].image}",
-                                                              fit: BoxFit.fill,
-                                                              height: 150,
-                                                              width: 150,
-                                                              // Better way to load images from network flutter
-                                                              // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                              loadingBuilder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      Widget
-                                                                          child,
-                                                                      ImageChunkEvent?
-                                                                          loadingProgress) {
-                                                                if (loadingProgress ==
-                                                                    null)
-                                                                  return child;
-                                                                return Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    value: loadingProgress.expectedTotalBytes !=
-                                                                            null
-                                                                        ? loadingProgress.cumulativeBytesLoaded /
-                                                                            loadingProgress.expectedTotalBytes!
-                                                                        : null,
+                                    return product.length != 0
+                                        ? SizedBox(
+                                            height: 220,
+                                            child: ListView.builder(
+                                              physics: BouncingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: product.length,
+                                              itemBuilder: (context, index) {
+                                                return Container(
+                                                  decoration: productBox(),
+                                                  margin: const EdgeInsets.only(
+                                                      right: 12),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailProduct(
+                                                                      productId: product[
+                                                                              index]
+                                                                          .id!
+                                                                          .toInt())));
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(14.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            product[index]
+                                                                        .image ==
+                                                                    null
+                                                                ? ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          130,
+                                                                      width:
+                                                                          130,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .inventory,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                    child: Image
+                                                                        .network(
+                                                                      "${apiUrlStorage}/${product![index].image}",
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      height:
+                                                                          130,
+                                                                      width:
+                                                                          130,
+                                                                      // Better way to load images from network flutter
+                                                                      // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                                      loadingBuilder: (BuildContext context,
+                                                                          Widget
+                                                                              child,
+                                                                          ImageChunkEvent?
+                                                                              loadingProgress) {
+                                                                        if (loadingProgress ==
+                                                                            null)
+                                                                          return child;
+                                                                        return Center(
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            value: loadingProgress.expectedTotalBytes != null
+                                                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                                                : null,
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    ),
                                                                   ),
-                                                                );
-                                                              },
+                                                            SizedBox(
+                                                              height: 10,
                                                             ),
-                                                          ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Container(
-                                                          width: 100,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                "${product[index].name}",
-                                                                style: GoogleFonts
-                                                                    .montserrat(
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                              ),
-                                                              Text(
-                                                                  "${rupiahConvert.format(product[index].harga)}"),
-                                                            ],
-                                                          ),
+                                                            Row(
+                                                              children: [
+                                                                Container(
+                                                                  width: 100,
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        "${truncateWithEllipsis(14, "${product[index].name}")}",
+                                                                        style: GoogleFonts.montserrat(
+                                                                            fontSize:
+                                                                                12,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                      Text(
+                                                                          "${truncateWithEllipsis(14, "${rupiahConvert.format(product[index].harga)}")}",
+                                                                          style:
+                                                                              GoogleFonts.montserrat(
+                                                                            fontSize:
+                                                                                12,
+                                                                          )),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            height: 220,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Produk Tidak Ditemukan.",
+                                                  style: GoogleFonts.montserrat(
+                                                      fontWeight:
+                                                          FontWeight.w300),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           );
-                                        },
-                                      ),
-                                    );
                                   }
                                   return Center(
                                     child: loading(),
@@ -426,156 +483,193 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        Text("Vertical Mode",
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            )),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Furnitur Populer",
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                )),
+                            Text("Lihat Semua",
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12),
+                                )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
                         Column(
                           children: [
-                            const SizedBox(
-                              height: 24,
-                            ),
                             BlocBuilder<ProductBloc, ProductState>(
                               builder: (context, state) {
                                 if (state is ProductLoaded) {
-                                  var product = state.productModel.results!
-                                      .where((e) => e.name!
-                                      .toLowerCase()
-                                      .contains(
-                                      searchValue.toLowerCase()) &&
-                                      e.categories!.toLowerCase().contains
-                                        (categoryValue.toLowerCase()))
+                                  var product = state.productModel.topProduct!
+                                      .where((e) =>
+                                          e.name!.toLowerCase().contains(
+                                              searchValue.toLowerCase()) &&
+                                          e.categories!.toLowerCase().contains(
+                                              categoryValue.toLowerCase()))
                                       .toList();
-                                  return SizedBox(
-                                    width: double.infinity,
-                                    child: ListView.builder(
-                                      physics: BouncingScrollPhysics(),
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: product.length,
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 12),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailProduct(
-                                                              productId: product[
-                                                                      index]
-                                                                  .id!
-                                                                  .toInt())));
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      product[index].image ==
-                                                              null
-                                                          ? ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15),
-                                                              child: Container(
-                                                                height: 100,
-                                                                width: 100,
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .inventory,
+                                  return product.length != 0
+                                      ? SizedBox(
+                                          height: 120,
+                                          child: ListView.builder(
+                                            physics: BouncingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: product.length,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                decoration: productBox(),
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 12, right: 12),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                DetailProduct(
+                                                                    productId: product[
+                                                                            index]
+                                                                        .id!
+                                                                        .toInt())));
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15)),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              14.0),
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              product[index]
+                                                                          .image ==
+                                                                      null
+                                                                  ? ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              topLeft: Radius.circular(10)),
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            80,
+                                                                        width:
+                                                                            80,
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .inventory,
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(10)),
+                                                                      child: Image
+                                                                          .network(
+                                                                        "${apiUrlStorage}/${product[index].image}",
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            80,
+                                                                        width:
+                                                                            80,
+                                                                        // Better way to load images from network flutter
+                                                                        // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                                        loadingBuilder: (BuildContext context,
+                                                                            Widget
+                                                                                child,
+                                                                            ImageChunkEvent?
+                                                                                loadingProgress) {
+                                                                          if (loadingProgress ==
+                                                                              null)
+                                                                            return child;
+                                                                          return Center(
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Container(
+                                                                width: 150,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      "${product[index].name}",
+                                                                      style: GoogleFonts.montserrat(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                    Text(
+                                                                      "${truncateWithEllipsis(12, product[index].desc.toString())}",
+                                                                      style: GoogleFonts.montserrat(
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    ),
+                                                                    Text(
+                                                                        "${rupiahConvert.format(state.productModel.results![index].harga)}"),
+                                                                  ],
                                                                 ),
                                                               ),
-                                                            )
-                                                          : ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15),
-                                                              child:
-                                                                  Image.network(
-                                                                "${apiUrlStorage}/${product[index].image}",
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                height: 100,
-                                                                width: 100,
-                                                                // Better way to load images from network flutter
-                                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                                loadingBuilder: (BuildContext
-                                                                        context,
-                                                                    Widget
-                                                                        child,
-                                                                    ImageChunkEvent?
-                                                                        loadingProgress) {
-                                                                  if (loadingProgress ==
-                                                                      null)
-                                                                    return child;
-                                                                  return Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      value: loadingProgress.expectedTotalBytes !=
-                                                                              null
-                                                                          ? loadingProgress.cumulativeBytesLoaded /
-                                                                              loadingProgress.expectedTotalBytes!
-                                                                          : null,
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ),
-                                                            ),
-                                                      Container(
-                                                        height: 100,
-                                                        width: 150,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "${product[index].name}",
-                                                              style: GoogleFonts
-                                                                  .montserrat(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                            ),
-                                                            Text(
-                                                              "${truncateWithEllipsis(20, product[index].desc.toString())}",
-                                                              style: GoogleFonts
-                                                                  .montserrat(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
-                                                            ),
-                                                            Text(
-                                                                "${rupiahConvert.format(state.productModel.results![index].harga)}"),
-                                                          ],
-                                                        ),
+                                                            ],
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          height: 120,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Produk Tidak Ditemukan.",
+                                                style: GoogleFonts.montserrat(
+                                                    fontWeight:
+                                                        FontWeight.w300),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         );
-                                      },
-                                    ),
-                                  );
                                 }
                                 return Center(
                                   child: loading(),
