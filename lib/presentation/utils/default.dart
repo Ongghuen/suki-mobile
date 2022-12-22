@@ -57,4 +57,9 @@ TextStyle textStyleDefault() {
   return GoogleFonts.montserrat(color: Colors.black);
 }
 
+TextStyle notFoundText() {
+  return GoogleFonts.montserrat(fontWeight:
+  FontWeight.w300);
+}
+
 final rupiahConvert = NumberFormat.currency(locale: 'ID');

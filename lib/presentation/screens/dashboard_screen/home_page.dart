@@ -467,9 +467,7 @@ class _HomePageState extends State<HomePage> {
                                               children: [
                                                 Text(
                                                   "Produk Tidak Ditemukan.",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.w300),
+                                                  style: notFoundText(),
                                                 ),
                                               ],
                                             ),
@@ -495,13 +493,18 @@ class _HomePageState extends State<HomePage> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 )),
-                            Text("Lihat Semua",
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
-                                )),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/search");
+                              },
+                              child: Text("Lihat Semua",
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  )),
+                            ),
                           ],
                         ),
                         const SizedBox(

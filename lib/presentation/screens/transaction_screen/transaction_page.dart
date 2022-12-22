@@ -181,9 +181,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Text("Anda belum melakukan "
-                                              "transaksi."),
+                                              "transaksi.", style: notFoundText()),
                                         ],
                                       ),
                                     ),

@@ -52,8 +52,12 @@ class _WishlistPageState extends State<WishlistPage> {
                 } else if (state is WishlistLoaded) {
                   return state.data.results!.isEmpty
                       ? Center(
-                          child: Text("Ayooo cari furnitur favoritmu di "
-                              "katalog kami!"))
+                          child: SizedBox(
+                            width: 200,
+                            child: Text("Ayooo cari furnitur favoritmu di "
+                                "katalog kami!", style: notFoundText(),
+                              textAlign: TextAlign.center,),
+                          ))
                       : ListView.builder(
                           scrollDirection: Axis.vertical,
                           physics: BouncingScrollPhysics(),

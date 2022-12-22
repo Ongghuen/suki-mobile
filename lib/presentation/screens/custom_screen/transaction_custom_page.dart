@@ -379,7 +379,9 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text("Anda belum mengajukan "
-                                                "furnitur custom."),
+                                                "furnitur custom.",
+                                                style: GoogleFonts
+                                                    .montserrat()),
                                           ],
                                         ),
                                       ),

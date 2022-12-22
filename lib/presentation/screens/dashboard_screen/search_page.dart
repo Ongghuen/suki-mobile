@@ -15,21 +15,26 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController search = TextEditingController();
   var searchValue = "";
+  var categoryValue = "";
+  List<String> categories = ["Semua", "Kursi", "Meja", "Pagar", "Pintu", "Rak"];
+  List<IconData> categoriesIcon = [
+    Icons.fiber_manual_record_outlined,
+    Icons.chair_alt_outlined,
+    Icons.table_bar_outlined,
+    Icons.fence_outlined,
+    Icons.door_front_door_outlined,
+    Icons.night_shelter_outlined
+  ];
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.grey[800],
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 40,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextField(
@@ -61,148 +66,276 @@ class _SearchPageState extends State<SearchPage> {
                           // search disini
                         },
                       ),
-                      fillColor: const Color(0xFFF8F9FA),
+                      fillColor: Colors.white,
                       filled: true),
                 ),
               ),
               Column(
                 children: [
                   const SizedBox(
-                    height: 24,
+                    height: 10,
                   ),
-                  BlocBuilder<ProductBloc, ProductState>(
-                    builder: (context, state) {
-                      if (state is ProductLoaded) {
-                        var product = state.productModel.results!
-                            .where((e) => e.name!
-                                .toLowerCase()
-                                .contains(searchValue.toLowerCase()))
-                            .toList();
 
-                        return SizedBox(
-                          width: double.infinity,
-                          child: ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: product.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailProduct(
-                                                productId: product[index]
-                                                    .id!
-                                                    .toInt())));
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
+                  // categories
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 50,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: AlwaysScrollableScrollPhysics(
+                                    parent: BouncingScrollPhysics()),
+                                itemCount: categories.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedIndex = index;
+                                        categoryValue =
+                                        index == 0 ? "" : categories[index];
+                                      });
+                                    },
                                     child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        SizedBox(
-                                          height: 10,
-                                        ),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            product[index].image == null
-                                                ? ClipRRect(
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 10),
+                                              decoration: BoxDecoration(
+                                                color: selectedIndex == index
+                                                    ? Colors.black
+                                                    : Colors.white,
+
+                                                //border categories
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Icon(categoriesIcon[index],
+                                                      color:
+                                                      selectedIndex == index
+                                                          ? Colors.white
+                                                          : Colors.grey),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(categories[index],
+                                                      style:
+                                                      GoogleFonts.montserrat(
+                                                        textStyle: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontSize: 14,
+                                                          color: selectedIndex ==
+                                                              index
+                                                              ? Colors.white
+                                                              : Colors.grey,
+                                                        ),
+                                                      )),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 16,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      children: [
+                        BlocBuilder<ProductBloc, ProductState>(
+                          builder: (context, state) {
+                            if (state is ProductLoaded) {
+                              var product = state.productModel.results!
+                                  .where((e) =>
+                              e.name!.toLowerCase().contains(
+                                  searchValue.toLowerCase()) &&
+                                  e.categories!
+                                      .toLowerCase()
+                                      .contains(categoryValue
+                                      .toLowerCase()))
+                                  .toList();
+
+                              return product.length != 0 ? SizedBox(
+                                height: 600,
+                                width: double.infinity,
+                                child: GridView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 200,
+                                        childAspectRatio: 1.5 / 2,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10),
+                                    itemCount: product.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                      return Container(
+                                        decoration: productBox(),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailProduct(
+                                                            productId: product[
+                                                            index]
+                                                                .id!
+                                                                .toInt())));
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius
+                                                    .circular(
+                                                    15)),
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets
+                                                  .all(14.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  product[index]
+                                                      .image ==
+                                                      null
+                                                      ? ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: Container(
-                                                      height: 100,
-                                                      width: 100,
-                                                      child: Icon(
-                                                        Icons.inventory,
+                                                    BorderRadius.circular(
+                                                        15),
+                                                    child:
+                                                    Container(
+                                                      height:
+                                                      130,
+                                                      width:
+                                                      130,
+                                                      child:
+                                                      Icon(
+                                                        Icons
+                                                            .inventory,
                                                       ),
                                                     ),
                                                   )
-                                                : ClipRRect(
+                                                      : ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: Image.network(
+                                                    BorderRadius.circular(
+                                                        10),
+                                                    child: Image
+                                                        .network(
                                                       "${apiUrlStorage}/${product![index].image}",
-                                                      fit: BoxFit.fill,
-                                                      height: 100,
-                                                      width: 100,
+                                                      fit: BoxFit
+                                                          .cover,
+                                                      height:
+                                                      130,
+                                                      width:
+                                                      130,
                                                       // Better way to load images from network flutter
                                                       // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
+                                                      loadingBuilder: (BuildContext context,
+                                                          Widget
+                                                          child,
                                                           ImageChunkEvent?
-                                                              loadingProgress) {
+                                                          loadingProgress) {
                                                         if (loadingProgress ==
-                                                            null) return child;
+                                                            null)
+                                                          return child;
                                                         return Center(
                                                           child:
-                                                              CircularProgressIndicator(
-                                                            value: loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                        .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes!
+                                                          CircularProgressIndicator(
+                                                            value: loadingProgress.expectedTotalBytes != null
+                                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                                                 : null,
                                                           ),
                                                         );
                                                       },
                                                     ),
                                                   ),
-                                            Container(
-                                              height: 100,
-                                              width: 150,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${product![index].name}",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                  SizedBox(
+                                                    height: 10,
                                                   ),
-                                                  Text(
-                                                    "${truncateWithEllipsis(20, product![index].desc.toString())}",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 100,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                          children: [
+                                                            Text(
+                                                              "${truncateWithEllipsis(14, "${product[index].name}")}",
+                                                              style: GoogleFonts.montserrat(
+                                                                  fontSize:
+                                                                  12,
+                                                                  fontWeight:
+                                                                  FontWeight.bold),
+                                                            ),
+                                                            Text(
+                                                                "${truncateWithEllipsis(14, "${rupiahConvert.format(product[index].harga)}")}",
+                                                                style:
+                                                                GoogleFonts.montserrat(
+                                                                  fontSize:
+                                                                  12,
+                                                                )),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Text(
-                                                      "${rupiahConvert.format(product![index].harga)}"),
                                                 ],
                                               ),
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ],
+                                      );
+                                    }),
+                              ): SizedBox(
+                                height: 600,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Produk Tidak Ditemukan.",
+                                      style: notFoundText(),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               );
-                            },
-                          ),
-                        );
-                      }
-                      return Center(
-                        child: loading(),
-                      );
-                    },
+                            }
+                            return Center(
+                              child: loading(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               )

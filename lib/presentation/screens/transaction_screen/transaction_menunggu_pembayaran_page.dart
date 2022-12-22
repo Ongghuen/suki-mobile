@@ -87,7 +87,7 @@ class _TransactionMenungguPembayaranPageState
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Anda belum melakukan "
-                                        "transaksi."),
+                                        "transaksi.", style: notFoundText()),
                                   ],
                                 ),
                               ),
