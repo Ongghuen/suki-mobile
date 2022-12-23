@@ -82,7 +82,7 @@ class _TransactionDetailsCustomPageState
                                   "disetujui oleh Admin!",
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.montserrat(
-                                      fontSize: 22,
+                                      fontSize: getAdaptiveTextSize(context, 22),
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -92,12 +92,12 @@ class _TransactionDetailsCustomPageState
                               Text(
                                   "Total Harga: ${rupiahConvert.format(custom.totalHarga)}",
                                   style: GoogleFonts.montserrat(
-                                      fontSize: 16,
+                                      fontSize: getAdaptiveTextSize(context, 16),
                                       fontWeight: FontWeight.w500)),
                               Text(
                                   "Down Payment: ${rupiahConvert.format(custom.customs!.first.dp)}",
                                   style: GoogleFonts.montserrat(
-                                      fontSize: 16,
+                                      fontSize: getAdaptiveTextSize(context, 16),
                                       fontWeight: FontWeight.w500)),
                               // ini input text atau form
                               SizedBox(
@@ -120,7 +120,8 @@ class _TransactionDetailsCustomPageState
                                         'SETUJU',
                                         style: GoogleFonts.montserrat(
                                             color: Colors.white,
-                                            fontSize: 18,
+                                            fontSize: getAdaptiveTextSize
+                                              (context, 18),
                                             fontWeight: FontWeight.bold),
                                       ),
                                       // pay now
@@ -148,7 +149,8 @@ class _TransactionDetailsCustomPageState
                                         'TOLAK',
                                         style: GoogleFonts.montserrat(
                                             color: Colors.white,
-                                            fontSize: 18,
+                                            fontSize: getAdaptiveTextSize
+                                              (context, 18),
                                             fontWeight: FontWeight.bold),
                                       ),
                                       // pay now
@@ -179,7 +181,9 @@ class _TransactionDetailsCustomPageState
         title: Text(
           'Selesaikan Pemesanan?',
           style:
-              GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.bold),
+              GoogleFonts.montserrat(fontSize: getAdaptiveTextSize(context, 18),
+              fontWeight: FontWeight
+                  .bold),
         ),
         content: Text(
           'Klik tombol \"OK\" jika pesanan'
@@ -262,6 +266,7 @@ class _TransactionDetailsCustomPageState
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -289,7 +294,7 @@ class _TransactionDetailsCustomPageState
                 Text(
                   "Detail Custom",
                   style: GoogleFonts.montserrat(
-                    fontSize: 24,
+                    fontSize: getAdaptiveTextSize(context, 24),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -321,12 +326,16 @@ class _TransactionDetailsCustomPageState
                             Text(
                               "Status Transaksi: ${custom.status}",
                               style: GoogleFonts.montserrat(
-                                  fontSize: 14, fontWeight: FontWeight.w600),
+                                  fontSize: getAdaptiveTextSize(context, 14),
+                                  fontWeight:
+                              FontWeight.w600),
                             ),
                             Text(
                               "Status Custom: ${custom.customs!.first.status}",
                               style: GoogleFonts.montserrat(
-                                  fontSize: 14, fontWeight: FontWeight.w600),
+                                  fontSize: getAdaptiveTextSize(context, 14),
+                                  fontWeight:
+                              FontWeight.w600),
                             ),
                             // divider
                             divider(),
@@ -335,7 +344,9 @@ class _TransactionDetailsCustomPageState
                             Text(
                               "Alamat Pengiriman",
                               style: GoogleFonts.montserrat(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
+                                  fontSize: getAdaptiveTextSize(context, 18),
+                                  fontWeight:
+                              FontWeight.w600),
                             ),
 
                             // inside
@@ -403,7 +414,8 @@ class _TransactionDetailsCustomPageState
                                         "Furnitur yang "
                                         "diajukan",
                                         style: GoogleFonts.montserrat(
-                                            fontSize: 18,
+                                            fontSize: getAdaptiveTextSize
+                                              (context, 18),
                                             fontWeight: FontWeight.bold),
                                       )),
                                       SizedBox(
@@ -494,7 +506,7 @@ class _TransactionDetailsCustomPageState
                                   "PESANAN DITERIMA",
                                   style: GoogleFonts.montserrat(
                                       color: Colors.white,
-                                      fontSize: 16,
+                                      fontSize: getAdaptiveTextSize(context, 16),
                                       fontWeight: FontWeight.bold),
                                 ),
                                 // pay now

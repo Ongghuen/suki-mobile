@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/api/call.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
+import 'package:mobile/presentation/utils/default.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
@@ -51,8 +53,10 @@ class _LoginPageState extends State<LoginPage> {
                     }, builder: (_, state) {
                       return Text("Selamat Datang Kembali!",
                           style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20)));
+                              textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize:
+                              getAdaptiveTextSize(context, 20))), textAlign:
+                        TextAlign.center,);
                     }),
                   ),
 
@@ -120,8 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.white,
                               );
                             }
-                            return const Text("MASUK",
-                                style: TextStyle(fontSize: 16));
+                            return Text("MASUK",
+                                style: TextStyle(fontSize:
+                                getAdaptiveTextSize(context, 16)));
                           }),
                         );
                       }),

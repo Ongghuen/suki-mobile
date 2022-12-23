@@ -61,7 +61,9 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
         title: Text(
           'Selesaikan Pembayaran?',
           style:
-              GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.bold),
+              GoogleFonts.montserrat(fontSize: getAdaptiveTextSize(context, 18),
+              fontWeight: FontWeight
+                  .bold),
         ),
         content: Text(
           'Anda tidak dapat mengubah gambar bukti transaksi'
@@ -100,7 +102,15 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    restartBlocs();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -133,7 +143,7 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                   Text(
                     "Pembayaran",
                     style: GoogleFonts.montserrat(
-                      fontSize: 24,
+                      fontSize: getAdaptiveTextSize(context, 24),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -167,7 +177,8 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                                   Text(
                                     "Bank Transfer",
                                     style: GoogleFonts.montserrat(
-                                        fontSize: 18,
+                                        fontSize: getAdaptiveTextSize
+                                          (context, 18),
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Icon(Icons.local_atm_outlined)
@@ -267,17 +278,19 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                                   physics: AlwaysScrollableScrollPhysics(
                                       parent: BouncingScrollPhysics()),
                                   child: Container(
-                                    height: 400,
-                                    width: 400,
+                                    height: size.height * 0.15,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Anda belum menyatakan "
-                                          "cinta.\n Pull down untuk refresh"
+                                          "Anda belum mengupload bukti "
+                                          "pembayaran.\n Pull down untuk "
+                                              "refresh"
                                           " ",
                                           textAlign: TextAlign.center,
+                                          style: GoogleFonts.montserrat(fontSize:
+                                          getAdaptiveTextSize(context, 12))
                                         ),
                                       ],
                                     ),
@@ -325,7 +338,9 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                       "Pesananmu baru diteruskan ke toko setelah pembayaran "
                       "terverifikasi",
                       style: GoogleFonts.montserrat(
-                          fontSize: 18, fontWeight: FontWeight.w400),
+                          fontSize: getAdaptiveTextSize(context, 18), fontWeight:
+                      FontWeight
+                          .w400),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -358,14 +373,18 @@ class _TransactionPembayaranPageState extends State<TransactionPembayaranPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              checkout.buktiBayar == null
-                                  ? 'UPLOAD BUKTI PEMBAYARAN'
-                                  : "FINALIZE PEMBAYARAN",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                            Container(
+                            width: size.width * 0.7,
+                              child: Text(
+                                checkout.buktiBayar == null
+                                    ? 'UPLOAD BUKTI PEMBAYARAN'
+                                    : "FINALIZE PEMBAYARAN",
+                                style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: getAdaptiveTextSize(context, 16),
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             // pay now
                           ],

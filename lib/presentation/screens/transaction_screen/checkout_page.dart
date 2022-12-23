@@ -78,7 +78,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   'UPDATE ALAMAT',
                                   style: GoogleFonts.montserrat(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize:
+                                          getAdaptiveTextSize(context, 18),
                                       fontWeight: FontWeight.bold),
                                 ),
                                 // pay now
@@ -100,6 +101,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -119,7 +121,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Text(
               "Checkout",
               style: GoogleFonts.montserrat(
-                fontSize: 24,
+                fontSize: getAdaptiveTextSize(context, 24),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -150,7 +152,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             Text(
                               "Alamat Pengiriman",
                               style: GoogleFonts.montserrat(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
+                                  fontSize: getAdaptiveTextSize(context, 18),
+                                  fontWeight: FontWeight.w600),
                             ),
 
                             // spacing
@@ -173,7 +176,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  width: 200,
+                                  width: size.width * 0.5,
                                   child: Text(
                                     "${auth.address == null ? "- *tolong isi "
                                         "alamat terlebih dahulu" : auth.address}",
@@ -213,124 +216,143 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
             // list view of cart
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child:
-                    BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
-                  builder: (context, state) {
-                    if (state is DetailTransactionLoaded) {
-                      return ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        physics: BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.data.results!.length,
-                        itemBuilder: (context, index) {
-                          return BlocBuilder<ProductBloc, ProductState>(
-                              builder: (_, pstate) {
-                            if (pstate is ProductLoaded) {
-                              var product = pstate.productModel.results!.where(
-                                  (element) =>
-                                      element.id ==
-                                      state.data.results![index].pivot!
-                                          .productId);
-                              totHarga += int.parse(state
-                                  .data.results![index].pivot.subTotal
-                                  .toString());
+              child: BlocBuilder<DetailTransactionBloc,
+                  DetailTransactionState>(
+                builder: (context, state) {
+                  if (state is DetailTransactionLoaded) {
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.data.results!.length,
+                      itemBuilder: (context, index) {
+                        return BlocBuilder<ProductBloc, ProductState>(
+                            builder: (_, pstate) {
+                          if (pstate is ProductLoaded) {
+                            var product = pstate.productModel.results!
+                                .where((element) =>
+                                    element.id ==
+                                    state.data.results![index].pivot!
+                                        .productId);
+                            totHarga += int.parse(state
+                                .data.results![index].pivot.subTotal
+                                .toString());
 
-                              return Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          product.first.image == null
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  child: Container(
-                                                    height: 100,
-                                                    width: 100,
-                                                    child: Icon(
-                                                      Icons.inventory,
-                                                    ),
-                                                  ),
-                                                )
-                                              : ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  child: Image.network(
-                                                    "${apiUrlStorage}/${product.first.image}",
-                                                    fit: BoxFit.fill,
-                                                    height: 100,
-                                                    width: 100,
-                                                    // Better way to load images from network flutter
-                                                    // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                    loadingBuilder: (BuildContext
-                                                            context,
-                                                        Widget child,
-                                                        ImageChunkEvent?
-                                                            loadingProgress) {
-                                                      if (loadingProgress ==
-                                                          null) return child;
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          value: loadingProgress
-                                                                      .expectedTotalBytes !=
-                                                                  null
-                                                              ? loadingProgress
-                                                                      .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes!
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
+                            return Container(
+                              decoration: productBox(),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        product.first.image == null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        15),
+                                                child: Container(
+                                                  height:
+                                                  size.height *
+                                                      0.15,
+                                                  width:
+                                                  size.width * 0.3,
+                                                  child: Icon(
+                                                    Icons.inventory,
                                                   ),
                                                 ),
-                                          Container(
-                                            height: 100,
-                                            width: 150,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${product.first.name}",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                              )
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        15),
+                                                child: Image.network(
+                                                  "${apiUrlStorage}/${product.first.image}",
+                                                  fit: BoxFit.fill,
+                                                  height:
+                                                  size.height *
+                                                      0.15,
+                                                  width:
+                                                  size.width * 0.3,
+                                                  // Better way to load images from network flutter
+                                                  // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                  loadingBuilder: (BuildContext
+                                                          context,
+                                                      Widget child,
+                                                      ImageChunkEvent?
+                                                          loadingProgress) {
+                                                    if (loadingProgress ==
+                                                        null) return child;
+                                                    return Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        value: loadingProgress
+                                                                    .expectedTotalBytes !=
+                                                                null
+                                                            ? loadingProgress
+                                                                    .cumulativeBytesLoaded /
+                                                                loadingProgress
+                                                                    .expectedTotalBytes!
+                                                            : null,
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                                Text(
-                                                    "${rupiahConvert.format(state.data.results![index].pivot.subTotal)}"),
-                                                Text(
-                                                    "${state.data.results![index].pivot!.qty} barang"),
-                                              ],
+                                              ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${truncateWithEllipsis(14, "${product.first.name}")}",
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize:
+                                                      getAdaptiveTextSize(
+                                                          context, 14),
+                                                  fontWeight:
+                                                      FontWeight.bold),
                                             ),
-                                          ),
-                                        ],
-                                      ),
+                                            Text(
+                                              "${rupiahConvert.format(state.data.results![index].pivot.subTotal)}",
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize:
+                                                      getAdaptiveTextSize(
+                                                          context, 12),
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                            Text(
+                                              "${state.data.results![index].pivot!.qty} barang",
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize:
+                                                      getAdaptiveTextSize(
+                                                          context, 12),
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              );
-                            }
-                            return CircularProgressIndicator();
-                          });
-                        },
-                      );
-                    }
-                    return CircularProgressIndicator();
-                  },
-                ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          return CircularProgressIndicator();
+                        });
+                      },
+                    );
+                  }
+                  return CircularProgressIndicator();
+                },
               ),
             ),
 
@@ -343,7 +365,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Text(
                   "Ringkasan Belanja",
                   style: GoogleFonts.montserrat(
-                      fontSize: 18, fontWeight: FontWeight.w600),
+                      fontSize: getAdaptiveTextSize(context, 18),
+                      fontWeight: FontWeight.w600),
                 ),
 
                 // spacing
@@ -365,11 +388,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             children: [
                               Text(
                                 "Total Tagihan",
-                                style: GoogleFonts.montserrat(fontSize: 16),
+                                style: GoogleFonts.montserrat(
+                                    fontSize: getAdaptiveTextSize(context, 16)),
                               ),
                               Text(
                                 "${rupiahConvert.format(state.totalHarga)}",
-                                style: GoogleFonts.montserrat(fontSize: 16),
+                                style: GoogleFonts.montserrat(
+                                    fontSize: getAdaptiveTextSize(context, 16)),
                               ),
                             ],
                           );
@@ -395,10 +420,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   var auth = state.userModel.user!;
                   return InkWell(
                     onTap: () {
-                      auth.address == null ? bottomSheet(context) :
-                      Navigator.of(context)
-                          .pushNamed
-                        ('/transaction-confirm');
+                      auth.address == null
+                          ? bottomSheet(context)
+                          : Navigator.of(context)
+                              .pushNamed('/transaction-confirm');
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -414,7 +439,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 "PESANAN"}',
                             style: GoogleFonts.montserrat(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: getAdaptiveTextSize(context, 18),
                                 fontWeight: FontWeight.bold),
                           ),
                           // pay now
@@ -426,7 +451,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 return loading();
               },
             ),
-            SizedBox(height: 40,)
+            SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),

@@ -45,6 +45,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -61,11 +62,14 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                           Navigator.pop(context);
                         },
                         icon: Icon(Icons.arrow_back_ios)),
-                    Text(
-                      "List Request Custom",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      width: size.width * 0.7,
+                      child: Text(
+                        "List Request Custom",
+                        style: GoogleFonts.montserrat(
+                          fontSize: getAdaptiveTextSize(context, 20),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -82,7 +86,8 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
                       underline: SizedBox(),
                       style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.bold, color: Colors.black),
+                        fontSize: getAdaptiveTextSize(context, 14),
+                          fontWeight: FontWeight.w500, color: Colors.black),
                       onChanged: (String? value) {
                         // This is called when the user selects an item.
                         setState(() {
@@ -118,30 +123,32 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                   child: Container(
                     decoration: outlineBasic(),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.05, vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.attach_money_rounded,
-                                size: 32,
+                                size: size.width * 0.08,
                                 color: Colors.green,
                               ),
                               const SizedBox(
                                 width: 20,
                               ),
                               SizedBox(
-                                width: 200,
+                                width: size.width * 0.5,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       "Pembayaran atau Konfirmasi",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: getAdaptiveTextSize
+                                          (context, 14),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -164,7 +171,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
 
                 // transaction card
                 Container(
-                    height: 650,
+                    height: size.height * 0.5,
                     child: RefreshIndicator(
                       color: Colors.black,
                       onRefresh: () async {
@@ -251,9 +258,9 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                                   "${custom[index].categories}"),
                                                               Text(
                                                                 "${custom[index].createdAt}",
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.montserrat(
                                                                     fontSize:
-                                                                        12),
+                                                                        getAdaptiveTextSize(context, 12)),
                                                               ),
                                                             ],
                                                           ),
@@ -281,7 +288,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                         children: [
                                                           Text(
                                                             "${custom[index].customs!.first.name}",
-                                                            style: TextStyle(
+                                                            style: GoogleFonts.montserrat(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),
@@ -290,7 +297,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                             children: [
                                                               Text(
                                                                 "${custom[index].customs!.first.jenisCustom}",
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.montserrat(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
@@ -302,7 +309,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                                         4),
                                                                 child: Text(
                                                                   "-",
-                                                                  style: TextStyle(
+                                                                  style: GoogleFonts.montserrat(
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500),
@@ -310,7 +317,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                               ),
                                                               Text(
                                                                 "${custom[index].customs!.first.bahan}",
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.montserrat(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
@@ -340,7 +347,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                           Text("Total Harga:"),
                                                           Text(
                                                             "${rupiahConvert.format(custom[index].totalHarga)}",
-                                                            style: TextStyle(
+                                                            style: GoogleFonts.montserrat(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),
@@ -372,8 +379,7 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                       physics: AlwaysScrollableScrollPhysics(
                                           parent: BouncingScrollPhysics()),
                                       child: Container(
-                                        height: 400,
-                                        width: 400,
+                                        height: size.height * 0.2,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -381,7 +387,10 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                             Text("Anda belum mengajukan "
                                                 "furnitur custom.",
                                                 style: GoogleFonts
-                                                    .montserrat()),
+                                                    .montserrat(fontWeight:
+                                                FontWeight.w300),
+                                              textAlign:
+                                              TextAlign.center,),
                                           ],
                                         ),
                                       ),

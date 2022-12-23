@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_bloc.dart';
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
@@ -17,20 +18,11 @@ class DetailProduct extends StatefulWidget {
 }
 
 class _DetailProductState extends State<DetailProduct> {
-  // @override
-  // void initState() {
-  //   final pstate = context.read<ProductBloc>().state;
-  //   if (pstate is ProductLoaded) {
-  //     var product = pstate.productModel.results!
-  //         .where((element) => element.id == widget.productId);
-  //   }
-  //   // TODO: implement initState
-  //   super.initState();
-  // }
+
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    Size size = MediaQuery.of(context).size;
 
     return BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
       if (state is ProductLoaded) {
@@ -56,41 +48,43 @@ class _DetailProductState extends State<DetailProduct> {
           //
           body: Column(
             children: [
-              SizedBox(
-                height: height / 1.7,
-                child: Stack(
-                  children: [
-                    Align(
-                        alignment: Alignment.center,
-                        child: product.first.image == null
-                            ? const SizedBox(
-                                width: 50,
-                                child: Icon(Icons.inventory),
-                              )
-                            : Image.network(
-                                "${apiUrlStorage}${product.first.image}",
-                                fit: BoxFit.fill,
-                                // Better way to load images from network flutter
-                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
-                                  );
-                                },
-                              ))
-                  ],
+              Expanded(
+                child: SizedBox(
+                  height: size.height / 1.8,
+                  child: Stack(
+                    children: [
+                      Align(
+                          alignment: Alignment.center,
+                          child: product.first.image == null
+                              ? const SizedBox(
+                                  width: 50,
+                                  child: Icon(Icons.inventory),
+                                )
+                              : Image.network(
+                                  "${apiUrlStorage}${product.first.image}",
+                                  fit: BoxFit.fill,
+                                  // Better way to load images from network flutter
+                                  // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value:
+                                            loadingProgress.expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                      ),
+                                    );
+                                  },
+                                ))
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -105,21 +99,22 @@ class _DetailProductState extends State<DetailProduct> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: 350,
+                              width: size.width * 0.8,
                               child: SingleChildScrollView(
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 child: Text(
                                   "${product.first.name}",
-                                  style: const TextStyle(
-                                      fontSize: 32,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: getAdaptiveTextSize(context, 32),
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
                             Text(
                               "${rupiahConvert.format(product.first.harga)}",
-                              style: const TextStyle(fontSize: 18),
+                              style: GoogleFonts.montserrat(fontSize:
+                              getAdaptiveTextSize(context, 18)),
                             ),
                           ],
                         ),
@@ -127,12 +122,13 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                     const SizedBox(height: 20.0),
                     SizedBox(
-                      height: 100,
+                      height: size.height * 0.10,
                       child: Text(
                         "${product.first.desc}",
+                        style: GoogleFonts.montserrat(fontSize:
+                        getAdaptiveTextSize(context, 14))
                       ),
                     ),
-                    const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -183,7 +179,7 @@ class _DetailProductState extends State<DetailProduct> {
                         ),
                         Expanded(
                           child: Container(
-                            height: 40.0,
+                            height: size.height * 0.06,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
                             decoration: BoxDecoration(
@@ -257,7 +253,8 @@ class _DetailProductState extends State<DetailProduct> {
                           ),
                         )
                       ],
-                    )
+                    ),
+                    SizedBox(height: size.height * 0.02,)
                   ],
                 ),
               )

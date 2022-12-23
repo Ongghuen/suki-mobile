@@ -29,6 +29,7 @@ class _TransactionCustomMenungguPembayaranPageState
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -45,11 +46,14 @@ class _TransactionCustomMenungguPembayaranPageState
                           Navigator.pop(context);
                         },
                         icon: Icon(Icons.arrow_back_ios)),
-                    Text(
-                      "Pembayaran/Konfirmasi",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      width: size.width * 0.7,
+                      child: Text(
+                        "Pembayaran/Konfirmasi",
+                        style: GoogleFonts.montserrat(
+                          fontSize: getAdaptiveTextSize(context, 18),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -58,7 +62,7 @@ class _TransactionCustomMenungguPembayaranPageState
                   height: 24,
                 ),
                 Container(
-                  height: 650,
+                  height: size.height * 0.8,
                   child: RefreshIndicator(
                     onRefresh: () async {
                       restartBlocs();
@@ -70,8 +74,8 @@ class _TransactionCustomMenungguPembayaranPageState
                           var custom = state.data.details!
                               .where((e) =>
                                   e.customs!.length != 0 &&
-                                  e.status! == "Pending" || e.status! ==
-                                      "Belum_Bayar")
+                                      e.status! == "Pending" ||
+                                  e.status! == "Belum_Bayar")
                               .toList();
                           return custom.length != 0
                               ? ListView.builder(
@@ -132,19 +136,24 @@ class _TransactionCustomMenungguPembayaranPageState
                                                         SizedBox(
                                                           width: 5,
                                                         ),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                                "${custom[index].categories}"),
-                                                            Text(
-                                                              "${custom[index].createdAt}",
-                                                              style: TextStyle(
-                                                                  fontSize: 12),
-                                                            ),
-                                                          ],
+                                                        Container(
+                                                          width:
+                                                              size.width * 0.3,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                  "${custom[index].categories}"),
+                                                              Text(
+                                                                "${custom[index].createdAt}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -261,16 +270,20 @@ class _TransactionCustomMenungguPembayaranPageState
                                     physics: AlwaysScrollableScrollPhysics(
                                         parent: BouncingScrollPhysics()),
                                     child: Container(
-                                      height: 400,
-                                      width: 400,
+                                      height: size.height * 0.2,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text("Anda belum mengajukan "
-                                              "furnitur custom.",
-                                              style: GoogleFonts
-                                              .montserrat()),
+                                          Text(
+                                            "Anda belum mengajukan "
+                                            "furnitur custom.",
+                                            style: GoogleFonts.montserrat(
+                                                fontSize: getAdaptiveTextSize(
+                                                    context, 14),
+                                                fontWeight: FontWeight.w300),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ],
                                       ),
                                     ),

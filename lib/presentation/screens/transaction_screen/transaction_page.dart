@@ -36,6 +36,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -55,7 +56,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     Text(
                       "Daftar Transaksi",
                       style: GoogleFonts.montserrat(
-                        fontSize: 24,
+                        fontSize: getAdaptiveTextSize(context, 20),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -74,7 +75,8 @@ class _TransactionPageState extends State<TransactionPage> {
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
                       underline: const SizedBox(),
                       style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.bold, color: Colors.black),
+                        fontSize: getAdaptiveTextSize(context, 14),
+                          fontWeight: FontWeight.w500, color: Colors.black),
                       onChanged: (String? value) {
                         // This is called when the user selects an item.
                         setState(() {
@@ -105,30 +107,32 @@ class _TransactionPageState extends State<TransactionPage> {
                   child: Container(
                     decoration: outlineBasic(),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.05, vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.attach_money_rounded,
-                                size: 32,
+                                size: size.width * 0.08,
                                 color: Colors.green,
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 20,
                               ),
                               SizedBox(
-                                width: 200,
+                                width: size.width * 0.55,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       "Menunggu Pembayaran",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: getAdaptiveTextSize
+                                          (context, 14),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -151,7 +155,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
                 // transaction card
                 SizedBox(
-                  height: 650,
+                  height: size.height * 1,
                   child: BlocBuilder<DetailTransactionBloc,
                       DetailTransactionState>(
                     builder: (context, state) {
@@ -176,8 +180,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                         const AlwaysScrollableScrollPhysics(
                                             parent: BouncingScrollPhysics()),
                                     child: SizedBox(
-                                      height: 400,
-                                      width: 400,
+                                      height: size.height * 0.5,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -250,12 +253,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                                           children: [
                                                             Text(
                                                                 "${details[index].categories}"),
-                                                            Text(
-                                                              "${details[index].createdAt}",
-                                                              style:
-                                                                  const TextStyle(
-                                                                      fontSize:
-                                                                          12),
+                                                            Container(
+                                                              width: size
+                                                                  .width * 0.3,
+                                                              child: Text(
+                                                                "${details[index].createdAt}",
+                                                                style:
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            getAdaptiveTextSize(context, 12)),
+                                                              ),
                                                             ),
                                                           ],
                                                         ),

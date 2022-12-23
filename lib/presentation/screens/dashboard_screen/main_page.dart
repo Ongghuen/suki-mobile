@@ -76,7 +76,7 @@ class _MainPageState extends State<MainPage> {
               color: Theme.of(context).scaffoldBackgroundColor,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal:
-                    size.width * 0.02),
+                    size.width * 0.08),
                 child: GNav(
                     onTabChange: (value) {
                       setState(() {
@@ -87,9 +87,11 @@ class _MainPageState extends State<MainPage> {
                     activeColor: Colors.white,
                     tabBackgroundColor: Colors.black,
                     duration: const Duration(milliseconds: 200),
-                    iconSize: size.width * 0.07 - 2,
+                    iconSize: size.width * 0.07,
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        EdgeInsets.symmetric(horizontal: size.width * 0.045,
+                            vertical:
+                        15),
                     tabs: const [
                       GButton(
                         icon: Icons.home_outlined,

@@ -136,7 +136,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   Text(categories[index],
                                                       style: GoogleFonts
                                                           .montserrat(
-                                                        textStyle: TextStyle(
+                                                        textStyle: GoogleFonts.montserrat(
                                                           fontWeight:
                                                               FontWeight.w500,
                                                           fontSize: 14,
@@ -302,7 +302,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    "${truncateWithEllipsis(14, "${product[index].name}")}",
+                                                                    "${truncateWithEllipsis(12, "${product[index].name}")}",
                                                                     style: GoogleFonts.montserrat(
                                                                         fontSize: getAdaptiveTextSize(
                                                                             context,

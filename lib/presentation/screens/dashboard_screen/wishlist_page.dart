@@ -38,7 +38,7 @@ class _WishlistPageState extends State<WishlistPage> {
             child: Text(
               "Wishlist",
               style: GoogleFonts.montserrat(
-                fontSize: getAdaptiveTextSize(context, 24),
+                fontSize: getAdaptiveTextSize(context, 22),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -56,9 +56,12 @@ class _WishlistPageState extends State<WishlistPage> {
                   return state.data.results!.isEmpty
                       ? Center(
                           child: SizedBox(
-                            width: 200,
+                            width: size.width * 0.7,
                             child: Text("Ayooo cari furnitur favoritmu di "
-                                "katalog kami!", style: notFoundText(),
+                                "katalog kami!", style:GoogleFonts.montserrat
+                              (fontSize: getAdaptiveTextSize(context, 14),
+                                fontWeight:
+                            FontWeight.w300),
                               textAlign: TextAlign.center,),
                           ))
                       : ListView.builder(

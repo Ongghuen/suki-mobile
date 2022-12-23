@@ -15,6 +15,8 @@ class ProfilePage extends StatelessWidget {
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
 
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -27,7 +29,7 @@ class ProfilePage extends StatelessWidget {
                 Text(
                   "Profile Menu",
                   style: GoogleFonts.montserrat(
-                    fontSize: 24,
+                    fontSize: getAdaptiveTextSize(context, 22),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -87,17 +89,24 @@ class ProfilePage extends StatelessWidget {
                               SizedBox(
                                 width: 16,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${user?.name}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  Text("${user?.phone}"),
-                                ],
+                              Container(
+                                width: size.width * 0.45,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text( truncateWithEllipsis(22,
+                                      "${user?.name}"),
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: getAdaptiveTextSize
+                                            (context, 16)),
+                                    ),
+                                    Text("${user?.phone}", style: GoogleFonts.montserrat(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: getAdaptiveTextSize
+                                          (context, 14))),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -139,17 +148,22 @@ class ProfilePage extends StatelessWidget {
                                 width: 20,
                               ),
                               SizedBox(
-                                width: 200,
+                                width: size.width * 0.5,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Request Custom Furniture",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: getAdaptiveTextSize
+                                          (context, 12),
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     Text("Anda dapat meminta furnitur "
-                                        "sesuai dengan keinginan anda."),
+                                        "sesuai dengan keinginan anda.", style: GoogleFonts.montserrat(
+                                        fontSize: getAdaptiveTextSize
+                                          (context, 12),
+                                        )),
                                   ],
                                 ),
                               ),
@@ -185,7 +199,10 @@ class ProfilePage extends StatelessWidget {
                               children: [
                                 Text("Daftar Transaksi",
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                        GoogleFonts.montserrat(fontSize:
+                                        getAdaptiveTextSize(context, 12),
+                                            fontWeight:
+                                        FontWeight.w600)),
                                 Icon(
                                   Icons.arrow_forward_ios,
                                   size: 16,
@@ -204,6 +221,7 @@ class ProfilePage extends StatelessWidget {
                           Navigator.of(context).pushNamed("/cart");
                         },
                         child: Container(
+                          decoration: outlineBasic(),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 40.0, vertical: 10),
@@ -211,7 +229,10 @@ class ProfilePage extends StatelessWidget {
                               children: [
                                 Text(
                                   "Ke Keranjang",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: GoogleFonts.montserrat(fontSize:
+                                  getAdaptiveTextSize(context, 12),
+                                      fontWeight:
+                                  FontWeight.w600),
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios,
@@ -220,7 +241,6 @@ class ProfilePage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          decoration: outlineBasic(),
                         ),
                       ),
                     ],
@@ -232,8 +252,10 @@ class ProfilePage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 18.0),
                   child: Text("Aktivitas Saya",
                       style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold))),
+                          textStyle: GoogleFonts.montserrat(
+                              fontSize: getAdaptiveTextSize(context, 16),
+                              fontWeight:
+                          FontWeight.bold))),
                 ),
 
                 // transaksi
@@ -246,13 +268,16 @@ class ProfilePage extends StatelessWidget {
                         horizontal: 4.0, vertical: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.shopping_cart_outlined),
+                        Icon(Icons.shopping_cart_outlined
+                            , color: Color(0xFFfabd2f),
+                        ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           "Transaksi",
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.montserrat(fontSize: getAdaptiveTextSize
+                            (context, 14)),
                         )
                       ],
                     ),
@@ -269,13 +294,14 @@ class ProfilePage extends StatelessWidget {
                         horizontal: 4.0, vertical: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.favorite_outline),
+                        Icon(Icons.favorite_outline, color: Color(0xFFfb4934)),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           "Wishlist",
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.montserrat(fontSize: getAdaptiveTextSize
+                            (context, 14)),
                         )
                       ],
                     ),
@@ -294,13 +320,15 @@ class ProfilePage extends StatelessWidget {
                         horizontal: 4.0, vertical: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.dashboard_customize_outlined),
+                        Icon(Icons.dashboard_customize_outlined, color: Color
+                          (0xFFfe8019)),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           "List Request Customs",
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.montserrat(fontSize: getAdaptiveTextSize
+                            (context, 14)),
                         )
                       ],
                     ),
@@ -312,8 +340,10 @@ class ProfilePage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 18.0),
                   child: Text("Kategori Umum",
                       style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold))),
+                          textStyle: GoogleFonts.montserrat(
+                              fontSize: getAdaptiveTextSize(context, 16),
+                              fontWeight:
+                          FontWeight.bold))),
                 ),
 
                 // kursi
@@ -324,13 +354,14 @@ class ProfilePage extends StatelessWidget {
                         horizontal: 4.0, vertical: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.chair_outlined),
+                        Icon(Icons.chair_outlined, ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           "Kursi",
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.montserrat(fontSize: getAdaptiveTextSize
+                            (context, 14)),
                         )
                       ],
                     ),
@@ -351,7 +382,8 @@ class ProfilePage extends StatelessWidget {
                         ),
                         Text(
                           "Meja",
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.montserrat(fontSize: getAdaptiveTextSize
+                            (context, 14)),
                         )
                       ],
                     ),
@@ -363,8 +395,10 @@ class ProfilePage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 18.0),
                   child: Text("Pusat Bantuan",
                       style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold))),
+                          textStyle: GoogleFonts.montserrat(
+                              fontSize: getAdaptiveTextSize(context, 16),
+                              fontWeight:
+                          FontWeight.bold))),
                 ),
 
                 // Idk
@@ -375,13 +409,15 @@ class ProfilePage extends StatelessWidget {
                         horizontal: 4.0, vertical: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.support_agent_outlined),
+                        Icon(Icons.support_agent_outlined, color: Color
+                          (0xFFb8bb26)),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           "Whatsapp Admin",
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.montserrat(fontSize: getAdaptiveTextSize
+                            (context, 14)),
                         )
                       ],
                     ),

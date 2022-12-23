@@ -35,6 +35,88 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
 
   TextEditingController judul = TextEditingController();
   TextEditingController deskripsi = TextEditingController();
+  TextEditingController _alamat = TextEditingController();
+
+  bottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      // isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Form(
+          child: SingleChildScrollView(
+            child: AnimatedPadding(
+              padding: MediaQuery.of(context).viewInsets,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.decelerate,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 40),
+                    child: Column(
+                      children: [
+                        // ini input text atau form
+                        TextField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 2,
+                          controller: _alamat,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'Alamat '
+                                'Anda',
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            var auth = context.read<AuthBloc>().state;
+                            if (auth is AuthLoaded) {
+                              var data = {
+                                "alamat": _alamat.text,
+                              };
+                              if (_alamat.text == auth.userModel.user!.email) {
+                                data.remove("alamat");
+                              }
+                              context.read<AuthBloc>().add(
+                                  UserAuthUpdate(data, auth.userModel.token));
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.black,
+                            ),
+                            padding: const EdgeInsets.all(24),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'UPDATE ALAMAT',
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize:
+                                          getAdaptiveTextSize(context, 18),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                // pay now
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void restartBlocs() {
     final state = context.read<AuthBloc>().state;
@@ -55,6 +137,7 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocListener<TransactionCustomBloc, TransactionCustomState>(
       listener: (context, state) {
         if (state is TransactionCustomError) {
@@ -81,11 +164,14 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
                             Navigator.pop(context);
                           },
                           icon: Icon(Icons.arrow_back_ios_outlined)),
-                      Text(
-                        "Request Custom Form",
-                        style: GoogleFonts.montserrat(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        width: size.width * 0.7,
+                        child: Text(
+                          "Request Custom Form",
+                          style: GoogleFonts.montserrat(
+                            fontSize: getAdaptiveTextSize(context, 20),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -240,50 +326,78 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
                 // button ajukan request
                 Padding(
                   padding: const EdgeInsets.all(24.0),
-                  child: InkWell(
-                    onTap: () async {
-                      var data = {
-                        "name": judul.text,
-                        "jenis_custom": jenisValue,
-                        "bahan": bahanValue,
-                        "desc": deskripsi.text
-                      };
-                      final state = context.read<AuthBloc>().state;
-                      if (state is AuthLoaded) {
-                        context.read<TransactionCustomBloc>().add(
-                            RequestTransactionCustom(
-                                data, state.userModel.token));
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.black,
-                      ),
-                      padding: const EdgeInsets.all(24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          BlocBuilder<TransactionCustomBloc,
-                              TransactionCustomState>(
-                            builder: (context, state) {
-                              if (state is TransactionCustomLoading) {
-                                return CircularProgressIndicator(
-                                  color: Colors.white,
-                                );
-                              }
-                              return Text(
-                                "AJUKAN REQUEST",
-                                style: GoogleFonts.montserrat(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black,
+                    ),
+                    padding: const EdgeInsets.all(24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BlocBuilder<TransactionCustomBloc,
+                            TransactionCustomState>(
+                          builder: (context, state) {
+                            if (state is TransactionCustomLoading) {
+                              return CircularProgressIndicator(
+                                color: Colors.white,
                               );
-                            },
-                          ),
-                          // pay now
-                        ],
-                      ),
+                            }
+                            return BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                if (state is AuthLoaded) {
+                                  var auth = state.userModel.user!;
+                                  return InkWell(
+                                    onTap: () {
+                                      if (auth.address == null) {
+                                        bottomSheet(context);
+                                      } else {
+                                        var data = {
+                                          "name": judul.text,
+                                          "jenis_custom": jenisValue,
+                                          "bahan": bahanValue,
+                                          "desc": deskripsi.text
+                                        };
+                                        final state = context.read<AuthBloc>().state;
+                                        if (state is AuthLoaded) {
+                                          context.read<TransactionCustomBloc>().add(
+                                              RequestTransactionCustom(
+                                                  data, state.userModel.token));
+                                        }
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.black,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '${auth.address == null ? "GANT"
+                                                "I ALAMAT" : "AJUKAN "
+                                                "PESANAN"}',
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontSize: getAdaptiveTextSize(
+                                                    context, 18),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          // pay now
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return SizedBox();
+                              },
+                            );
+                          },
+                        ),
+                        // pay now
+                      ],
                     ),
                   ),
                 )

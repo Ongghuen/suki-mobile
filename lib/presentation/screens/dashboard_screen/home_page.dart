@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                                                   12, user.name!.split(" ")[0]);
                                               return Text("Hi, ${name}",
                                                   style: GoogleFonts.montserrat(
-                                                    textStyle: TextStyle(
+                                                    textStyle: GoogleFonts.montserrat(
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white,
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Text("Welcome to Suki!",
                                           style: GoogleFonts.montserrat(
-                                            textStyle: TextStyle(
+                                            textStyle: GoogleFonts.montserrat(
                                                 color: Colors.white,
                                                 fontSize: getAdaptiveTextSize(
                                                     context, 18)),
@@ -286,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                                                 Text(categories[index],
                                                     style:
                                                         GoogleFonts.montserrat(
-                                                      textStyle: TextStyle(
+                                                      textStyle: GoogleFonts.montserrat(
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontSize:
@@ -499,7 +499,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text("Furnitur Populer",
                                 style: GoogleFonts.montserrat(
-                                  textStyle: TextStyle(
+                                  textStyle: GoogleFonts.montserrat(
                                       fontWeight: FontWeight.bold,
                                       fontSize:
                                           getAdaptiveTextSize(context, 16)),
@@ -510,7 +510,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Text("Lihat Semua",
                                   style: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
+                                    textStyle: GoogleFonts.montserrat(
                                         color: Colors.grey,
                                         fontWeight: FontWeight.w500,
                                         fontSize:

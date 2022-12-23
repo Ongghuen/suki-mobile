@@ -30,6 +30,7 @@ class _TransactionMenungguPembayaranPageState
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -46,11 +47,14 @@ class _TransactionMenungguPembayaranPageState
                           Navigator.pop(context);
                         },
                         icon: Icon(Icons.arrow_back_ios)),
-                    Text(
-                      "Menunggu Pembayaran",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      width: size.width * 0.7,
+                      child: Text(
+                        "Menunggu Pembayaran",
+                        style: GoogleFonts.montserrat(
+                          fontSize: getAdaptiveTextSize(context, 18),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -59,7 +63,7 @@ class _TransactionMenungguPembayaranPageState
                   height: 24,
                 ),
                 Container(
-                  height: 650,
+                  height: size.height * 0.8,
                   child: BlocBuilder<DetailTransactionBloc,
                       DetailTransactionState>(
                     builder: (context, state) {
@@ -87,7 +91,10 @@ class _TransactionMenungguPembayaranPageState
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Anda belum melakukan "
-                                        "transaksi.", style: notFoundText()),
+                                        "transaksi.", style:GoogleFonts.montserrat
+                                      (fontSize: getAdaptiveTextSize(context, 14),
+                                        fontWeight:
+                                        FontWeight.w300)),
                                   ],
                                 ),
                               ),
@@ -146,13 +153,13 @@ class _TransactionMenungguPembayaranPageState
                                                           "${belumBayar[index]
                                                               .createdAt}",
                                                           style: TextStyle(
-                                                              fontSize: 12),
+                                                              fontSize:
+                                                              getAdaptiveTextSize(context, 12)),
                                                         ),
                                                       ],
                                                     ),
                                                   ],
                                                 ),
-                                                Text("Belum Bayar"),
                                               ],
                                             ),
 
@@ -230,9 +237,10 @@ class _TransactionMenungguPembayaranPageState
                                                   CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "${belumBayar[index]
+                                                      truncateWithEllipsis
+                                                        (18,"${belumBayar[index]
                                                           .products.first
-                                                          .name}",
+                                                          .name}"),
                                                       style: TextStyle(
                                                           fontWeight:
                                                           FontWeight.bold),

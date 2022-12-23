@@ -51,7 +51,7 @@ class _CartPageState extends State<CartPage> {
             child: Text(
               "Keranjang",
               style: GoogleFonts.montserrat(
-                fontSize: getAdaptiveTextSize(context, 24),
+                fontSize: getAdaptiveTextSize(context, 22),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -87,7 +87,10 @@ class _CartPageState extends State<CartPage> {
                                       'Ayoo beli '
                                       'furniturmu di catalog!',
                                       textAlign: TextAlign.center,
-                                      style: notFoundText(),
+                                      style:GoogleFonts.montserrat
+                                        (fontSize: getAdaptiveTextSize(context, 14),
+                                          fontWeight:
+                                          FontWeight.w300),
                                     )
                                   ],
                                 ),
@@ -126,11 +129,12 @@ class _CartPageState extends State<CartPage> {
                                         ),
                                         child: Container(
                                           decoration: productBox(),
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 5),
+                                          margin: const EdgeInsets.only(
+                                              bottom: 12, right: 12),
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 10),
+                                            padding:
+                                            const EdgeInsets.all(
+                                                14.0),
                                             child: InkWell(
                                               onTap: () {
                                                 Navigator.push(
@@ -154,8 +158,11 @@ class _CartPageState extends State<CartPage> {
                                                                       .circular(
                                                                           15),
                                                               child: Container(
-                                                                height: 100,
-                                                                width: 100,
+                                                                height:
+                                                                size.height *
+                                                                    0.15,
+                                                                width:
+                                                                size.width * 0.3,
                                                                 child: Icon(
                                                                   Icons
                                                                       .inventory,
@@ -172,8 +179,11 @@ class _CartPageState extends State<CartPage> {
                                                                 "${apiUrlStorage}/${product.first.image}",
                                                                 fit: BoxFit
                                                                     .cover,
-                                                                height: 100,
-                                                                width: 100,
+                                                                    height:
+                                                                    size.height *
+                                                                        0.15,
+                                                                    width:
+                                                                    size.width * 0.3,
                                                                 // Better way to load images from network flutter
                                                                 // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
                                                                 loadingBuilder: (BuildContext
@@ -218,13 +228,20 @@ class _CartPageState extends State<CartPage> {
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GoogleFonts
-                                                                    .montserrat(
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
+                                                                style: GoogleFonts.montserrat(
+                                                                    fontSize: getAdaptiveTextSize(
+                                                                        context,
+                                                                        12),
+                                                                    fontWeight:
+                                                                    FontWeight.bold),
                                                               ),
                                                               Text(
-                                                                  "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}"),
+                                                                  "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}", style: GoogleFonts.montserrat(
+                                                          fontSize: getAdaptiveTextSize(
+                                                              context,
+                                                              12),
+                                                          fontWeight:
+                                                          FontWeight.w400)),
                                                               Container(
                                                                 width: 150,
                                                                 child: Row(
@@ -348,7 +365,7 @@ class _CartPageState extends State<CartPage> {
                       // total price
                       Text(
                         'CHECKOUT',
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           fontSize: getAdaptiveTextSize(context, 18),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -368,7 +385,7 @@ class _CartPageState extends State<CartPage> {
                       return state.data.results!.isEmpty
                           ? Text(
                               ':| Tidak ada item',
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.montserrat(color: Colors.white),
                             )
                           : GestureDetector(
                               onTap: () {
@@ -384,10 +401,10 @@ class _CartPageState extends State<CartPage> {
                                 ),
                                 padding: const EdgeInsets.all(12),
                                 child: Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Bayar',
-                                      style: TextStyle(color: Colors.white),
+                                      style: GoogleFonts.montserrat(color: Colors.white),
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios,
