@@ -37,7 +37,7 @@ class _CartPageState extends State<CartPage> {
             child: Text(
               "Keranjang",
               style: GoogleFonts.montserrat(
-                fontSize: 24,
+                fontSize: getAdaptiveTextSize(context, 24),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -173,8 +173,7 @@ class _CartPageState extends State<CartPage> {
                                                                 .center,
                                                         children: [
                                                           Text(
-                                                            "${product.first
-                                                                .name}",
+                                                            "${truncateWithEllipsis(14, "${product.first.name}")}",
                                                             textAlign: TextAlign.center,
                                                             style: GoogleFonts
                                                                 .montserrat(
@@ -183,10 +182,7 @@ class _CartPageState extends State<CartPage> {
                                                                             .bold),
                                                           ),
                                                           Text(
-                                                              "${rupiahConvert
-                                                                  .format
-                                                              (product.first
-                                                                  .harga)}"),
+                                                              "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}"),
                                                           Container(
                                                             width: 150,
                                                             child: Row(
@@ -323,8 +319,8 @@ class _CartPageState extends State<CartPage> {
                       // total price
                       Text(
                         'CHECKOUT',
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: getAdaptiveTextSize(context, 18),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),

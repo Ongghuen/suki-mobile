@@ -17,6 +17,7 @@ void main(List<String> args) async {
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.grey[50], // navigation bar color
     systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icon

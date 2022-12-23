@@ -98,11 +98,13 @@ class _HomePageState extends State<HomePage> {
                                                   12, user.name!.split(" ")[0]);
                                               return Text("Hi, ${name}",
                                                   style: GoogleFonts.montserrat(
-                                                    textStyle: const TextStyle(
+                                                    textStyle: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white,
-                                                        fontSize: 24),
+                                                        fontSize:
+                                                            getAdaptiveTextSize(
+                                                                context, 24)),
                                                   ));
                                             }
                                             return loading();
@@ -111,9 +113,10 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Text("Welcome to Suki!",
                                           style: GoogleFonts.montserrat(
-                                            textStyle: const TextStyle(
+                                            textStyle: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 18),
+                                                fontSize: getAdaptiveTextSize(
+                                                    context, 18)),
                                           )),
                                     ]),
 
@@ -123,24 +126,23 @@ class _HomePageState extends State<HomePage> {
                                     if (state is AuthLoaded) {
                                       var user = state.userModel.user;
                                       return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Container(
+                                          color: Colors.grey,
+                                          height: 60,
+                                          width: 60,
                                           child: user?.image == null
-                                              ? Container(
+                                              ? Icon(
+                                                  Icons.person,
+                                                  size: 30,
                                                   color: Colors.white,
-                                                  height: 50,
-                                                  width: 50,
-                                                  child: const Icon(
-                                                    Icons.person,
-                                                    size: 40,
-                                                    color: Colors.black54,
-                                                  ),
                                                 )
                                               : Image.network(
                                                   "${apiUrlStorage}/${user?.image}",
                                                   fit: BoxFit.cover,
-                                                  height: 50,
-                                                  width: 50,
+                                                  height: 80,
+                                                  width: 80,
                                                   // Better way to load images from network flutter
                                                   // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
                                                   loadingBuilder:
@@ -164,7 +166,9 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     );
                                                   },
-                                                ));
+                                                ),
+                                        ),
+                                      );
                                     }
                                     return loading();
                                   },
@@ -183,7 +187,8 @@ class _HomePageState extends State<HomePage> {
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: TextField(
-                                style: GoogleFonts.montserrat(),
+                                style: GoogleFonts.montserrat(
+                                    fontSize: getAdaptiveTextSize(context, 14)),
                                 onEditingComplete: () {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   setState(() {
@@ -284,7 +289,9 @@ class _HomePageState extends State<HomePage> {
                                                       textStyle: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        fontSize: 14,
+                                                        fontSize:
+                                                            getAdaptiveTextSize(
+                                                                context, 14),
                                                         color: selectedIndex ==
                                                                 index
                                                             ? Colors.white
@@ -324,7 +331,7 @@ class _HomePageState extends State<HomePage> {
                                         .toList();
                                     return product.length != 0
                                         ? SizedBox(
-                                            height: 220,
+                                            height: size.height * 0.25,
                                             child: ListView.builder(
                                               physics: BouncingScrollPhysics(),
                                               shrinkWrap: true,
@@ -371,10 +378,12 @@ class _HomePageState extends State<HomePage> {
                                                                             15),
                                                                     child:
                                                                         Container(
-                                                                      height:
-                                                                          130,
-                                                                      width:
-                                                                          130,
+                                                                      height: size
+                                                                              .height *
+                                                                          0.15,
+                                                                      width: size
+                                                                              .width *
+                                                                          0.3,
                                                                       child:
                                                                           Icon(
                                                                         Icons
@@ -391,10 +400,12 @@ class _HomePageState extends State<HomePage> {
                                                                       "${apiUrlStorage}/${product![index].image}",
                                                                       fit: BoxFit
                                                                           .cover,
-                                                                      height:
-                                                                          130,
-                                                                      width:
-                                                                          130,
+                                                                      height: size
+                                                                              .height *
+                                                                          0.15,
+                                                                      width: size
+                                                                              .width *
+                                                                          0.3,
                                                                       // Better way to load images from network flutter
                                                                       // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
                                                                       loadingBuilder: (BuildContext context,
@@ -421,30 +432,29 @@ class _HomePageState extends State<HomePage> {
                                                             ),
                                                             Row(
                                                               children: [
-                                                                Container(
-                                                                  width: 100,
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        "${truncateWithEllipsis(14, "${product[index].name}")}",
-                                                                        style: GoogleFonts.montserrat(
-                                                                            fontSize:
-                                                                                12,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                      ),
-                                                                      Text(
-                                                                          "${truncateWithEllipsis(14, "${rupiahConvert.format(product[index].harga)}")}",
-                                                                          style:
-                                                                              GoogleFonts.montserrat(
-                                                                            fontSize:
-                                                                                12,
-                                                                          )),
-                                                                    ],
-                                                                  ),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      "${truncateWithEllipsis(14, "${product[index].name}")}",
+                                                                      style: GoogleFonts.montserrat(
+                                                                          fontSize: getAdaptiveTextSize(
+                                                                              context,
+                                                                              12),
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                    Text(
+                                                                        "${truncateWithEllipsis(14, "${rupiahConvert.format(product[index].harga)}")}",
+                                                                        style: GoogleFonts
+                                                                            .montserrat(
+                                                                          fontSize: getAdaptiveTextSize(
+                                                                              context,
+                                                                              12),
+                                                                        )),
+                                                                  ],
                                                                 ),
                                                               ],
                                                             ),
@@ -489,9 +499,10 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text("Furnitur Populer",
                                 style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
+                                  textStyle: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      fontSize:
+                                          getAdaptiveTextSize(context, 16)),
                                 )),
                             InkWell(
                               onTap: () {
@@ -499,10 +510,11 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Text("Lihat Semua",
                                   style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
+                                    textStyle: TextStyle(
                                         color: Colors.grey,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12),
+                                        fontSize:
+                                            getAdaptiveTextSize(context, 12)),
                                   )),
                             ),
                           ],
@@ -524,8 +536,8 @@ class _HomePageState extends State<HomePage> {
                                       .toList();
                                   return product.length != 0
                                       ? SizedBox(
-                                          height: 120,
-                                          child: ListView.builder(
+                                    height: size.height * 0.145,
+                                    child: ListView.builder(
                                             physics: BouncingScrollPhysics(),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
@@ -557,6 +569,8 @@ class _HomePageState extends State<HomePage> {
                                                           const EdgeInsets.all(
                                                               14.0),
                                                       child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Row(
                                                             mainAxisAlignment:
@@ -572,10 +586,10 @@ class _HomePageState extends State<HomePage> {
                                                                               topLeft: Radius.circular(10)),
                                                                       child:
                                                                           Container(
-                                                                        height:
-                                                                            80,
+                                                                            height:
+                                                                            size.height * 0.085,
                                                                         width:
-                                                                            80,
+                                                                            size.width * 0.2,
                                                                         child:
                                                                             Icon(
                                                                           Icons
@@ -593,9 +607,10 @@ class _HomePageState extends State<HomePage> {
                                                                         fit: BoxFit
                                                                             .cover,
                                                                         height:
-                                                                            80,
+                                                                        size
+                                                                            .height * 0.085,
                                                                         width:
-                                                                            80,
+                                                                        size.width * 0.2,
                                                                         // Better way to load images from network flutter
                                                                         // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
                                                                         loadingBuilder: (BuildContext context,
@@ -618,8 +633,10 @@ class _HomePageState extends State<HomePage> {
                                                               SizedBox(
                                                                 width: 20,
                                                               ),
-                                                              Container(
-                                                                width: 150,
+                                                              SizedBox(
+                                                                width: size
+                                                                    .width *
+                                                                    0.30,
                                                                 child: Column(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
@@ -629,19 +646,30 @@ class _HomePageState extends State<HomePage> {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                      "${product[index].name}",
+                                                                      "${truncateWithEllipsis(14, "${product[index].name}")}",
                                                                       style: GoogleFonts.montserrat(
+                                                                          fontSize: getAdaptiveTextSize(
+                                                                              context,
+                                                                              12),
                                                                           fontWeight:
                                                                               FontWeight.bold),
                                                                     ),
                                                                     Text(
                                                                       "${truncateWithEllipsis(12, product[index].desc.toString())}",
                                                                       style: GoogleFonts.montserrat(
+                                                                          fontSize: getAdaptiveTextSize(
+                                                                              context,
+                                                                              12),
                                                                           fontWeight:
                                                                               FontWeight.normal),
                                                                     ),
                                                                     Text(
-                                                                        "${rupiahConvert.format(state.productModel.results![index].harga)}"),
+                                                                        "${truncateWithEllipsis(14, "${rupiahConvert.format(product[index].harga)}")}",
+                                                                        style: GoogleFonts.montserrat(
+                                                                            fontSize: getAdaptiveTextSize(context,
+                                                                                12),
+                                                                            fontWeight:
+                                                                                FontWeight.normal)),
                                                                   ],
                                                                 ),
                                                               ),

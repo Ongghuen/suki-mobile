@@ -75,7 +75,8 @@ class _MainPageState extends State<MainPage> {
             bottomNavigationBar: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal:
+                    size.width * 0.02),
                 child: GNav(
                     onTabChange: (value) {
                       setState(() {
@@ -86,7 +87,7 @@ class _MainPageState extends State<MainPage> {
                     activeColor: Colors.white,
                     tabBackgroundColor: Colors.black,
                     duration: const Duration(milliseconds: 200),
-                    iconSize: 26,
+                    iconSize: size.width * 0.07 - 2,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     tabs: const [

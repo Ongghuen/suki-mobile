@@ -20,6 +20,7 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -37,11 +38,13 @@ class _WishlistPageState extends State<WishlistPage> {
             child: Text(
               "Wishlist",
               style: GoogleFonts.montserrat(
-                fontSize: 24,
+                fontSize: getAdaptiveTextSize(context, 24),
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
+
+          SizedBox(height: 20,),
 
           // list view of wishlist
           Expanded(
@@ -74,8 +77,11 @@ class _WishlistPageState extends State<WishlistPage> {
                                             .productId);
 
                                 return Container(
+                                  decoration: productBox(),
                                   margin:
-                                      const EdgeInsets.symmetric(horizontal: 12),
+                                      EdgeInsets.symmetric(horizontal:
+                                      size.width * 0.03, vertical: size
+                                          .height * 0.01),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
@@ -100,8 +106,12 @@ class _WishlistPageState extends State<WishlistPage> {
                                                           BorderRadius.circular(
                                                               15),
                                                       child: Container(
-                                                        height: 100,
-                                                        width: 100,
+                                                        height:
+                                                        size
+                                                            .height * 0.10,
+                                                        width:
+                                                        size
+                                                            .width * 0.2,
                                                         child: Icon(
                                                           Icons.inventory,
                                                         ),
@@ -113,9 +123,13 @@ class _WishlistPageState extends State<WishlistPage> {
                                                               15),
                                                       child: Image.network(
                                                         "${apiUrlStorage}/${product.first.image}",
-                                                        fit: BoxFit.fill,
-                                                        height: 100,
-                                                        width: 100,
+                                                        fit: BoxFit.cover,
+                                                        height:
+                                                        size
+                                                            .height * 0.10,
+                                                        width:
+                                                        size
+                                                            .width * 0.2,
                                                         // Better way to load images from network flutter
                                                         // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
                                                         loadingBuilder: (BuildContext
@@ -141,38 +155,44 @@ class _WishlistPageState extends State<WishlistPage> {
                                                         },
                                                       ),
                                                     ),
-                                              Container(
-                                                height: 100,
-                                                width: 150,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${product.first.name}",
-                                                      style:
-                                                          GoogleFonts.montserrat(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    ),
-                                                    Text(
-                                                      "${truncateWithEllipsis(20, product.first.desc.toString())}",
-                                                      style:
-                                                          GoogleFonts.montserrat(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                    ),
-                                                    Text(
-                                                        "${rupiahConvert
-                                                            .format(product
-                                                            .first
-                                                            .harga)}"),
-                                                  ],
-                                                ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${product.first.name}",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                          fontSize:
+                                                          getAdaptiveTextSize(context, 12),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                  Text(
+                                                    "${truncateWithEllipsis(20, product.first.desc.toString())}",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                          fontSize:
+                                                          getAdaptiveTextSize(context, 12),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal),
+                                                  ),
+                                                  Text(
+                                                      "${rupiahConvert
+                                                          .format(product
+                                                          .first
+                                                          .harga)}", style:
+                                                  GoogleFonts.montserrat(
+                                                      fontSize:
+                                                      getAdaptiveTextSize(context, 12),
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .normal)),
+                                                ],
                                               ),
                                               BlocBuilder<AuthBloc, AuthState>(
                                                 builder: (context, state) {

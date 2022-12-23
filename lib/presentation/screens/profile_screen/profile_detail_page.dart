@@ -157,7 +157,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                                     )
                                   : Image.network(
                                       "${apiUrlStorage}/${user?.image}",
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                       height: 80,
                                       width: 80,
                                       // Better way to load images from network flutter
