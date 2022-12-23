@@ -102,9 +102,11 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
                       TextField(
                         controller: judul,
                         decoration: const InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Colors.black26),
                           ),
                           labelText: 'Judul Custom',
                         ),
@@ -207,9 +209,11 @@ class _CustomRequestPageState extends State<CustomRequestPage> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                         decoration: const InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Colors.black26),
                           ),
                           labelText: 'Deskripsi',
                         ),

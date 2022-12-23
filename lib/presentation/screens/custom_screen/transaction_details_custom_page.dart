@@ -410,12 +410,15 @@ class _TransactionDetailsCustomPageState
                                         height: 20,
                                       ),
                                       divider(),
-                                      Center(
-                                          child: Text(
-                                        "Judul: ${custom.customs!.first.name}",
-                                        style: GoogleFonts.montserrat(
-                                            fontWeight: FontWeight.w600),
-                                      )),
+                                      Padding(
+                                        padding: const EdgeInsets.all(18.0),
+                                        child: Center(
+                                            child: Text(
+                                          "Judul: ${custom.customs!.first.name}",
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                      ),
                                       divider(),
                                       Text(
                                         "Jenis: ${custom.customs!.first.jenisCustom}",
