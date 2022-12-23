@@ -196,7 +196,7 @@ class _DetailProductState extends State<DetailProduct> {
                                 return BlocBuilder<ProductBloc, ProductState>(
                                   builder: (context, pstate) {
                                     return GestureDetector(
-                                      onTap: () {
+                                      onTap: () async {
                                         if (pstate is ProductLoaded) {
                                           var product = pstate
                                               .productModel.results!
@@ -229,17 +229,9 @@ class _DetailProductState extends State<DetailProduct> {
                                                         DetailTransactionBloc>()
                                                     .add(
                                                         AddProductToDetailTransactionList(
-                                                            data,
+                                                            data, dataDetail,
                                                             astate.userModel
                                                                 .token!));
-                                                context
-                                                    .read<
-                                                        DetailTransactionBloc>()
-                                                    .add(
-                                                        AddQTYProductToDetailTransactionList(
-                                                            dataDetail,
-                                                            astate.userModel
-                                                                .token));
                                                 showSnackbar(
                                                     context, "Berhasil Hore");
                                               } else {

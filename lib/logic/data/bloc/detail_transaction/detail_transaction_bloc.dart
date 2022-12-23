@@ -18,7 +18,12 @@ class DetailTransactionBloc
 
         String apiUrl = "/api/orders/detail";
         var res = await CallApi().getData(apiUrl, token: event.token);
+
         var body = json.decode(res.body);
+        if (res.statusCode != 200) {
+          emit(DetailTransactionError("${body['message']}"));
+        }
+
         final data = DetailTransactionModel.fromJson(body);
 
         List<String> oncart = [];
@@ -31,7 +36,7 @@ class DetailTransactionBloc
 
         emit(DetailTransactionLoaded(data, oncart, tempTotHarga));
       } catch (ex, trace) {
-        emit(DetailTransactionError("sum ting wong"));
+        emit(DetailTransactionError("Cart: something's wrong"));
       }
     });
     on<GetDetailTransactionList>((event, emit) async {
@@ -40,7 +45,12 @@ class DetailTransactionBloc
 
         String apiUrl = "/api/orders/${event.transaction_id}";
         var res = await CallApi().getData(apiUrl, token: event.token);
+
         var body = json.decode(res.body);
+        if (res.statusCode != 200) {
+          emit(DetailTransactionError("${body['message']}"));
+        }
+
         final data = DetailTransactionModel.fromJson(body);
 
         List<String> oncart = [];
@@ -53,58 +63,60 @@ class DetailTransactionBloc
 
         emit(DetailTransactionLoaded(data, oncart, tempTotHarga));
       } catch (ex, trace) {
-        emit(DetailTransactionError("sum ting wong"));
+        emit(DetailTransactionError("Get: something's wrong"));
       }
     });
     on<AddProductToDetailTransactionList>((event, emit) async {
       try {
-        emit(DetailTransactionLoading());
-
         String apiUrl = "/api/orders/detail";
         var res = await CallApi()
             .postData(apiUrl, data: event.data, token: event.token);
+
+        var body = json.decode(res.body);
         if (res.statusCode == 200) {
-          print("MASUK????");
+          print("Add: masuk");
+          add(AddQTYProductToDetailTransactionList(
+              event.dataDetail, event.token));
+          add(GetOngoingDetailTransactionList(event.token));
+        } else {
+          emit(DetailTransactionError("${body['message']}"));
         }
-        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
-        emit(DetailTransactionError("sum ting wong"));
+        emit(DetailTransactionError("Add Product: something's wrong"));
       }
     });
     on<AddQTYProductToDetailTransactionList>((event, emit) async {
       try {
-        emit(DetailTransactionLoading());
-
         String apiUrl = "/api/orders/detail";
         var res = await CallApi()
             .putData(apiUrl, data: event.data, token: event.token);
-        print(event.data);
+        var body = json.decode(res.body);
         if (res.statusCode == 200) {
-          print("MASUK????");
+          print("Add qty: masuk");
+          add(GetOngoingDetailTransactionList(event.token));
+        } else {
+          emit(DetailTransactionError("${body['message']}"));
         }
-        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
-        emit(DetailTransactionError("sum ting wong"));
+        emit(DetailTransactionError("Add: something's wrong"));
       }
-      add(GetOngoingDetailTransactionList(event.token));
     });
 
     on<SubstractQTYProductToDetailTransactionList>((event, emit) async {
       try {
-        emit(DetailTransactionLoading());
-
         String apiUrl = "/api/orders/detail";
         var res = await CallApi()
             .putData(apiUrl, data: event.data, token: event.token);
-        print(event.data);
+        var body = json.decode(res.body);
         if (res.statusCode == 200) {
-          print(res.body);
+          print("SIP MINES");
+          add(GetOngoingDetailTransactionList(event.token));
+        } else {
+          emit(DetailTransactionError("${body['message']}"));
         }
-        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
-        emit(DetailTransactionError("sum ting wong"));
+        emit(DetailTransactionError("Substract: something's wrong $ex $trace"));
       }
-      add(GetOngoingDetailTransactionList(event.token));
     });
 
     on<DeleteProductToDetailTransactionList>((event, emit) async {
@@ -114,14 +126,16 @@ class DetailTransactionBloc
         String apiUrl = "/api/orders/detail";
         var res = await CallApi()
             .deleteData(apiUrl, data: event.data, token: event.token);
+        var body = json.decode(res.body);
         if (res.statusCode == 200) {
           print("KEAPUS HAHAY");
+          add(GetOngoingDetailTransactionList(event.token));
+        } else {
+          emit(DetailTransactionError("${body['message']}"));
         }
-        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
-        emit(DetailTransactionError("sum ting wong"));
+        emit(DetailTransactionError("Delete: something's wrong"));
       }
-      add(GetOngoingDetailTransactionList(event.token));
     });
   }
 }

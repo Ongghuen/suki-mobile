@@ -7,6 +7,7 @@ import 'package:mobile/logic/data/bloc/detail_transaction/detail_transaction_blo
 import 'package:mobile/logic/data/bloc/product/product_bloc.dart';
 import 'package:mobile/presentation/screens/transaction_screen/checkout_page.dart';
 import 'package:mobile/presentation/screens/product_screen/detail_product_page.dart';
+import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class CartPage extends StatefulWidget {
@@ -17,8 +18,21 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  void reloadBlocs() {
+    final state = context.read<AuthBloc>().state;
+    if (state is AuthLoaded) {
+      context.read<AuthBloc>().add(UserAuthCheckToken(state.userModel.token));
+      // get products
+      context.read<ProductBloc>().add(GetProductList());
+      // get wishlists
+      context.read<DetailTransactionBloc>().add(
+          GetOngoingDetailTransactionList(state.userModel.token.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -43,259 +57,274 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
 
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
 
           // list view of cart
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
-                builder: (context, state) {
-                  if (state is DetailTransactionLoaded) {
-                    var checkout = state.data.results!;
-                    return checkout.isEmpty
-                        ? Center(
-                            child: SizedBox(width: 200,child: Text('Ayoo beli '
-                            'furniturmu di catalog!', textAlign: TextAlign
-                                .center, style: notFoundText(),)))
-                        : ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: checkout.length,
-                            itemBuilder: (context, index) {
-                              return BlocBuilder<ProductBloc, ProductState>(
-                                  builder: (_, pstate) {
-                                if (pstate is ProductLoaded) {
-                                  var product = pstate.productModel.results!
-                                      .where((element) =>
-                                          element.id ==
-                                          state.data.results![index].pivot!
-                                              .productId);
-
-                                  return Slidable(
-                                    endActionPane: ActionPane(
-                                      motion: ScrollMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (BuildContext context) =>
-                                              deleteItem(product.first.id),
-                                          backgroundColor: Color(0xFFb50000),
-                                          foregroundColor: Colors.white,
-                                          icon: Icons.playlist_remove_outlined,
-                                          label: 'Hapus',
-                                        ),
-                                      ],
+            child: RefreshIndicator(
+              color: Colors.black,
+              onRefresh: () async => reloadBlocs(),
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics()),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: BlocBuilder<DetailTransactionBloc,
+                      DetailTransactionState>(
+                    builder: (context, state) {
+                      if (state is DetailTransactionLoaded) {
+                        var checkout = state.data.results!;
+                        return checkout.isEmpty
+                            ? Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: size.height * 0.3,
                                     ),
-                                    child: Container(
-                                      decoration: productBox(),
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 5),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric
-                                          (horizontal: 15, vertical: 10),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DetailProduct(
-                                                            productId: product
-                                                                .first.id!
-                                                                .toInt())));
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              Row(
-                                                children: [
-                                                  product.first.image == null
-                                                      ? ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          child: Container(
-                                                            height: 100,
-                                                            width: 100,
-                                                            child: Icon(
-                                                              Icons.inventory,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          child: Image.network(
-                                                            "${apiUrlStorage}/${product.first.image}",
-                                                            fit: BoxFit.cover,
-                                                            height: 100,
-                                                            width: 100,
-                                                            // Better way to load images from network flutter
-                                                            // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                            loadingBuilder:
-                                                                (BuildContext
+                                    Text(
+                                      'Ayoo beli '
+                                      'furniturmu di catalog!',
+                                      textAlign: TextAlign.center,
+                                      style: notFoundText(),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: checkout.length,
+                                itemBuilder: (context, index) {
+                                  return BlocBuilder<ProductBloc, ProductState>(
+                                      builder: (_, pstate) {
+                                    if (pstate is ProductLoaded) {
+                                      var product = pstate.productModel.results!
+                                          .where((element) =>
+                                              element.id ==
+                                              state.data.results![index].pivot!
+                                                  .productId);
+
+                                      return Slidable(
+                                        endActionPane: ActionPane(
+                                          motion: ScrollMotion(),
+                                          children: [
+                                            SlidableAction(
+                                              onPressed: (BuildContext
+                                                      context) =>
+                                                  deleteItem(product.first.id),
+                                              backgroundColor:
+                                                  Color(0xFFb50000),
+                                              foregroundColor: Colors.white,
+                                              icon: Icons
+                                                  .playlist_remove_outlined,
+                                              label: 'Hapus',
+                                            ),
+                                          ],
+                                        ),
+                                        child: Container(
+                                          decoration: productBox(),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 5),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 10),
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            DetailProduct(
+                                                                productId: product
+                                                                    .first.id!
+                                                                    .toInt())));
+                                              },
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: [
+                                                      product.first.image ==
+                                                              null
+                                                          ? ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15),
+                                                              child: Container(
+                                                                height: 100,
+                                                                width: 100,
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .inventory,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15),
+                                                              child:
+                                                                  Image.network(
+                                                                "${apiUrlStorage}/${product.first.image}",
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                height: 100,
+                                                                width: 100,
+                                                                // Better way to load images from network flutter
+                                                                // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                                loadingBuilder: (BuildContext
                                                                         context,
                                                                     Widget
                                                                         child,
                                                                     ImageChunkEvent?
                                                                         loadingProgress) {
-                                                              if (loadingProgress ==
-                                                                  null)
-                                                                return child;
-                                                              return Center(
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  value: loadingProgress
-                                                                              .expectedTotalBytes !=
-                                                                          null
-                                                                      ? loadingProgress
-                                                                              .cumulativeBytesLoaded /
-                                                                          loadingProgress
-                                                                              .expectedTotalBytes!
-                                                                      : null,
+                                                                  if (loadingProgress ==
+                                                                      null)
+                                                                    return child;
+                                                                  return Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      value: loadingProgress.expectedTotalBytes !=
+                                                                              null
+                                                                          ? loadingProgress.cumulativeBytesLoaded /
+                                                                              loadingProgress.expectedTotalBytes!
+                                                                          : null,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                      SizedBox(
+                                                        width: 20,
+                                                      ),
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          height: 100,
+                                                          width: 150,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                "${truncateWithEllipsis(14, "${product.first.name}")}",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: GoogleFonts
+                                                                    .montserrat(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                              ),
+                                                              Text(
+                                                                  "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}"),
+                                                              Container(
+                                                                width: 150,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          var data =
+                                                                              {
+                                                                            "produc"
+                                                                                "t_"
+                                                                                "id"
+                                                                                "": "${state.data.results![index].id}",
+                                                                            "qty":
+                                                                                "${checkout[index].pivot!.qty != 1 ? checkout[index].pivot!.qty - 1 : deleteItem(state.data.results![index].id)}",
+                                                                            "sub_total":
+                                                                                "${checkout[index].harga * (checkout[index].pivot!.qty - 1)}"
+                                                                          };
+                                                                          final astate = context
+                                                                              .read<AuthBloc>()
+                                                                              .state;
+                                                                          if (astate
+                                                                              is AuthLoaded) {
+                                                                            print(state.data.results![index].id);
+                                                                            context.read<DetailTransactionBloc>().add(SubstractQTYProductToDetailTransactionList(data,
+                                                                                astate.userModel.token));
+                                                                          }
+                                                                        },
+                                                                        icon: Icon(
+                                                                            Icons.remove_circle_outline)),
+                                                                    Text(state.data.results![index].pivot!.qty ==
+                                                                            null
+                                                                        ? "0"
+                                                                        : state
+                                                                            .data
+                                                                            .results![index]
+                                                                            .pivot!
+                                                                            .qty
+                                                                            .toString()),
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          var data =
+                                                                              {
+                                                                            "produc"
+                                                                                "t_"
+                                                                                "id"
+                                                                                "": "${state.data.results![index].id}",
+                                                                            "qty":
+                                                                                "${checkout[index].pivot!.qty + 1}",
+                                                                            "sub_total":
+                                                                                "${checkout[index].harga * (checkout[index].pivot!.qty + 1)}"
+                                                                          };
+                                                                          final astate = context
+                                                                              .read<AuthBloc>()
+                                                                              .state;
+                                                                          if (astate
+                                                                              is AuthLoaded) {
+                                                                            print(state.data.results![index].id);
+                                                                            context.read<DetailTransactionBloc>().add(AddQTYProductToDetailTransactionList(data,
+                                                                                astate.userModel.token));
+                                                                          }
+                                                                        },
+                                                                        icon: Icon(
+                                                                            Icons.add_circle_outline)),
+                                                                  ],
                                                                 ),
-                                                              );
-                                                            },
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                  SizedBox(width: 20,),
-                                                  Expanded(
-                                                    child: SizedBox(
-                                                      height: 100,
-                                                      width: 150,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            "${truncateWithEllipsis(14, "${product.first.name}")}",
-                                                            textAlign: TextAlign.center,
-                                                            style: GoogleFonts
-                                                                .montserrat(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                          ),
-                                                          Text(
-                                                              "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}"),
-                                                          Container(
-                                                            width: 150,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      var data = {
-                                                                        "produc"
-                                                                            "t_"
-                                                                            "id"
-                                                                            "": "${state.data.results![index].id}",
-                                                                        "qty":
-                                                                            "${checkout[index].pivot!.qty != 1 ? checkout[index].pivot!.qty - 1 : deleteItem(state.data.results![index].id)}",
-                                                                        "sub_total":
-                                                                            "${
-                                                                                checkout[index].harga * (checkout[index].pivot!.qty - 1)}"
-                                                                      };
-                                                                      final astate = context
-                                                                          .read<
-                                                                              AuthBloc>()
-                                                                          .state;
-                                                                      if (astate
-                                                                          is AuthLoaded) {
-                                                                        print(state
-                                                                            .data
-                                                                            .results![
-                                                                                index]
-                                                                            .id);
-                                                                        context.read<DetailTransactionBloc>().add(SubstractQTYProductToDetailTransactionList(
-                                                                            data,
-                                                                            astate
-                                                                                .userModel
-                                                                                .token));
-                                                                      }
-                                                                    },
-                                                                    icon: Icon(Icons
-                                                                        .remove_circle_outline)),
-                                                                Text(state
-                                                                            .data
-                                                                            .results![
-                                                                                index]
-                                                                            .pivot!
-                                                                            .qty ==
-                                                                        null
-                                                                    ? "0"
-                                                                    : state
-                                                                        .data
-                                                                        .results![
-                                                                            index]
-                                                                        .pivot!
-                                                                        .qty
-                                                                        .toString()),
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      var data = {
-                                                                        "produc"
-                                                                            "t_"
-                                                                            "id"
-                                                                            "": "${state.data.results![index].id}",
-                                                                        "qty":
-                                                                            "${checkout[index].pivot!.qty + 1}",
-                                                                        "sub_total":
-                                                                            "${
-                                                                                checkout[index].harga * (checkout[index].pivot!.qty + 1)}"
-                                                                      };
-                                                                      final astate = context
-                                                                          .read<
-                                                                              AuthBloc>()
-                                                                          .state;
-                                                                      if (astate
-                                                                          is AuthLoaded) {
-                                                                        print(state
-                                                                            .data
-                                                                            .results![
-                                                                                index]
-                                                                            .id);
-                                                                        context.read<DetailTransactionBloc>().add(AddQTYProductToDetailTransactionList(
-                                                                            data,
-                                                                            astate
-                                                                                .userModel
-                                                                                .token));
-                                                                      }
-                                                                    },
-                                                                    icon: Icon(Icons
-                                                                        .add_circle_outline)),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                return loading();
-                              });
-                            },
-                          );
-                  }
-                  return loading();
-                },
+                                      );
+                                    }
+                                    return SizedBox();
+                                  });
+                                },
+                              );
+                      }
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.5,
+                            child: loading(),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ),
@@ -329,8 +358,12 @@ class _CartPageState extends State<CartPage> {
                   ),
 
                   // pay now
-                  BlocBuilder<DetailTransactionBloc, DetailTransactionState>(
-                      builder: (context, state) {
+                  BlocConsumer<DetailTransactionBloc, DetailTransactionState>(
+                      listener: (context, state) {
+                    if (state is DetailTransactionError) {
+                      showSnackbar(context, "${state.msg}");
+                    }
+                  }, builder: (context, state) {
                     if (state is DetailTransactionLoaded) {
                       return state.data.results!.isEmpty
                           ? Text(
@@ -386,5 +419,6 @@ class _CartPageState extends State<CartPage> {
           DeleteProductToDetailTransactionList(
               product_id, astate.userModel.token));
     }
+    return "0";
   }
 }
