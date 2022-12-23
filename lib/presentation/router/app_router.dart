@@ -34,7 +34,7 @@ class AppRouter {
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomePage());
       case '/search':
-        return MaterialPageRoute(builder: (_) => const SearchPage());
+        return MaterialPageRoute(builder: (_) => SearchPage(category: ""));
       case '/wishlist':
         return MaterialPageRoute(builder: (_) => const WishlistPage());
       case '/cart':

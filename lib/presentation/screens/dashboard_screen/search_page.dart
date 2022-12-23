@@ -6,7 +6,8 @@ import 'package:mobile/presentation/screens/product_screen/detail_product_page.d
 import 'package:mobile/presentation/utils/default.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  String category;
+  SearchPage({super.key, required this.category});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -26,6 +27,15 @@ class _SearchPageState extends State<SearchPage> {
     Icons.night_shelter_outlined
   ];
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    widget.category == "Kursi" ? selectedIndex = 1 : 0;
+    widget.category == "Meja" ? selectedIndex = 2 : 0;
+    // TODO: implement initState
+    categoryValue = selectedIndex == 0 ? "" : categories[selectedIndex];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +58,6 @@ class _SearchPageState extends State<SearchPage> {
                     FocusManager.instance.primaryFocus?.unfocus();
                     setState(() {
                       searchValue = search.text.toString();
-                      print(searchValue);
                     });
                   },
                   controller: search,
@@ -60,7 +69,8 @@ class _SearchPageState extends State<SearchPage> {
                               const BorderSide(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(16)),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
+                          borderSide:
+                          const BorderSide(color: Colors.black12, width: 1),
                           borderRadius: BorderRadius.circular(16)),
                       hintText: 'Cari Barang atau Perabotan',
                       prefixIcon: IconButton(

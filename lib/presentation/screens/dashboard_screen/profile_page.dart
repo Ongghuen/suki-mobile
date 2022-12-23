@@ -1,8 +1,11 @@
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/screens/custom_screen/transaction_custom_page.dart';
+import 'package:mobile/presentation/screens/dashboard_screen/search_page.dart';
 import 'package:mobile/presentation/utils/default.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -10,12 +13,17 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController names = TextEditingController();
-    TextEditingController username = TextEditingController();
-    TextEditingController email = TextEditingController();
-    TextEditingController password = TextEditingController();
 
     Size size = MediaQuery.of(context).size;
+
+    void _openWhatsapp() {
+      var number = "+622150996855";
+      final intent = AndroidIntent(
+        action: 'action_view',
+        data: Uri.encodeFull('https://api.whatsapp.com/send?phone=' + number),
+      );
+      intent.launch();
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -348,7 +356,11 @@ class ProfilePage extends StatelessWidget {
 
                 // kursi
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder:
+                        (context) => SearchPage(category: "Kursi"), settings: RouteSettings(name:
+                    "/search")));
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.0, vertical: 10),
@@ -370,7 +382,12 @@ class ProfilePage extends StatelessWidget {
 
                 // Meja
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder:
+                        (context) => SearchPage(category: "Meja"), settings:
+                    RouteSettings(name:
+                    "/search")));
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.0, vertical: 10),
@@ -403,7 +420,9 @@ class ProfilePage extends StatelessWidget {
 
                 // Idk
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _openWhatsapp();
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 4.0, vertical: 10),

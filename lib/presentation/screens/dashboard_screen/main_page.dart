@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> pageList = [
     const HomePage(),
     const WishlistPage(),
-    const SearchPage(),
+    SearchPage(category: ""),
     const CartPage(),
     const ProfilePage(),
   ];

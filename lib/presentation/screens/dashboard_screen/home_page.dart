@@ -206,7 +206,8 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius:
                                             BorderRadius.circular(16)),
                                     enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
+                                        borderSide: const BorderSide(
+                                            color: Colors.black12, width: 1),
                                         borderRadius:
                                             BorderRadius.circular(16)),
                                     hintText: 'Cari Barang atau Perabotan',
