@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/logic/data/api/call.dart';
+import 'package:hive/hive.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 import 'package:mobile/presentation/utils/components/snackbar.dart';
 import 'package:mobile/presentation/utils/default.dart';
@@ -41,7 +39,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   //
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    padding: EdgeInsets.symmetric(horizontal: size
+                        .width * 0.01),
                     child:
                         BlocConsumer<AuthBloc, AuthState>(listener: (_, state) {
                       if (state is AuthLoaded) {
@@ -53,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                     }, builder: (_, state) {
                       return Text("Selamat Datang Kembali!",
                           style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
+                              textStyle: GoogleFonts.montserrat(
                                   fontWeight: FontWeight.bold, fontSize:
                               getAdaptiveTextSize(context, 20))), textAlign:
                         TextAlign.center,);
@@ -67,10 +66,11 @@ class _LoginPageState extends State<LoginPage> {
 
                   // ini input text atau form
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     controller: _emailController,
                     decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: Icon(Icons.person_outline),
                         hintText: 'Username',
                         fillColor: Color(0xFFF8F9FA),
                         filled: true),
@@ -82,12 +82,13 @@ class _LoginPageState extends State<LoginPage> {
 
                   // ini input text atau form
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     controller: _passController,
                     obscureText: true,
                     decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
                         hintText: 'Password',
-                        prefixIcon: Icon(Icons.password_outlined),
+                        prefixIcon: Icon(Icons.lock_outlined),
                         fillColor: Color(0xFFF8F9FA),
                         filled: true),
                   ),
@@ -125,7 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             }
                             return Text("MASUK",
-                                style: TextStyle(fontSize:
+                                style: GoogleFonts.montserrat(fontWeight: FontWeight.bold,
+                                    fontSize:
                                 getAdaptiveTextSize(context, 16)));
                           }),
                         );
@@ -141,18 +143,18 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "< Belum mempunyai akun? ",
-                        style: TextStyle(
+                      Text(
+                        "Belum mempunyai akun? ",
+                        style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF979797)),
                       ),
                       GestureDetector(
                         onTap: () =>
                             Navigator.of(context).pushNamed('/register'),
-                        child: const Text(
+                        child: Text(
                           "Daftar",
-                          style: TextStyle(
+                          style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       )

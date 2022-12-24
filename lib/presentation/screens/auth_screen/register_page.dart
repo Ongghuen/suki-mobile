@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/logic/data/bloc/auth/auth_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -53,10 +54,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         "Buat Akunmu!",
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.bold, fontSize: 24),
                       ),
                     ],
@@ -69,6 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // ini input text atau form
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     controller: _nameController,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -82,6 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // ini input text atau form
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     controller: _noTelpController,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -96,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // ini input text atau form
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     controller: _usernameController,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -105,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // ini input text atau form
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     controller: _emailController,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -119,6 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   //
 
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     obscureText: _hidePass,
                     controller: _passController,
                     decoration: InputDecoration(
@@ -137,6 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
 
                   TextField(
+                    style: GoogleFonts.montserrat(),
                     obscureText: _hidePass,
                     controller: _passConfirmationController,
                     decoration: InputDecoration(
@@ -182,8 +189,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   color: Colors.white,
                                 );
                               }
-                              return const Text("BUAT AKUN",
-                                  style: TextStyle(fontSize: 18));
+                              return Text("BUAT AKUN",
+                                  style: GoogleFonts.montserrat(fontSize: 18,
+                                  fontWeight: FontWeight.bold));
                             }),
                         onPressed: () async {
                           var data = {
@@ -208,9 +216,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "< Sudah memiliki akun? ",
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF979797)),
                       ),
@@ -220,9 +228,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Text(
+                        child: Text(
                           "Login",
-                          style: TextStyle(
+                          style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       )

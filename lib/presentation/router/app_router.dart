@@ -11,6 +11,8 @@ import 'package:mobile/presentation/screens/dashboard_screen/search_page.dart';
 import 'package:mobile/presentation/screens/dashboard_screen/wishlist_page.dart';
 import 'package:mobile/presentation/screens/auth_screen/login_page.dart';
 import 'package:mobile/presentation/screens/auth_screen/register_page.dart';
+import 'package:mobile/presentation/screens/intro_screen/intro_page.dart';
+import 'package:mobile/presentation/screens/intro_screen/welcome_page.dart';
 import 'package:mobile/presentation/screens/profile_screen/profile_detail_page.dart';
 import 'package:mobile/presentation/screens/transaction_screen/transaction_konfirmasi_checkout_page.dart';
 import 'package:mobile/presentation/screens/transaction_screen/transaction_menunggu_pembayaran_page.dart';
@@ -24,6 +26,8 @@ class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
+        return MaterialPageRoute(builder: (_) => const WelcomePage());
+      case '/auth':
         return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginPage());
