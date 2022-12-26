@@ -18,15 +18,16 @@ const List<String> jenisList = <String>[
   'Meja',
   'Pagar',
   'Pintu',
-  'Rak'
+  'Rak',
+  'Lemari',
+  'Kanopi',
 ];
 
 const List<String> bahanList = <String>[
-  'Kayu Jati',
-  'Kayu Mahoni',
-  'Besi',
+  'Stainless',
+  'Baja Ringan',
+  'Kayu',
   'Kaca',
-  'Alumunium'
 ];
 
 class _CustomRequestPageState extends State<CustomRequestPage> {

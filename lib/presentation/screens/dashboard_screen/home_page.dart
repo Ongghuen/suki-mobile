@@ -24,14 +24,17 @@ class _HomePageState extends State<HomePage> {
   TextEditingController search = TextEditingController();
   var searchValue = "";
   var categoryValue = "";
-  List<String> categories = ["Semua", "Kursi", "Meja", "Pagar", "Pintu", "Rak"];
+  List<String> categories = ["Semua", "Kursi", "Meja", "Pagar", "Pintu", "Rak"
+      , "Lemari", "Kanopi"];
   List<IconData> categoriesIcon = [
     Icons.fiber_manual_record_outlined,
     Icons.chair_alt_outlined,
     Icons.table_bar_outlined,
     Icons.fence_outlined,
     Icons.door_front_door_outlined,
-    Icons.night_shelter_outlined
+    Icons.night_shelter_outlined,
+    Icons.kitchen_sharp,
+    Icons.roofing_outlined
   ];
   int selectedIndex = 0;
 

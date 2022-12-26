@@ -249,20 +249,23 @@ class _TransactionCustomPageState extends State<TransactionCustomPage> {
                                                           SizedBox(
                                                             width: 5,
                                                           ),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                  "${custom[index].categories}"),
-                                                              Text(
-                                                                "${custom[index].createdAt}",
-                                                                style: GoogleFonts.montserrat(
-                                                                    fontSize:
-                                                                        getAdaptiveTextSize(context, 12)),
-                                                              ),
-                                                            ],
+                                                          Container(
+                                                            width: 150,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                    "${custom[index].categories}"),
+                                                                Text(
+                                                                  "${custom[index].createdAt}",
+                                                                  style: GoogleFonts.montserrat(
+                                                                      fontSize:
+                                                                          getAdaptiveTextSize(context, 12)),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
