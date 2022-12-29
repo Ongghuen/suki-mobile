@@ -87,10 +87,10 @@ class _CartPageState extends State<CartPage> {
                                       'Ayoo beli '
                                       'furniturmu di catalog!',
                                       textAlign: TextAlign.center,
-                                      style:GoogleFonts.montserrat
-                                        (fontSize: getAdaptiveTextSize(context, 14),
-                                          fontWeight:
-                                          FontWeight.w300),
+                                      style: GoogleFonts.montserrat(
+                                          fontSize:
+                                              getAdaptiveTextSize(context, 14),
+                                          fontWeight: FontWeight.w300),
                                     )
                                   ],
                                 ),
@@ -132,9 +132,7 @@ class _CartPageState extends State<CartPage> {
                                           margin: const EdgeInsets.only(
                                               bottom: 12, right: 12),
                                           child: Padding(
-                                            padding:
-                                            const EdgeInsets.all(
-                                                14.0),
+                                            padding: const EdgeInsets.all(14.0),
                                             child: InkWell(
                                               onTap: () {
                                                 Navigator.push(
@@ -159,10 +157,11 @@ class _CartPageState extends State<CartPage> {
                                                                           15),
                                                               child: Container(
                                                                 height:
-                                                                size.height *
-                                                                    0.15,
+                                                                    size.height *
+                                                                        0.15,
                                                                 width:
-                                                                size.width * 0.3,
+                                                                    size.width *
+                                                                        0.3,
                                                                 child: Icon(
                                                                   Icons
                                                                       .inventory,
@@ -179,11 +178,12 @@ class _CartPageState extends State<CartPage> {
                                                                 "${apiUrlStorage}/${product.first.image}",
                                                                 fit: BoxFit
                                                                     .cover,
-                                                                    height:
+                                                                height:
                                                                     size.height *
                                                                         0.15,
-                                                                    width:
-                                                                    size.width * 0.3,
+                                                                width:
+                                                                    size.width *
+                                                                        0.3,
                                                                 // Better way to load images from network flutter
                                                                 // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
                                                                 loadingBuilder: (BuildContext
@@ -229,19 +229,23 @@ class _CartPageState extends State<CartPage> {
                                                                     TextAlign
                                                                         .center,
                                                                 style: GoogleFonts.montserrat(
-                                                                    fontSize: getAdaptiveTextSize(
-                                                                        context,
-                                                                        12),
+                                                                    fontSize:
+                                                                        getAdaptiveTextSize(
+                                                                            context,
+                                                                            12),
                                                                     fontWeight:
-                                                                    FontWeight.bold),
+                                                                        FontWeight
+                                                                            .bold),
                                                               ),
                                                               Text(
-                                                                  "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}", style: GoogleFonts.montserrat(
-                                                          fontSize: getAdaptiveTextSize(
-                                                              context,
-                                                              12),
-                                                          fontWeight:
-                                                          FontWeight.w400)),
+                                                                  "${truncateWithEllipsis(14, "${rupiahConvert.format(product.first.harga)}")}",
+                                                                  style: GoogleFonts.montserrat(
+                                                                      fontSize: getAdaptiveTextSize(
+                                                                          context,
+                                                                          12),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400)),
                                                               Container(
                                                                 width: 150,
                                                                 child: Row(
@@ -269,8 +273,9 @@ class _CartPageState extends State<CartPage> {
                                                                           if (astate
                                                                               is AuthLoaded) {
                                                                             print(state.data.results![index].id);
-                                                                            context.read<DetailTransactionBloc>().add(SubstractQTYProductToDetailTransactionList(data,
-                                                                                astate.userModel.token));
+                                                                            checkout[index].pivot!.qty != 1
+                                                                                ? context.read<DetailTransactionBloc>().add(SubstractQTYProductToDetailTransactionList(data, astate.userModel.token))
+                                                                                : "";
                                                                           }
                                                                         },
                                                                         icon: Icon(
@@ -385,7 +390,8 @@ class _CartPageState extends State<CartPage> {
                       return state.data.results!.isEmpty
                           ? Text(
                               ':| Tidak ada item',
-                              style: GoogleFonts.montserrat(color: Colors.white),
+                              style:
+                                  GoogleFonts.montserrat(color: Colors.white),
                             )
                           : GestureDetector(
                               onTap: () {
@@ -404,7 +410,8 @@ class _CartPageState extends State<CartPage> {
                                   children: [
                                     Text(
                                       'Bayar',
-                                      style: GoogleFonts.montserrat(color: Colors.white),
+                                      style: GoogleFonts.montserrat(
+                                          color: Colors.white),
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios,

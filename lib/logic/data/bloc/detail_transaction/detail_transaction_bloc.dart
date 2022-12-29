@@ -93,10 +93,10 @@ class DetailTransactionBloc
         var body = json.decode(res.body);
         if (res.statusCode == 200) {
           print("Add qty: masuk");
-          add(GetOngoingDetailTransactionList(event.token));
         } else {
           emit(DetailTransactionError("${body['message']}"));
         }
+        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
         emit(DetailTransactionError("Add: something's wrong"));
       }
@@ -110,10 +110,10 @@ class DetailTransactionBloc
         var body = json.decode(res.body);
         if (res.statusCode == 200) {
           print("SIP MINES");
-          add(GetOngoingDetailTransactionList(event.token));
         } else {
           emit(DetailTransactionError("${body['message']}"));
         }
+        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
         emit(DetailTransactionError("Substract: something's wrong $ex $trace"));
       }
@@ -129,10 +129,10 @@ class DetailTransactionBloc
         var body = json.decode(res.body);
         if (res.statusCode == 200) {
           print("KEAPUS HAHAY");
-          add(GetOngoingDetailTransactionList(event.token));
         } else {
           emit(DetailTransactionError("${body['message']}"));
         }
+        add(GetOngoingDetailTransactionList(event.token));
       } catch (ex, trace) {
         emit(DetailTransactionError("Delete: something's wrong"));
       }

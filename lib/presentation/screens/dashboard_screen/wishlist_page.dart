@@ -165,7 +165,9 @@ class _WishlistPageState extends State<WishlistPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "${product.first.name}",
+                                                    "${truncateWithEllipsis
+                                                      (12, "${product.first
+                                                        .name}")}",
                                                     style:
                                                         GoogleFonts.montserrat(
                                                           fontSize:
