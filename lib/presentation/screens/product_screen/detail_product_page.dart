@@ -207,7 +207,7 @@ class _DetailProductState extends State<DetailProduct> {
                                             if (state.oncart.contains(
                                                 widget.productId.toString())) {
                                               showSnackbar(
-                                                  context, "Udah ada kali");
+                                                  context, "Product sudah ada dikeranjang");
                                             } else {
                                               var data = {
                                                 "product_id":
@@ -233,7 +233,7 @@ class _DetailProductState extends State<DetailProduct> {
                                                             astate.userModel
                                                                 .token!));
                                                 showSnackbar(
-                                                    context, "Berhasil Hore");
+                                                    context, "Product Berhasil Dimasukkan Ke Keranjang");
                                               } else {
                                                 showSnackbar(context, "Gagal");
                                               }
