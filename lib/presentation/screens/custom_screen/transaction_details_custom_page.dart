@@ -404,7 +404,7 @@ class _TransactionDetailsCustomPageState
                                 width: double.infinity,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 40),
+                                      horizontal: 20, vertical: 40),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

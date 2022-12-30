@@ -65,6 +65,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
         if (res.statusCode != 200) {
           emit(AuthUpdateError(body['message']));
         }
+        emit(AuthUpdateSuccess());
         add(UserAuthRestart(event.token));
       } catch (ex, trace) {
         print("$ex $trace");

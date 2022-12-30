@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-const url = "http://192.168.0.116:8000";
+const url = "http://192.168.100.9:8000";
 // const url = "http://10.0.2.2:8000";
+// const url = "https://sukifurniture.herokuapp.com";
 
 // url api yang dipake
 const apiUrl = url;
@@ -64,6 +65,37 @@ TextStyle notFoundText() {
 getAdaptiveTextSize(BuildContext context, dynamic value) {
   // 720 is medium screen height
   return (value / 720) * MediaQuery.of(context).size.height;
+}
+
+statusColorizer(String status){
+  Color color = Colors.black;
+  switch(status){
+    case "Menunggu_Konfirmasi": {
+      color = Colors.grey;
+    }
+    break;
+    case "Terkonfirmasi": {
+      color = Colors.deepOrange;
+    }
+    break;
+    case "Dikirim": {
+      color = Colors.blue;
+    }
+    break;
+    case "Selesai": {
+      color = Colors.green;
+    }
+    break;
+    case "Belum_Bayar": {
+      color = Colors.red;
+    }
+    break;
+    case "Pending": {
+      color = Colors.orangeAccent;
+    }
+    break;
+  }
+  return color;
 }
 
 final rupiahConvert = NumberFormat.currency(locale: 'ID');

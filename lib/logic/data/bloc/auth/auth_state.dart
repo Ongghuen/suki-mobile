@@ -29,6 +29,8 @@ class AuthLoaded extends AuthState {
 
 class AuthLogout extends AuthState {}
 
+class AuthUpdateSuccess extends AuthState {}
+
 class AuthError extends AuthState {
   final String? msg;
   AuthError(this.msg);

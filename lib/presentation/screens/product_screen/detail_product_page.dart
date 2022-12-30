@@ -121,12 +121,16 @@ class _DetailProductState extends State<DetailProduct> {
                       ],
                     ),
                     const SizedBox(height: 20.0),
-                    SizedBox(
-                      height: size.height * 0.10,
-                      child: Text(
-                        "${product.first.desc}",
-                        style: GoogleFonts.montserrat(fontSize:
-                        getAdaptiveTextSize(context, 14))
+                    SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(parent:
+                      BouncingScrollPhysics()),
+                      child: SizedBox(
+                        height: size.height * 0.20,
+                        child: Text(
+                          "${product.first.desc}",
+                          style: GoogleFonts.montserrat(fontSize:
+                          getAdaptiveTextSize(context, 14)), textAlign: TextAlign.left,
+                        ),
                       ),
                     ),
                     Row(

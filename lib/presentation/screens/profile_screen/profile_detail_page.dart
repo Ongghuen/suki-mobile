@@ -298,8 +298,9 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                                 backgroundColor: const Color(0xFF151515)),
                             child: BlocConsumer<AuthBloc, AuthState>(
                                 listener: (_, state) {
-                              if (state is AuthRegistered) {
-                                Navigator.pop(context);
+                              if (state is AuthUpdateSuccess) {
+                                showSnackbar(context, "Update detail "
+                                    "akun berhasil");
                               }
                             }, builder: (_, state) {
                               if (state is AuthLoading) {
