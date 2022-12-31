@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 showSnackbar(BuildContext context, text, [label, onPressed]) {
   final snackBar = SnackBar(
-    content: Text(text),
+    backgroundColor: Colors.grey[850],
+    content: Text(text, style: GoogleFonts.montserrat(color: Colors.white),),
     action: SnackBarAction(
       label: label ?? "",
       onPressed: onPressed ?? () {},

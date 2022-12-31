@@ -207,7 +207,7 @@ class _DetailProductState extends State<DetailProduct> {
                                             if (state.oncart.contains(
                                                 widget.productId.toString())) {
                                               showSnackbar(
-                                                  context, "Product sudah ada dikeranjang");
+                                                  context, "Product Sudah Ada Di Keranjang");
                                             } else {
                                               var data = {
                                                 "product_id":
