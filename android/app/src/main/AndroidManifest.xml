@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ongghuen.mobile">
+  <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Suki App"
         android:name="${applicationName}"
