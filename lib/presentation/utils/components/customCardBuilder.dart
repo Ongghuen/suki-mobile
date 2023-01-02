@@ -108,69 +108,72 @@ buildCustomCard(BuildContext context, var custom){
                     ),
 
                     // item yang dibeli
-                    Row(
-                      children: [
-                        // nama barang
-                        Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
-                          children: [
-                            Text(
-                              truncateWithEllipsis(
-                                  50,
-                                  "${custom[index
-                                  ].customs!
-                                      .first
-                                      .name}"),
-                              style: GoogleFonts.montserrat(
-                                  fontWeight:
-                                  FontWeight
-                                      .bold),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "${custom[index].customs!.first.jenisCustom}",
-                                  style: GoogleFonts.montserrat(
-                                      fontWeight:
-                                      FontWeight
-                                          .w500),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets
-                                      .symmetric(
-                                      horizontal:
-                                      4),
-                                  child: Text(
-                                    "-",
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          // nama barang
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment
+                                .start,
+                            children: [
+                              Text(
+                                truncateWithEllipsis(
+                                    30,
+                                    "${custom[index
+                                    ].customs!
+                                        .first
+                                        .name}"),
+                                style: GoogleFonts.montserrat(
+                                    fontWeight:
+                                    FontWeight
+                                        .bold),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${custom[index].customs!.first.jenisCustom}",
                                     style: GoogleFonts.montserrat(
                                         fontWeight:
                                         FontWeight
                                             .w500),
                                   ),
-                                ),
-                                Text(
-                                  "${custom[index].customs!.first.bahan}",
-                                  style: GoogleFonts.montserrat(
-                                      fontWeight:
-                                      FontWeight
-                                          .w500),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width:
-                              size.width * 0.6,
-                              child: Text(
-                                truncateWithEllipsis(
-                                    50,
-                                    "${custom[index].customs!.first.desc}"),
+                                  Padding(
+                                    padding: const EdgeInsets
+                                        .symmetric(
+                                        horizontal:
+                                        4),
+                                    child: Text(
+                                      "-",
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight:
+                                          FontWeight
+                                              .w500),
+                                    ),
+                                  ),
+                                  Text(
+                                    "${custom[index].customs!.first.bahan}",
+                                    style: GoogleFonts.montserrat(
+                                        fontWeight:
+                                        FontWeight
+                                            .w500),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              SizedBox(
+                                width:
+                                size.width * 0.6,
+                                child: Text(
+                                  truncateWithEllipsis(
+                                      50,
+                                      "${custom[index].customs!.first.desc}"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
 
                     // kolom 3
