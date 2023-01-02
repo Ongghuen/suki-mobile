@@ -99,6 +99,17 @@ class _TransactionDetailsCustomPageState
                                   style: GoogleFonts.montserrat(
                                       fontSize: getAdaptiveTextSize(context, 16),
                                       fontWeight: FontWeight.w500)),
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: SizedBox(
+                                          width: 250,
+                                          child: Text(
+                                                                        "* pelunasan akan dilakukan saat barang telah diterima",
+                                                                        style: GoogleFonts.montserrat(
+                                          fontSize: getAdaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w300), textAlign: TextAlign.center,),
+                                        ),
+                                      ),
                               // ini input text atau form
                               SizedBox(
                                 height: 20,
