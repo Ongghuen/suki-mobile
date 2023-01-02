@@ -150,10 +150,28 @@ class _TransactionDetailsProductPageState
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Status: ${checkout.status}",
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 14, fontWeight: FontWeight.w600),
+                            Row(
+                              children: [
+                                Text(
+                                  "Status: ",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 14, fontWeight: FontWeight.w600),
+                                ),
+                                Container(
+                          decoration: BoxDecoration(
+                            color: statusColorizer(checkout.status),
+                            borderRadius: BorderRadius.all(Radius.circular(6))
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:
+                            6, vertical: 4),
+                            child: Text(truncateWithEllipsis(
+                                20,
+                                checkout.status), style: GoogleFonts
+                                .montserrat(fontWeight: FontWeight.bold),),
+                          ),
+                        ),
+                              ],
                             ),
                             // divider
                             divider(),

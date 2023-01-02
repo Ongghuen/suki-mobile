@@ -334,12 +334,31 @@ class _TransactionDetailsCustomPageState
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Status Transaksi: ${custom.status}",
-                              style: GoogleFonts.montserrat(
-                                  fontSize: getAdaptiveTextSize(context, 14),
-                                  fontWeight:
-                              FontWeight.w600),
+                            Row(
+                              children: [
+                                Text(
+                                  "Status: ",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: getAdaptiveTextSize(context, 14),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: statusColorizer("${custom.status}"),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 4),
+                                    child: Text(
+                                      truncateWithEllipsis(20, "${custom.status}"),
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: getAdaptiveTextSize(context, 14),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             Text(
                               "Status Custom: ${custom.customs!.first.status}",
