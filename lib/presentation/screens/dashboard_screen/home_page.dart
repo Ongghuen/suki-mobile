@@ -399,36 +399,39 @@ class _HomePageState extends State<HomePage> {
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             10),
-                                                                    child: Image
-                                                                        .network(
-                                                                      "${apiUrlStorage}/${product![index].image}",
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      height: size
-                                                                              .height *
-                                                                          0.15,
-                                                                      width: size
-                                                                              .width *
-                                                                          0.3,
-                                                                      // Better way to load images from network flutter
-                                                                      // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
-                                                                      loadingBuilder: (BuildContext context,
-                                                                          Widget
-                                                                              child,
-                                                                          ImageChunkEvent?
-                                                                              loadingProgress) {
-                                                                        if (loadingProgress ==
-                                                                            null)
-                                                                          return child;
-                                                                        return Center(
-                                                                          child:
-                                                                              CircularProgressIndicator(
-                                                                            value: loadingProgress.expectedTotalBytes != null
-                                                                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                                                                : null,
-                                                                          ),
-                                                                        );
-                                                                      },
+                                                                    child: Hero(
+                                                                      tag: 'product',
+                                                                      child: Image
+                                                                          .network(
+                                                                        "${apiUrlStorage}/${product![index].image}",
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height: size
+                                                                                .height *
+                                                                            0.15,
+                                                                        width: size
+                                                                                .width *
+                                                                            0.3,
+                                                                        // Better way to load images from network flutter
+                                                                        // https://stackoverflow.com/questions/53577962/better-way-to-load-images-from-network-flutter
+                                                                        loadingBuilder: (BuildContext context,
+                                                                            Widget
+                                                                                child,
+                                                                            ImageChunkEvent?
+                                                                                loadingProgress) {
+                                                                          if (loadingProgress ==
+                                                                              null)
+                                                                            return child;
+                                                                          return Center(
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              value: loadingProgress.expectedTotalBytes != null
+                                                                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                                                  : null,
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                      ),
                                                                     ),
                                                                   ),
                                                             SizedBox(
